@@ -89,14 +89,13 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
 .stitle{font-size:.76rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:20px;font-size:.78rem;z-index:9999;pointer-events:none;animation:fi .3s ease;white-space:nowrap;max-width:90vw}
 .toast-ok{background:#003300;color:var(--green)}.toast-info{background:#001a33;color:#66aaff}.toast-err{background:#330000;color:#ff6666}
-/* DEBUG CONSOLE */
-#dbg-btn{position:fixed;bottom:12px;right:12px;width:36px;height:36px;border-radius:50%;background:#1a1a1a;border:1px solid #333;color:var(--faint);font-size:.7rem;cursor:pointer;z-index:8000;display:flex;align-items:center;justify-content:center}
-#dbg-panel{position:fixed;inset:0;background:#050505ee;z-index:8500;display:none;flex-direction:column}
-#dbg-header{background:#111;border-bottom:1px solid #222;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0}
-#dbg-header span{flex:1;font-size:.85rem;font-weight:700;color:#ff8844}
-#dbg-clear{background:#2a0000;border:none;color:#ff6666;font-size:.7rem;padding:4px 10px;border-radius:6px;cursor:pointer}
-#dbg-close{background:#1a1a1a;border:none;color:var(--muted);font-size:.9rem;padding:4px 10px;border-radius:6px;cursor:pointer}
-#dbg-log{flex:1;overflow-y:auto;padding:10px;font-family:monospace;font-size:.72rem;display:flex;flex-direction:column;gap:3px}
+/* DEBUG ABA */
+#page-dbg{background:var(--bg)}
+#dbg-inner{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+#dbg-hdr{background:#111;border-bottom:1px solid #222;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+#dbg-hdr span{flex:1;font-size:.85rem;font-weight:700;color:#ff8844}
+.dbg-act{background:#1a1a1a;border:none;color:var(--muted);font-size:.7rem;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:inherit}
+#dbg-log{flex:1;overflow-y:auto;padding:10px;font-family:monospace;font-size:.7rem;display:flex;flex-direction:column;gap:3px}
 .dlog-err{color:#ff6666;background:#1a0000;padding:4px 8px;border-radius:4px;border-left:3px solid #ff2200}
 .dlog-warn{color:#ffcc44;background:#1a1400;padding:4px 8px;border-radius:4px;border-left:3px solid #ffaa00}
 .dlog-info{color:#44aaff;background:#001a33;padding:4px 8px;border-radius:4px;border-left:3px solid #0088ff}
@@ -106,17 +105,6 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
 </style>
 </head>
 <body>
-
-<!-- DEBUG CONSOLE -->
-<button id="dbg-btn" onclick="toggleDbg()">🐛</button>
-<div id="dbg-panel">
-  <div id="dbg-header">
-    <span>🐛 Console Debug</span>
-    <button id="dbg-clear" onclick="clearDbg()">Limpar</button>
-    <button id="dbg-close" onclick="toggleDbg()">✕ Fechar</button>
-  </div>
-  <div id="dbg-log"></div>
-</div>
 
 <!-- BANNER -->
 <div id="ann-banner" class="banner" onclick="showTab('ann')">📢 Novo anúncio! Toque para ver.</div>
@@ -135,6 +123,8 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
   <div class="tab" id="tab-sup" onclick="showTab('sup')"><span class="ico">🎧</span><span>Suporte</span></div>
   <div class="tab" id="tab-tkt" onclick="showTab('tkt')"><span class="ico">📋</span><span>Tickets</span><span class="tbadge" id="b-tkt"></span></div>
   <div class="tab" id="tab-ann" onclick="showTab('ann')"><span class="ico">📢</span><span>Novidades</span><span class="tbadge" id="b-ann"></span></div>
+  <div class="tab" id="tab-dbg" onclick="showTab('dbg')"><span class="ico">🐛</span><span>Debug</span></div>
+  <div class="tab" id="tab-dbg" onclick="showTab('dbg')"><span class="ico">🐛</span><span>Console</span></div>
 </div>
 
 <!-- CHAT -->
@@ -199,6 +189,15 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
   </div>
 </div>
 
+<!-- CONSOLE -->
+<div class="page" id="page-dbg" style="flex-direction:column">
+  <div style="background:#111;border-bottom:1px solid #222;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0">
+    <span style="flex:1;font-size:.85rem;font-weight:700;color:#ff8844">🐛 Console Debug</span>
+    <button onclick="clearDbg()" style="background:#2a0000;border:none;color:#ff6666;font-size:.7rem;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:inherit">Limpar</button>
+  </div>
+  <div id="dbg-log" style="flex:1;overflow-y:auto;padding:10px;font-family:monospace;font-size:.72rem;display:flex;flex-direction:column;gap:3px"></div>
+</div>
+
 <script>
 // ══ CONFIG ════════════════════════════════════════════════
 const GROQ_KEY = "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";
@@ -217,10 +216,6 @@ function dbg(type, msg) {
   d.innerHTML = '<span class="dlog-time">' + t + '</span>' + String(msg).replace(/</g,"&lt;");
   log.appendChild(d);
   log.scrollTop = log.scrollHeight;
-}
-function toggleDbg() {
-  dbgOpen = !dbgOpen;
-  document.getElementById("dbg-panel").style.display = dbgOpen ? "flex" : "none";
 }
 function clearDbg() {
   document.getElementById("dbg-log").innerHTML = "";
@@ -481,7 +476,7 @@ ci.addEventListener("keydown", function(e){ if (e.key==="Enter" && !e.shiftKey) 
 // ══ INIT ══════════════════════════════════════════════════
 function onReady() {
   dbg("ok","App iniciado! Supabase: " + SB_URL);
-  addMsg("sys","👋 Olá! Sou o FloppaAI.\nUse o Chat para perguntas ou 🎧 Suporte para abrir um ticket!\n\nToque em 🐛 no canto inferior direito para ver logs de debug.");
+  addMsg("sys","👋 Olá! Sou o FloppaAI.\nUse o Chat para perguntas ou 🎧 Suporte para abrir um ticket!\n\nAba 🐛 Console para ver logs de debug.");
   checkAnn();
 }
 onReady();

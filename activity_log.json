@@ -123,5 +123,35 @@
     "time": "16/03/2026 01:11:21",
     "action": "LOGIN",
     "detail": "Desenvolvedor autenticado"
+  },
+  {
+    "time": "16/03/2026 12:28:18",
+    "action": "LOGIN",
+    "detail": "Desenvolvedor autenticado"
+  },
+  {
+    "time": "16/03/2026 12:29:25",
+    "action": "RESPOSTA TICKET",
+    "detail": "#TKT-20260316-GAH4 Heitot"
+  },
+  {
+    "time": "16/03/2026 12:29:47",
+    "action": "RESPOSTA TICKET",
+    "detail": "#TKT-20260316-GAH4 Heitot"
+  },
+  {
+    "time": "16/03/2026 12:30:29",
+    "action": "RESPOSTA TICKET",
+    "detail": "#TKT-20260316-GAH4 Heitot"
+  },
+  {
+    "time": "16/03/2026 12:31:38",
+    "action": "DELETOU TICKET",
+    "detail": "#TKT-20260316-DLQF"
+  },
+  {
+    "time": "16/03/2026 12:32:43",
+    "action": "CRIOU ANÚNCIO",
+    "detail": "FloppaAI"
   }
 ]

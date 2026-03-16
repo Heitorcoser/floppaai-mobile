@@ -135,30 +135,7 @@ select.finp{cursor:pointer}
   </div>
 </div>
 
-<!-- DEBUG CONSOLE -->
-<style>
-#dbg-btn{position:fixed;bottom:16px;right:16px;width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:1px solid #333;color:var(--faint);font-size:.75rem;cursor:pointer;z-index:8000;display:flex;align-items:center;justify-content:center}
-#dbg-panel{position:fixed;bottom:60px;right:16px;width:500px;max-width:90vw;height:340px;background:#0a0a0a;border:1px solid #222;border-radius:12px;z-index:8500;display:none;flex-direction:column;box-shadow:0 4px 20px #000}
-#dbg-hdr{background:#111;border-bottom:1px solid #222;padding:8px 12px;display:flex;align-items:center;gap:8px;border-radius:12px 12px 0 0;flex-shrink:0}
-#dbg-hdr span{flex:1;font-size:.82rem;font-weight:700;color:#ff8844}
-.dbg-action{background:#1a1a1a;border:none;color:var(--muted);font-size:.7rem;padding:3px 9px;border-radius:5px;cursor:pointer}
-#dbg-log{flex:1;overflow-y:auto;padding:8px;font-family:monospace;font-size:.7rem;display:flex;flex-direction:column;gap:2px}
-.dlog-err{color:#ff6666;background:#1a0000;padding:3px 7px;border-radius:3px;border-left:3px solid #ff2200}
-.dlog-warn{color:#ffcc44;background:#1a1400;padding:3px 7px;border-radius:3px;border-left:3px solid #ffaa00}
-.dlog-info{color:#44aaff;background:#001a33;padding:3px 7px;border-radius:3px;border-left:3px solid #0088ff}
-.dlog-ok{color:#44ff88;background:#001a00;padding:3px 7px;border-radius:3px;border-left:3px solid #00cc66}
-.dlog-log{color:#888;padding:3px 7px;border-radius:3px}
-.dlog-time{color:#444;margin-right:6px;font-size:.62rem}
-</style>
-<button id="dbg-btn" onclick="toggleDbg()" title="Debug Console">🐛</button>
-<div id="dbg-panel">
-  <div id="dbg-hdr">
-    <span>🐛 Console Debug</span>
-    <button class="dbg-action" onclick="clearDbg()">Limpar</button>
-    <button class="dbg-action" onclick="toggleDbg()">✕</button>
-  </div>
-  <div id="dbg-log"></div>
-</div>
+
 
 <!-- SIDEBAR -->
 <div id="sidebar">
@@ -178,8 +155,8 @@ select.finp{cursor:pointer}
   <div class="sb-sep"></div>
   <button class="sb-btn active" id="btn-chat" onclick="showPanel('chat')">🗨️ Chat</button>
   <button class="sb-btn" id="btn-bugs" onclick="showPanel('bugs')">🐛 Respostas de Bug</button>
-  <button class="sb-btn" id="btn-sup" onclick="showPanel('sup')">🎧 Suporte</button>
-  <button class="sb-btn" id="btn-ann" onclick="showPanel('ann')">📢 Novidades</button>
+  <button class="sb-btn" id="btn-sup"  onclick="showPanel('sup')">🎧 Suporte</button>
+  <button class="sb-btn" id="btn-dbg"  onclick="showPanel('dbg')">🖥️ Console Debug</button>
   <div class="sb-bottom">
     <div class="sb-sep"></div>
     <button class="sb-btn" onclick="clearChat()">🗑️ Limpar chat</button>
@@ -219,11 +196,6 @@ select.finp{cursor:pointer}
       <div style="height:1px;background:#1e1e1e;margin:14px 0"></div>
       <div class="stitle">Bug selecionado</div>
       <div id="bug-detail" class="detail-box">Selecione um bug acima.</div>
-      <div class="flbl">Colar resposta (cola aqui e salva no Supabase):</div>
-      <div class="irow">
-        <input id="bug-resp" class="finp" type="text" placeholder="Cole a resposta aqui...">
-        <button class="btn btn-green" onclick="saveBugResp()" style="white-space:nowrap">✔ Salvar</button>
-      </div>
     </div>
   </div>
 
@@ -259,40 +231,21 @@ select.finp{cursor:pointer}
       <div style="height:1px;background:#1e1e1e;margin:14px 0"></div>
       <div class="stitle">Ticket selecionado</div>
       <div id="sup-detail" class="detail-box">Selecione um ticket acima.</div>
-      <div class="flbl">Colar resposta (salva no Supabase — usuário verá automaticamente):</div>
-      <div class="irow">
-        <input id="sup-resp" class="finp" type="text" placeholder="Cole a resposta aqui...">
-        <button class="btn btn-green" onclick="saveSupResp()" style="white-space:nowrap">✔ Salvar</button>
-      </div>
     </div>
   </div>
 
-  <!-- NOVIDADES -->
-  <div class="panel" id="panel-ann">
-    <div class="phdr blue"><span style="font-size:1.3rem">📢</span>
-      <div class="hinfo"><h2>Novidades & Anúncios</h2><p>Últimas atualizações</p></div>
-      <button class="back-btn blue" onclick="showPanel('chat')">← Chat</button>
+  <!-- DEBUG CONSOLE (aba) -->
+  <div class="panel" id="panel-dbg">
+    <div class="phdr dark">
+      <span style="font-size:1.3rem">🖥️</span>
+      <div class="hinfo"><h2>Console Debug</h2><p>Logs de erros, warns e requisições</p></div>
+      <button class="back-btn dim" onclick="clearDbg()">🗑 Limpar</button>
     </div>
-    <div class="pscroll">
-      <div class="card" style="background:#002200">
-        <div class="ctitle" style="color:#44ff88">➕ Publicar novo anúncio</div>
-        <label class="flbl">Título:</label>
-        <input id="ann-title" class="finp" type="text" placeholder="Título do anúncio" maxlength="80">
-        <label class="flbl">Mensagem:</label>
-        <textarea id="ann-msg" class="finp" maxlength="500" style="min-height:60px" placeholder="Mensagem..."></textarea>
-        <label class="flbl">Tipo:</label>
-        <select id="ann-type" class="finp">
-          <option value="info">ℹ️ Info</option><option value="update">🆕 Update</option><option value="aviso">⚠️ Aviso</option>
-        </select>
-        <button class="btn btn-green" onclick="postAnn()">📢 Publicar Anúncio</button>
-        <div id="ann-st" class="smsg"></div>
-      </div>
-      <button class="rbtn" onclick="loadAnn()">🔄 Atualizar</button>
-      <div id="ann-list"><div class="empty"><div class="eico">📢</div>Nenhum anúncio.</div></div>
-    </div>
+    <div id="dbg-log"></div>
   </div>
 </div>
 </div>
+
 <script>
 const GROQ_KEY="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";
 const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
@@ -366,7 +319,7 @@ function showPanel(name){
   document.querySelectorAll(".sb-btn").forEach(b=>b.classList.remove("active"));
   document.getElementById("panel-"+name).classList.add("active");
   const btn=document.getElementById("btn-"+name);if(btn)btn.classList.add("active");
-  if(name==="bugs")loadBugs();if(name==="sup")loadTickets();if(name==="ann")loadAnn();
+  if(name==="bugs")loadBugs();if(name==="sup")loadTickets();
 }
 function clearChat(){hist=[];document.getElementById("chat-box").innerHTML="";addMsg("sys","Chat limpo!");}
 const BAD=["porra","caralho","merda","viado","fdp","vsf","fuck","shit","bitch"];

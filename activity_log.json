@@ -1,0 +1,57 @@
+[
+  {
+    "time": "15/03/2026 13:12:09",
+    "action": "LOGIN",
+    "detail": "Desenvolvedor autenticado"
+  },
+  {
+    "time": "15/03/2026 13:12:23",
+    "action": "RESPOSTA TICKET",
+    "detail": "#92ce3ae0 sss"
+  },
+  {
+    "time": "15/03/2026 13:13:02",
+    "action": "CONFIGUROU FIREBASE",
+    "detail": "https://floppa-ai2-default-rtdb.firebaseio.com"
+  },
+  {
+    "time": "15/03/2026 13:13:07",
+    "action": "CONFIGUROU FIREBASE",
+    "detail": "https://floppa-ai2-default-rtdb.firebaseio.co"
+  },
+  {
+    "time": "15/03/2026 13:13:13",
+    "action": "CONFIGUROU FIREBASE",
+    "detail": "https://floppa-ai2-default-rtdb.firebaseio.com"
+  },
+  {
+    "time": "15/03/2026 13:13:14",
+    "action": "CONFIGUROU FIREBASE",
+    "detail": "https://floppa-ai2-default-rtdb.firebaseio.com"
+  },
+  {
+    "time": "15/03/2026 13:24:03",
+    "action": "LOGIN",
+    "detail": "Desenvolvedor autenticado"
+  },
+  {
+    "time": "15/03/2026 13:24:09",
+    "action": "CONFIGUROU FIREBASE",
+    "detail": "https://floppa-ai2-default-rtdb.firebaseio.com"
+  },
+  {
+    "time": "15/03/2026 14:01:51",
+    "action": "LOGIN",
+    "detail": "Desenvolvedor autenticado"
+  },
+  {
+    "time": "15/03/2026 14:03:59",
+    "action": "RESPOSTA TICKET",
+    "detail": "#mms077ziyy80 Heitor"
+  },
+  {
+    "time": "15/03/2026 14:04:21",
+    "action": "RESPOSTA TICKET",
+    "detail": "#mms077ziyy80 Heitor"
+  }
+]

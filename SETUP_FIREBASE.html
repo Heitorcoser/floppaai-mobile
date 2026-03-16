@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FloppaAI — Guia Firebase</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:#080808;color:#e0e0e0;padding:24px;line-height:1.6;max-width:680px;margin:0 auto}
+h1{color:#ff8844;font-size:1.4rem;margin-bottom:6px}
+h2{color:#44aaff;font-size:1rem;margin:24px 0 8px;display:flex;align-items:center;gap:8px}
+.step{background:#111;border-radius:12px;padding:16px;margin-bottom:12px;border-left:3px solid #ff2200}
+.step p{color:#aaa;font-size:.88rem;margin-top:6px}
+code{background:#1a1a1a;border:1px solid #333;border-radius:6px;
+  padding:2px 8px;font-family:monospace;color:#ffcc66;font-size:.88rem}
+.rules-box{background:#001a0a;border:1px solid #00442233;border-radius:10px;
+  padding:14px;margin:10px 0;font-family:monospace;font-size:.8rem;color:#88ff88;line-height:2}
+.warn{background:#1a1a00;border:1px solid #ffcc0033;border-radius:10px;
+  padding:12px 16px;font-size:.82rem;color:#ffcc66;margin:14px 0}
+.ok{background:#001a00;border:1px solid #00ff6633;border-radius:10px;
+  padding:12px 16px;font-size:.82rem;color:#88ff88;margin:14px 0}
+a{color:#44aaff}hr{border:none;border-top:1px solid #222;margin:20px 0}
+</style>
+</head>
+<body>
+<h1>🔥 FloppaAI — Configurar Firebase</h1>
+<p style="color:#888;font-size:.85rem;margin-bottom:20px">
+  Siga este guia para conectar o app ao Firebase e receber tickets do celular em tempo real.
+</p>
+
+<h2>📋 Passo 1 — Criar o projeto Firebase</h2>
+<div class="step">
+  <p>1. Acesse <a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a></p>
+  <p>2. Clique em <b>Adicionar projeto</b> e dê um nome (ex: <b>floppaai-tickets</b>)</p>
+  <p>3. Desative o Google Analytics (opcional) e clique em <b>Criar projeto</b></p>
+</div>
+
+<h2>🗄 Passo 2 — Criar o Realtime Database</h2>
+<div class="step">
+  <p>1. No menu lateral, clique em <b>Build → Realtime Database</b></p>
+  <p>2. Clique em <b>Create Database</b></p>
+  <p>3. Escolha a região <b>United States (us-central1)</b> e clique em <b>Next</b></p>
+  <p>4. Selecione <b>Start in test mode</b> e clique em <b>Enable</b></p>
+  <p>5. Copie a URL que aparece — ela será parecida com:</p>
+  <code>https://floppaai-tickets-default-rtdb.firebaseio.com</code>
+</div>
+
+<h2>🔓 Passo 3 — Configurar as Regras de acesso</h2>
+<div class="step">
+  <p>1. Na aba <b>Rules</b> do Realtime Database, substitua o conteúdo por:</p>
+  <div class="rules-box">{<br>
+&nbsp;&nbsp;"rules": {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"tickets": {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".read": false,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".write": true<br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"bugs": {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".read": false,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".write": true<br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"announcements": {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".read": true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".write": false<br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"spam": {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".read": false,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".write": false<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;}<br>
+}</div>
+  <p>2. Clique em <b>Publish</b></p>
+  <p>⚠️ Essas regras permitem que qualquer pessoa envie tickets, mas <b>ninguém consegue ler os tickets</b> — só o servidor (Python) com acesso direto consegue ler.</p>
+</div>
+
+<h2>🖥 Passo 4 — Configurar o Dev Mode (PC)</h2>
+<div class="step">
+  <p>1. Abra o <b>FloppaAI Modo Desenvolvedor</b> (<code>dev_mode.py</code>)</p>
+  <p>2. Vá em <b>⚙️ Configurações</b></p>
+  <p>3. Cole a URL do Firebase no campo <b>Firebase URL</b></p>
+  <p>4. Clique em <b>💾 Salvar & Testar</b> — deve aparecer "✅ Conectado!"</p>
+</div>
+
+<h2>📱 Passo 5 — Configurar o Celular</h2>
+<div class="step">
+  <p>1. Abra o <b>mobile/index.html</b> no navegador do celular</p>
+  <p>2. Na tela de setup que vai aparecer, cole a mesma URL do Firebase</p>
+  <p>3. Clique em <b>Salvar e Continuar</b></p>
+  <p>4. Pronto! Qualquer ticket enviado pelo celular aparecerá no Dev Mode em segundos.</p>
+  <p style="margin-top:10px">💡 Dica: Você pode hospedar o <code>mobile/index.html</code> gratuitamente no
+    <a href="https://pages.github.com" target="_blank">GitHub Pages</a> ou
+    <a href="https://netlify.com" target="_blank">Netlify</a> para acessar de qualquer dispositivo sem copiar o arquivo.</p>
+</div>
+
+<div class="ok">
+  ✅ <b>Fluxo completo:</b><br>
+  Usuário no celular envia ticket → Firebase → Dev Mode no PC recebe em tempo real → Você responde → Usuário vê resposta na aba "Meus Tickets"
+</div>
+
+<div class="warn">
+  ⚠️ O plano <b>Spark (gratuito)</b> do Firebase permite até <b>1 GB de armazenamento</b> e <b>10 GB/mês de transferência</b>.
+  Para um app pequeno como o FloppaAI, isso é mais do que suficiente para sempre.
+</div>
+
+<hr>
+<p style="color:#444;font-size:.78rem;text-align:center">FloppaAI v1.0 — Guia de Configuração Firebase</p>
+</body>
+</html>

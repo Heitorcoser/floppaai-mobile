@@ -1,0 +1,46 @@
+[
+  {
+    "id": "56e7c99b",
+    "date": "15/03/2026 12:27",
+    "name": "Heitor",
+    "message": "Eu tento coletar o livro e não vai",
+    "response": ""
+  },
+  {
+    "id": "755ba23e",
+    "date": "15/03/2026 12:29",
+    "name": "heitor",
+    "message": "oi eae",
+    "response": ""
+  },
+  {
+    "id": "c261dbb5",
+    "date": "15/03/2026 12:31",
+    "name": "ss",
+    "message": "s",
+    "response": ""
+  },
+  {
+    "id": "d863fa50",
+    "date": "15/03/2026 12:33",
+    "name": "heui",
+    "message": "asd",
+    "response": ""
+  },
+  {
+    "id": "92ce3ae0",
+    "date": "15/03/2026 12:34",
+    "name": "sss",
+    "message": "ss",
+    "response": "Problema resolvido! Se precisar de mais ajuda, envie outra mensagem."
+  },
+  {
+    "id": "mms077ziyy80",
+    "date": "15/03/2026 14:03",
+    "name": "Heitor",
+    "subject": "bug",
+    "message": "Queria saber como jogar o jogo",
+    "response": "Ao iniciar o jogo...",
+    "platform": "mobile"
+  }
+]

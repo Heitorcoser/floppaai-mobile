@@ -1,0 +1,7 @@
+{
+  "password_hash": "0f5fdb20028e7514a755f4c2648b7fc26a888b8fed25edfafb3fc1287ac420e6",
+  "spam_limit": 3,
+  "spam_window_min": 10,
+  "min_msg_len": 3,
+  "auto_block_after": 5
+}

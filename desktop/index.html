@@ -304,7 +304,6 @@ function openConfig(){ toast("✅ Supabase configurado automaticamente!","toast-
 function updateSrvLabel(){
   const el=document.getElementById("srv-lbl");if(!el)return;
   el.textContent="🟢 Supabase";el.style.color="#44ff88";
-  else{el.textContent="⚪ offline";el.style.color="var(--faint)";}
 }
 
 // ══ UTILS ════════════════════════════════════════════════
@@ -366,8 +365,7 @@ function registerBug(summary){
   if(SB_URL&&SB_KEY)sb("POST","bugs",bug);
   document.getElementById("btn-bugs").textContent=`🐛 Respostas de Bug (${bugs.length})`;
 }
-</script>
-<script>
+
 // ══ TICKETS ══════════════════════════════════════════════
 async function sendTicket(){
   const name=document.getElementById("sup-name").value.trim();

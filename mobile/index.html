@@ -383,8 +383,7 @@ async function checkAnn(){
   const raw=await sb("GET","announcements",null,"?select=id&limit=1");
   if(Array.isArray(raw)&&raw.length){document.getElementById("ann-banner").style.display="block";badge("ann",raw.length);}
 }
-</script>
-<script>
+
 // ══ CHAT ═════════════════════════════════════════════════
 const SYS=`Você é assistente especializado em "Floppa's Schoolhouse 2" (Roblox). NUNCA invente. Responda em português do Brasil.
 OBJETIVO: Coletar 7 livros e encontrar a saída correta. Saída errada vira parede.

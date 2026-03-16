@@ -13,33 +13,57 @@
   --bg:#0d0d0d;--bg2:#111;--bg3:#1a1a1a;
   --red:#ff2200;--red2:#cc1100;--red3:#2a0000;
   --blue:#0088ff;--blue2:#003a7a;
-  --green:#00cc66;
-  --orange:#ff8844;--yellow:#ffcc44;
+  --green:#00cc66;--orange:#ff8844;--yellow:#ffcc44;
+  --gold:#ffd700;--gold2:#b8860b;
   --text:#e0e0e0;--muted:#888;--faint:#444;
   --radius:16px;--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)
 }
 html,body{height:100%;overflow:hidden}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
+
+/* LOGIN */
+#login-screen{position:fixed;inset:0;background:#050505;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;flex-direction:column}
+.login-box{background:#111;border-radius:20px;padding:26px;width:100%;max-width:340px;text-align:center}
+.login-box .logo{font-size:3rem;margin-bottom:10px}
+.login-box h2{font-size:1.1rem;font-weight:700;color:var(--orange);margin-bottom:6px}
+.login-box p{font-size:.76rem;color:var(--muted);margin-bottom:18px;line-height:1.5}
+#login-input{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:12px 16px;color:var(--text);font-size:.95rem;outline:none;font-family:inherit;text-align:center}
+#login-input:focus{border-color:var(--orange)}
+#login-err{font-size:.72rem;color:#ff6666;margin-top:6px;display:none}
+#login-btn{width:100%;margin-top:12px;padding:13px;background:var(--red);border:none;border-radius:12px;color:#fff;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit}
+#login-btn:active{transform:scale(.98)}
+
+/* HEADER */
 #header{background:linear-gradient(135deg,#1a0000,#2a0000);border-bottom:1px solid #ff220022;padding:calc(var(--st)+10px) 14px 10px;display:flex;align-items:center;gap:10px;flex-shrink:0}
 .avatar{width:36px;height:36px;background:linear-gradient(135deg,var(--red),var(--red2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .hinfo{flex:1}.hinfo h1{font-size:.9rem;font-weight:700}.hinfo p{font-size:.63rem;color:var(--orange)}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 #cfg-btn{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:4px}
+
+/* BANNER */
 .banner{display:none;padding:6px 14px;font-size:.74rem;text-align:center;flex-shrink:0;cursor:pointer}
 #ann-banner{background:#001a33;border-bottom:1px solid #0088ff44;color:#66aaff}
-#tabbar{display:flex;background:var(--bg2);border-bottom:1px solid #1e1e1e;flex-shrink:0}
-.tab{flex:1;padding:9px 4px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.58rem;color:var(--faint);cursor:pointer;border-bottom:2px solid transparent;transition:.15s;user-select:none;position:relative}
-.tab .ico{font-size:1.1rem}
+
+/* TABBAR */
+#tabbar{display:flex;background:var(--bg2);border-bottom:1px solid #1e1e1e;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+#tabbar::-webkit-scrollbar{display:none}
+.tab{flex:1;min-width:52px;padding:8px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.55rem;color:var(--faint);cursor:pointer;border-bottom:2px solid transparent;transition:.15s;user-select:none;position:relative;white-space:nowrap}
+.tab .ico{font-size:1.05rem}
 .tab.active{color:var(--orange);border-bottom-color:var(--red)}
-.tbadge{position:absolute;top:5px;right:10px;background:var(--red);color:#fff;font-size:.52rem;border-radius:8px;padding:1px 5px;display:none}
+.tbadge{position:absolute;top:4px;right:8px;background:var(--red);color:#fff;font-size:.5rem;border-radius:8px;padding:1px 4px;display:none}
+
+/* PAGES */
 .page{display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0}
 .page.active{display:flex}
 .pscroll{flex:1;overflow-y:auto;padding:14px 14px calc(var(--sb)+14px)}
+
+/* AI CHAT */
 .qabar{display:flex;gap:6px;overflow-x:auto;padding:6px 10px;flex-shrink:0;background:#0a0a0a;border-bottom:1px solid #1a1a1a;scrollbar-width:none}
 .qabar::-webkit-scrollbar{display:none}
-.qabtn{background:var(--red3);border:1px solid #ff220033;border-radius:16px;color:#ffaa88;font-size:.68rem;padding:5px 10px;white-space:nowrap;cursor:pointer;flex-shrink:0}
+.qabtn{background:var(--red3);border:1px solid #ff220033;border-radius:16px;color:#ffaa88;font-size:.68rem;padding:5px 10px;white-space:nowrap;cursor:pointer;flex-shrink:0;transition:.2s}
 .qabtn:active{transform:scale(.97)}
+.qabtn.cd{opacity:.4;cursor:not-allowed;pointer-events:none}
 #chat{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:5px}
 .mrow{display:flex;width:100%}
 .mrow.user{justify-content:flex-end}
@@ -60,6 +84,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 #cinput:focus{border-color:var(--red)}
 #csend{background:var(--red);border:none;border-radius:50%;width:44px;height:44px;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0}
 #csend:active{transform:scale(.9)}
+
+/* GERAL CHAT */
+#gchat{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:4px}
+.gmsg{display:flex;flex-direction:column;animation:fi .15s ease}
+.gmsg .gname{font-size:.62rem;font-weight:700;margin-bottom:2px;padding:0 4px}
+.gmsg .gname.dev{color:var(--gold);text-shadow:0 0 8px #ffd70066}
+.gmsg .gname.user-self{color:#88ff44}
+.gmsg .gname.normal{color:#44aaff}
+.gmsg .gtext{background:var(--bg3);border-radius:10px;padding:8px 11px;font-size:.83rem;line-height:1.5;word-break:break-word;max-width:85%}
+.gmsg.self{align-items:flex-end}
+.gmsg.self .gtext{background:#1a3a0a}
+.gmsg.devmsg .gtext{background:#1a1400;border:1px solid #ffd70033}
+.gmsg .gtime{font-size:.58rem;color:var(--faint);margin-top:2px;padding:0 4px}
+#gchat-ft{background:var(--bg2);border-top:1px solid #1e1e1e;padding:8px 10px calc(var(--sb)+8px);display:flex;gap:6px;flex-shrink:0}
+#ginput{flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:22px;padding:10px 16px;color:var(--text);font-size:.84rem;outline:none;font-family:inherit}
+#ginput:focus{border-color:var(--blue)}
+#gsend{background:var(--blue2);border:none;border-radius:50%;width:44px;height:44px;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0}
+#gsend:active{transform:scale(.9)}
+.gchat-status{text-align:center;font-size:.7rem;color:var(--faint);padding:8px;flex-shrink:0}
+
+/* FORMS */
 .card{background:var(--bg2);border-radius:14px;padding:14px;margin-bottom:12px}
 .ctitle{font-size:.86rem;font-weight:700;margin-bottom:8px}
 .flbl{font-size:.7rem;color:var(--muted);display:block;margin-bottom:4px;margin-top:10px}
@@ -89,11 +134,10 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
 .stitle{font-size:.76rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:20px;font-size:.78rem;z-index:9999;pointer-events:none;animation:fi .3s ease;white-space:nowrap;max-width:90vw}
 .toast-ok{background:#003300;color:var(--green)}.toast-info{background:#001a33;color:#66aaff}.toast-err{background:#330000;color:#ff6666}
-/* DEBUG ABA */
-#page-dbg{background:var(--bg)}
-#dbg-inner{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
-#dbg-hdr{background:#111;border-bottom:1px solid #222;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0}
-#dbg-hdr span{flex:1;font-size:.85rem;font-weight:700;color:#ff8844}
+
+/* DEBUG */
+#page-dbg .dbg-hdr{background:#111;border-bottom:1px solid #222;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+#page-dbg .dbg-hdr span{flex:1;font-size:.85rem;font-weight:700;color:#ff8844}
 .dbg-act{background:#1a1a1a;border:none;color:var(--muted);font-size:.7rem;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:inherit}
 #dbg-log{flex:1;overflow-y:auto;padding:10px;font-family:monospace;font-size:.7rem;display:flex;flex-direction:column;gap:3px}
 .dlog-err{color:#ff6666;background:#1a0000;padding:4px 8px;border-radius:4px;border-left:3px solid #ff2200}
@@ -106,13 +150,25 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
 </head>
 <body>
 
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="logo">🐱</div>
+    <h2>Bem-vindo ao FloppaAI</h2>
+    <p>Digite seu nome de usuário para entrar.<br>Você pode trocar nas configurações ⚙️</p>
+    <input id="login-input" type="text" placeholder="Seu nome..." maxlength="24" autocomplete="off" autocorrect="off" spellcheck="false">
+    <div id="login-err">⚠️ Nome inválido. Use 3-24 caracteres sem palavrões.</div>
+    <button id="login-btn" onclick="doLogin()">Entrar →</button>
+  </div>
+</div>
+
 <!-- BANNER -->
 <div id="ann-banner" class="banner" onclick="showTab('ann')">📢 Novo anúncio! Toque para ver.</div>
 
 <!-- HEADER -->
 <div id="header">
   <div class="avatar">🐱</div>
-  <div class="hinfo"><h1>FloppaAI</h1><p>Floppa's Schoolhouse 2</p></div>
+  <div class="hinfo"><h1>FloppaAI</h1><p id="header-user">Floppa's Schoolhouse 2</p></div>
   <div class="dot"></div>
   <button id="cfg-btn" onclick="openConfig()">⚙️</button>
 </div>
@@ -120,25 +176,25 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
 <!-- TABBAR -->
 <div id="tabbar">
   <div class="tab active" id="tab-chat" onclick="showTab('chat')"><span class="ico">🐱</span><span>Chat</span></div>
+  <div class="tab" id="tab-geral" onclick="showTab('geral')"><span class="ico">💬</span><span>Geral</span><span class="tbadge" id="b-geral"></span></div>
   <div class="tab" id="tab-sup" onclick="showTab('sup')"><span class="ico">🎧</span><span>Suporte</span></div>
   <div class="tab" id="tab-tkt" onclick="showTab('tkt')"><span class="ico">📋</span><span>Tickets</span><span class="tbadge" id="b-tkt"></span></div>
-  <div class="tab" id="tab-ann" onclick="showTab('ann')"><span class="ico">📢</span><span>Novidades</span><span class="tbadge" id="b-ann"></span></div>
+  <div class="tab" id="tab-ann" onclick="showTab('ann')"><span class="ico">📢</span><span>News</span><span class="tbadge" id="b-ann"></span></div>
   <div class="tab" id="tab-dbg" onclick="showTab('dbg')"><span class="ico">🐛</span><span>Debug</span></div>
-  <div class="tab" id="tab-dbg" onclick="showTab('dbg')"><span class="ico">🐛</span><span>Console</span></div>
 </div>
 
-<!-- CHAT -->
+<!-- AI CHAT -->
 <div class="page active" id="page-chat">
-  <div class="qabar">
-    <div class="qabtn" onclick="qa('Qual é o objetivo do jogo?')">🎯 Objetivo</div>
-    <div class="qabtn" onclick="qa('Me fale sobre os personagens.')">👾 Personagens</div>
-    <div class="qabtn" onclick="qa('Como funciona o tutorial?')">📖 Tutorial</div>
-    <div class="qabtn" onclick="qa('Quais são as salas do mapa?')">🗺️ Salas</div>
-    <div class="qabtn" onclick="qa('Como funcionam os livros?')">📚 Livros</div>
-    <div class="qabtn" onclick="qa('Como funciona o Carro?')">🚗 Carro</div>
-    <div class="qabtn" onclick="qa('Como funciona a fita cassete?')">📼 Fita</div>
-    <div class="qabtn" onclick="qa('Me dê dicas para sobreviver.')">💡 Dicas</div>
-    <div class="qabtn" onclick="qa('Quero reportar um bug.')">🐛 Bug</div>
+  <div class="qabar" id="qabar">
+    <div class="qabtn" onclick="qaClick(this,'Qual é o objetivo do jogo?')">🎯 Objetivo</div>
+    <div class="qabtn" onclick="qaClick(this,'Me fale sobre os personagens.')">👾 Personagens</div>
+    <div class="qabtn" onclick="qaClick(this,'Como funciona o tutorial?')">📖 Tutorial</div>
+    <div class="qabtn" onclick="qaClick(this,'Quais são as salas do mapa?')">🗺️ Salas</div>
+    <div class="qabtn" onclick="qaClick(this,'Como funcionam os livros?')">📚 Livros</div>
+    <div class="qabtn" onclick="qaClick(this,'Como funciona o Carro?')">🚗 Carro</div>
+    <div class="qabtn" onclick="qaClick(this,'Como funciona a fita cassete?')">📼 Fita</div>
+    <div class="qabtn" onclick="qaClick(this,'Me dê dicas para sobreviver.')">💡 Dicas</div>
+    <div class="qabtn" onclick="qaClick(this,'Quero reportar um bug.')">🐛 Bug</div>
   </div>
   <div id="chat"></div>
   <div id="chat-ft">
@@ -147,13 +203,21 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
   </div>
 </div>
 
+<!-- GERAL CHAT -->
+<div class="page" id="page-geral">
+  <div class="gchat-status" id="gchat-status">💬 Chat Geral — todos os jogadores</div>
+  <div id="gchat"></div>
+  <div id="gchat-ft">
+    <input id="ginput" type="text" placeholder="Mensagem para todos..." maxlength="200" autocomplete="off">
+    <button id="gsend" onclick="sendGeral()">➤</button>
+  </div>
+</div>
+
 <!-- SUPORTE -->
 <div class="page" id="page-sup">
   <div class="pscroll">
     <div class="card">
       <div class="ctitle">🎧 Abrir Ticket</div>
-      <label class="flbl">Seu nome (Roblox):</label>
-      <input id="sup-name" class="finp" type="text" placeholder="Ex: NomeRoblox123" maxlength="40">
       <label class="flbl">Assunto:</label>
       <select id="sup-sub" class="finp">
         <option value="">— Selecione —</option>
@@ -171,7 +235,7 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
   </div>
 </div>
 
-<!-- MEUS TICKETS -->
+<!-- TICKETS -->
 <div class="page" id="page-tkt">
   <div class="pscroll">
     <button class="rbtn" onclick="loadTickets()">🔄 Atualizar respostas</button>
@@ -189,24 +253,24 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
   </div>
 </div>
 
-<!-- CONSOLE -->
-<div class="page" id="page-dbg" style="flex-direction:column">
-  <div style="background:#111;border-bottom:1px solid #222;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0">
-    <span style="flex:1;font-size:.85rem;font-weight:700;color:#ff8844">🐛 Console Debug</span>
-    <button onclick="clearDbg()" style="background:#2a0000;border:none;color:#ff6666;font-size:.7rem;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:inherit">Limpar</button>
+<!-- DEBUG -->
+<div class="page" id="page-dbg">
+  <div class="dbg-hdr">
+    <span>🐛 Console Debug</span>
+    <button class="dbg-act" onclick="clearDbg()">Limpar</button>
   </div>
-  <div id="dbg-log" style="flex:1;overflow-y:auto;padding:10px;font-family:monospace;font-size:.72rem;display:flex;flex-direction:column;gap:3px"></div>
+  <div id="dbg-log"></div>
 </div>
 
 <script>
 // ══ CONFIG ════════════════════════════════════════════════
-const GROQ_KEY = "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";
-const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-const SB_URL   = "https://gxjmolabyaiuuwvioyuw.supabase.co";
-const SB_KEY   = "sb_publishable_nLx32tzEkLUyXe3J4YfHKg_apSpDoI0";
+var GROQ_KEY = "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";
+var GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+var SB_URL   = "https://gxjmolabyaiuuwvioyuw.supabase.co";
+var SB_KEY   = "sb_publishable_nLx32tzEkLUyXe3J4YfHKg_apSpDoI0";
+var DEV_HASH = "0f5fdb20028e7514a755f4c2648b7fc26a888b8fed25edfafb3fc1287ac420e6";
 
-// ══ DEBUG CONSOLE ═════════════════════════════════════════
-var dbgOpen = false;
+// ══ DEBUG ═════════════════════════════════════════════════
 function dbg(type, msg) {
   var log = document.getElementById("dbg-log");
   if (!log) return;
@@ -214,272 +278,364 @@ function dbg(type, msg) {
   d.className = "dlog-" + type;
   var t = new Date().toTimeString().slice(0,8);
   d.innerHTML = '<span class="dlog-time">' + t + '</span>' + String(msg).replace(/</g,"&lt;");
-  log.appendChild(d);
-  log.scrollTop = log.scrollHeight;
+  log.appendChild(d); log.scrollTop = log.scrollHeight;
 }
-function clearDbg() {
-  document.getElementById("dbg-log").innerHTML = "";
-}
-// Intercepta console.error, console.warn, console.log
-var _ce = console.error, _cw = console.warn, _cl = console.log;
-console.error = function() { _ce.apply(console,arguments); dbg("err", Array.from(arguments).join(" ")); };
-console.warn  = function() { _cw.apply(console,arguments); dbg("warn",Array.from(arguments).join(" ")); };
-console.log   = function() { _cl.apply(console,arguments); dbg("log", Array.from(arguments).join(" ")); };
-window.onerror = function(msg, src, line) {
-  dbg("err", "JS ERROR: " + msg + " (linha " + line + ")");
-  return false;
-};
-window.onunhandledrejection = function(e) {
-  dbg("err", "Promise rejected: " + (e.reason || e));
-};
+function clearDbg() { document.getElementById("dbg-log").innerHTML = ""; }
+var _ce=console.error,_cw=console.warn,_cl=console.log;
+console.error=function(){_ce.apply(console,arguments);dbg("err",Array.from(arguments).join(" "));};
+console.warn =function(){_cw.apply(console,arguments);dbg("warn",Array.from(arguments).join(" "));};
+window.onerror=function(msg,src,line){dbg("err","JS ERROR: "+msg+" (L"+line+")");return false;};
+window.onunhandledrejection=function(e){dbg("err","Promise: "+(e.reason||e));};
 
 // ══ SUPABASE ══════════════════════════════════════════════
 async function sb(method, table, body, filter) {
   filter = filter || "";
   try {
-    var headers = {
-      "Content-Type":  "application/json",
-      "apikey":        SB_KEY,
-      "Authorization": "Bearer " + SB_KEY
-    };
-    if (method !== "GET") headers["Prefer"] = "return=representation";
-    var opts = { method: method, headers: headers };
+    var h = {"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY};
+    if (method !== "GET") h["Prefer"] = "return=representation";
+    var opts = {method:method, headers:h};
     if (body) opts.body = JSON.stringify(body);
-    var url = SB_URL + "/rest/v1/" + table + filter;
-    dbg("info", "SB " + method + " " + table + filter);
-    var r = await fetch(url, opts);
-    if (!r.ok) {
-      var txt = await r.text();
-      dbg("err", "SB " + r.status + " " + table + ": " + txt);
-      return null;
-    }
-    if (method === "GET") { var data = await r.json(); dbg("ok","SB GET " + table + " ok, " + (Array.isArray(data)?data.length+" items":"ok")); return data; }
-    if (r.status === 204) { dbg("ok","SB " + method + " " + table + " 204 ok"); return true; }
-    return r.json().catch(function() { return true; });
-  } catch(e) {
-    dbg("err", "SB exception " + table + ": " + e.message);
-    return null;
-  }
+    dbg("info", "SB "+method+" "+table+filter);
+    var r = await fetch(SB_URL+"/rest/v1/"+table+filter, opts);
+    if (!r.ok) { var t=await r.text(); dbg("err","SB "+r.status+": "+t); return null; }
+    if (method==="GET") { var d=await r.json(); dbg("ok","SB GET "+table+" "+Array.isArray(d)?d.length+" items":"ok"); return d; }
+    if (r.status===204) return true;
+    return r.json().catch(function(){return true;});
+  } catch(e) { dbg("err","SB exc: "+e.message); return null; }
 }
 
 // ══ UTILS ═════════════════════════════════════════════════
-function genId() {
-  var d = new Date();
-  var dt = d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDate());
-  var rnd = Math.random().toString(36).slice(2,6).toUpperCase();
-  return "TKT-" + dt + "-" + rnd;
+function pad(n){return String(n).padStart(2,"0");}
+function genId(){
+  var d=new Date();
+  return "TKT-"+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+"-"+Math.random().toString(36).slice(2,6).toUpperCase();
 }
-function pad(n) { return String(n).padStart(2,"0"); }
-function nowStr() {
-  var d = new Date();
-  return pad(d.getDate())+"/"+pad(d.getMonth()+1)+"/"+d.getFullYear()+" "+pad(d.getHours())+":"+pad(d.getMinutes());
-}
-function esc(t) {
-  return (t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");
-}
-function md(t) {
-  return esc(t).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");
-}
-function badge(id, v) {
-  var b = document.getElementById("b-"+id);
-  b.style.display = v ? "block" : "none";
-  b.textContent = v;
-}
-function toast(msg, cls) {
-  var t = document.createElement("div");
-  t.className = "toast " + (cls||"toast-ok");
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(function(){ t.remove(); }, 3000);
-}
-function showTab(name) {
-  document.querySelectorAll(".page").forEach(function(p){ p.classList.remove("active"); });
-  document.querySelectorAll(".tab").forEach(function(b){ b.classList.remove("active"); });
+function genMsgId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,5);}
+function nowStr(){var d=new Date();return pad(d.getDate())+"/"+pad(d.getMonth()+1)+"/"+d.getFullYear()+" "+pad(d.getHours())+":"+pad(d.getMinutes());}
+function esc(t){return(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");}
+function md(t){return esc(t).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");}
+function badge(id,v){var b=document.getElementById("b-"+id);if(!b)return;b.style.display=v?"block":"none";b.textContent=v;}
+function toast(msg,cls){var t=document.createElement("div");t.className="toast "+(cls||"toast-ok");t.textContent=msg;document.body.appendChild(t);setTimeout(function(){t.remove();},3000);}
+function showTab(name){
+  document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active");});
+  document.querySelectorAll(".tab").forEach(function(b){b.classList.remove("active");});
   document.getElementById("page-"+name).classList.add("active");
   document.getElementById("tab-"+name).classList.add("active");
-  if (name === "tkt") loadTickets();
-  if (name === "ann") loadAnn();
-}
-function openConfig() {
-  toast("✅ Supabase configurado automaticamente!", "toast-ok");
+  if(name==="tkt") loadTickets();
+  if(name==="ann") loadAnn();
+  if(name==="geral") { badge("geral",""); startGeralPolling(); }
 }
 
-// ══ SPAM ══════════════════════════════════════════════════
-var BAD = ["porra","caralho","merda","viado","fdp","vsf","fuck","shit","bitch"];
+// ══ LOGIN / USUÁRIO ════════════════════════════════════════
+var USERNAME = "";
+var IS_DEV = false;
+
+// Palavrões para validação do nome
+var BAD_NAME = ["porra","caralho","merda","fdp","vsf","fuck","shit","bitch","buceta","cuzao","viado"];
+
+function doLogin() {
+  var val = document.getElementById("login-input").value.trim();
+  var err = document.getElementById("login-err");
+  if (val.length < 3 || val.length > 24) { err.style.display="block"; return; }
+  if (BAD_NAME.some(function(w){return val.toLowerCase().includes(w);})) { err.style.display="block"; return; }
+  err.style.display = "none";
+  USERNAME = val;
+  localStorage.setItem("fai_username", USERNAME);
+  document.getElementById("login-screen").style.display = "none";
+  document.getElementById("header-user").textContent = "Olá, " + USERNAME + "!";
+  onReady();
+}
+
+function openConfig() {
+  var op = prompt("Configurações:\n\n1. Trocar nome de usuário\n2. Modo Desenvolvedor\n\nDigite 1 ou 2:", "1");
+  if (!op) return;
+  if (op.trim() === "1") {
+    var novo = prompt("Novo nome de usuário:", USERNAME);
+    if (!novo || novo.trim().length < 3) return;
+    USERNAME = novo.trim();
+    localStorage.setItem("fai_username", USERNAME);
+    document.getElementById("header-user").textContent = "Olá, " + USERNAME + "!";
+    toast("✅ Nome atualizado: " + USERNAME, "toast-ok");
+  } else if (op.trim() === "2") {
+    var pwd = prompt("Senha de desenvolvedor:");
+    if (!pwd) return;
+    sha256(pwd).then(function(hash) {
+      if (hash === DEV_HASH) {
+        IS_DEV = true;
+        localStorage.setItem("fai_is_dev","1");
+        toast("🔑 Modo Dev ativado! Você aparece em dourado no chat.", "toast-ok");
+      } else {
+        toast("❌ Senha incorreta.", "toast-err");
+      }
+    });
+  }
+}
+
+async function sha256(msg) {
+  var buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,"0");}).join("");
+}
+
+// ══ ANTI-SPAM QABAR ════════════════════════════════════════
+var qaCooldown = false;
+function qaClick(btn, prompt) {
+  if (qaCooldown) return;
+  qaCooldown = true;
+  document.querySelectorAll(".qabtn").forEach(function(b){b.classList.add("cd");});
+  qa(prompt);
+  setTimeout(function(){
+    qaCooldown = false;
+    document.querySelectorAll(".qabtn").forEach(function(b){b.classList.remove("cd");});
+  }, 5000);
+}
+
+// ══ MODERAÇÃO MELHORADA ════════════════════════════════════
+var BAD_WORDS = [
+  // palavrões básicos
+  "porra","caralho","merda","viado","fdp","vsf","fuck","shit","bitch","cuzao","buceta",
+  // insultos ao criador/jogo
+  "heitorcoser lixo","heitordc lixo","criador lixo","criador idiota","criador otario",
+  "dono lixo","dono idiota","dono otario","jogo lixo","jogo merda","jogo ruim",
+  "jogo horrivel","jogo pessimo","jogo odeio","odeio esse jogo","esse jogo e uma merda",
+  "esse jogo e lixo","floppa lixo","floppa merda","floppa e lixo",
+  "heitor idiota","heitor lixo","heitor merda","heitor otario"
+];
+function checkBadWords(text) {
+  var t = text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  return BAD_WORDS.some(function(w){return t.includes(w);});
+}
 function checkSpam(name) {
-  var log = JSON.parse(localStorage.getItem("fai_sp")||"[]"), now = Date.now(), win = 600000;
-  if (log.filter(function(e){ return e.n===name.toLowerCase() && now-e.t<win; }).length >= 3) return false;
+  var log=JSON.parse(localStorage.getItem("fai_sp")||"[]"),now=Date.now(),win=600000;
+  if(log.filter(function(e){return e.n===name.toLowerCase()&&now-e.t<win;}).length>=3)return false;
   log.push({n:name.toLowerCase(),t:now});
-  localStorage.setItem("fai_sp", JSON.stringify(log.filter(function(e){ return now-e.t<win*2; })));
+  localStorage.setItem("fai_sp",JSON.stringify(log.filter(function(e){return now-e.t<win*2;})));
   return true;
 }
 
 // ══ TICKET ════════════════════════════════════════════════
-document.getElementById("sup-msg").addEventListener("input", function(){
-  document.getElementById("sup-cnt").textContent = this.value.length;
+document.getElementById("sup-msg").addEventListener("input",function(){
+  document.getElementById("sup-cnt").textContent=this.value.length;
 });
-
 async function sendTicket() {
-  var name = document.getElementById("sup-name").value.trim();
-  var sub  = document.getElementById("sup-sub").value;
-  var msg  = document.getElementById("sup-msg").value.trim();
-  var st   = document.getElementById("sup-st");
-  var btn  = document.getElementById("sup-btn");
-  function show(t,c){ st.textContent=t; st.className="smsg "+c; st.style.display="block"; }
-  if (!name)        { show("⚠️ Informe seu nome.","swarn"); return; }
-  if (!sub)         { show("⚠️ Selecione o assunto.","swarn"); return; }
-  if (msg.length<10){ show("⚠️ Mensagem muito curta.","swarn"); return; }
-  if (!checkSpam(name))  { show("🚫 Aguarde 10 minutos.","serr"); return; }
-  if (BAD.some(function(w){ return msg.toLowerCase().includes(w); })) { show("❌ Conteúdo impróprio.","serr"); return; }
-  btn.disabled = true; btn.textContent = "⏳ Enviando..."; show("Enviando...","swarn");
-  var tkt = { id:genId(), date:nowStr(), name:name, subject:sub, message:msg, response:"", platform:"mobile" };
-  var local = JSON.parse(localStorage.getItem("my_tkt")||"[]");
-  local.push(tkt);
-  localStorage.setItem("my_tkt", JSON.stringify(local));
-  var ok = await sb("POST", "tickets", tkt);
-  btn.disabled = false; btn.textContent = "📨 Enviar Ticket";
-  if (ok !== null) {
-    show("✅ Ticket " + tkt.id + " enviado!", "sok");
-    document.getElementById("sup-name").value = "";
-    document.getElementById("sup-sub").value  = "";
-    document.getElementById("sup-msg").value  = "";
-    document.getElementById("sup-cnt").textContent = "0";
-    dbg("ok","Ticket enviado: " + tkt.id);
-  } else {
-    show("❌ Erro ao enviar. Veja o console 🐛","serr");
-  }
+  var sub=document.getElementById("sup-sub").value;
+  var msg=document.getElementById("sup-msg").value.trim();
+  var st=document.getElementById("sup-st"),btn=document.getElementById("sup-btn");
+  function show(t,c){st.textContent=t;st.className="smsg "+c;st.style.display="block";}
+  if(!sub){show("⚠️ Selecione o assunto.","swarn");return;}
+  if(msg.length<10){show("⚠️ Mensagem muito curta.","swarn");return;}
+  if(!checkSpam(USERNAME)){show("🚫 Aguarde 10 minutos.","serr");return;}
+  if(checkBadWords(msg)){show("❌ Conteúdo impróprio bloqueado.","serr");return;}
+  btn.disabled=true;btn.textContent="⏳ Enviando...";show("Enviando...","swarn");
+  var tkt={id:genId(),date:nowStr(),name:USERNAME,subject:sub,message:msg,response:"",platform:"mobile"};
+  var local=JSON.parse(localStorage.getItem("my_tkt")||"[]");
+  local.push(tkt); localStorage.setItem("my_tkt",JSON.stringify(local));
+  var ok=await sb("POST","tickets",tkt);
+  btn.disabled=false;btn.textContent="📨 Enviar Ticket";
+  if(ok!==null){
+    show("✅ Ticket "+tkt.id+" enviado!","sok");
+    document.getElementById("sup-sub").value="";
+    document.getElementById("sup-msg").value="";
+    document.getElementById("sup-cnt").textContent="0";
+  }else show("❌ Erro ao enviar. Veja Debug.","serr");
 }
-
-// ══ LOAD TICKETS ══════════════════════════════════════════
 async function loadTickets() {
-  var box = document.getElementById("tkt-list");
-  box.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Buscando...</div>';
-  var local = JSON.parse(localStorage.getItem("my_tkt")||"[]");
-  if (!local.length) {
-    box.innerHTML = '<div class="empty"><div class="eico">📭</div>Nenhum ticket enviado ainda.</div>';
-    return;
-  }
-  var ids = local.map(function(t){ return t.id; }).join(",");
-  var raw = await sb("GET", "tickets", null, "?id=in.(" + ids + ")&select=id,response");
-  var cloud = {};
-  if (Array.isArray(raw)) raw.forEach(function(t){ cloud[t.id] = t; });
-  var upd = local.map(function(t){
-    return cloud[t.id] ? Object.assign({}, t, {response: cloud[t.id].response||""}) : t;
-  });
-  localStorage.setItem("my_tkt", JSON.stringify(upd));
-  var resp = upd.filter(function(t){ return t.response && t.response.trim(); }).length;
-  badge("tkt", resp || "");
-  box.innerHTML = "";
-  var slbl = {bug:"🐛 Bug", duvida:"❓ Dúvida", sugestao:"💡 Sugestão", outro:"🔧 Outro"};
-  upd.slice().reverse().forEach(function(t) {
-    var hasR = !!(t.response && t.response.trim());
-    var c = document.createElement("div");
-    c.className = "tcard " + (hasR ? "done" : "pend");
-    c.innerHTML =
-      '<div class="thead2"><span class="tid">🎫 '+t.id+'</span><span class="tstat" style="color:'+(hasR?"#44ff88":"#ffaa44")+'">'+(hasR?"✅ Respondido":"⏳ Aguardando")+'</span></div>'+
+  var box=document.getElementById("tkt-list");
+  box.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Buscando...</div>';
+  var local=JSON.parse(localStorage.getItem("my_tkt")||"[]");
+  if(!local.length){box.innerHTML='<div class="empty"><div class="eico">📭</div>Nenhum ticket ainda.</div>';return;}
+  var ids=local.map(function(t){return t.id;}).join(",");
+  var raw=await sb("GET","tickets",null,"?id=in.("+ids+")&select=id,response");
+  var cloud={};
+  if(Array.isArray(raw))raw.forEach(function(t){cloud[t.id]=t;});
+  var upd=local.map(function(t){return cloud[t.id]?Object.assign({},t,{response:cloud[t.id].response||""}):t;});
+  localStorage.setItem("my_tkt",JSON.stringify(upd));
+  badge("tkt",upd.filter(function(t){return t.response&&t.response.trim();}).length||"");
+  box.innerHTML="";
+  var slbl={bug:"🐛 Bug",duvida:"❓ Dúvida",sugestao:"💡 Sugestão",outro:"🔧 Outro"};
+  upd.slice().reverse().forEach(function(t){
+    var hasR=!!(t.response&&t.response.trim());
+    var c=document.createElement("div");c.className="tcard "+(hasR?"done":"pend");
+    c.innerHTML='<div class="thead2"><span class="tid">🎫 '+t.id+'</span><span class="tstat" style="color:'+(hasR?"#44ff88":"#ffaa44")+'">'+(hasR?"✅ Respondido":"⏳ Aguardando")+'</span></div>'+
       '<div style="font-size:.7rem;color:var(--muted);margin-bottom:5px">'+(slbl[t.subject]||"Suporte")+' • '+t.date+'</div>'+
       '<div class="tmsg">'+esc(t.message)+'</div>'+
-      (hasR
-        ? '<div style="font-size:.7rem;color:#44ff88;margin:5px 0 3px">💬 Resposta da equipe:</div><div class="treply">'+esc(t.response)+'</div>'
-        : '<div style="font-size:.7rem;color:var(--faint);margin-top:5px">Ainda sem resposta. Toque em 🔄 para verificar.</div>');
+      (hasR?'<div style="font-size:.7rem;color:#44ff88;margin:5px 0 3px">💬 Resposta:</div><div class="treply">'+esc(t.response)+'</div>':
+            '<div style="font-size:.7rem;color:var(--faint);margin-top:5px">Sem resposta ainda. Toque 🔄 para verificar.</div>');
     box.appendChild(c);
   });
 }
 
 // ══ ANÚNCIOS ══════════════════════════════════════════════
 async function loadAnn() {
-  var box = document.getElementById("ann-list");
-  box.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Carregando...</div>';
-  var raw = await sb("GET","announcements",null,"?select=*&order=id.desc");
-  if (!Array.isArray(raw) || !raw.length) {
-    box.innerHTML = '<div class="empty"><div class="eico">📢</div>Nenhum anúncio.</div>';
-    return;
-  }
-  box.innerHTML = "";
-  var ico = {info:"ℹ️", aviso:"⚠️", update:"🆕"};
-  raw.forEach(function(a) {
-    var d = document.createElement("div");
-    d.className = "acard " + (a.type||"info");
-    d.innerHTML = '<div class="atitle">'+(ico[a.type]||"📢")+" "+esc(a.title||"")+'</div><div class="amsg">'+esc(a.message||"")+'</div><div class="adate">'+esc(a.date||"")+'</div>';
+  var box=document.getElementById("ann-list");
+  box.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Carregando...</div>';
+  var raw=await sb("GET","announcements",null,"?select=*&order=id.desc");
+  if(!Array.isArray(raw)||!raw.length){box.innerHTML='<div class="empty"><div class="eico">📢</div>Nenhum anúncio.</div>';return;}
+  box.innerHTML="";
+  var ico={info:"ℹ️",aviso:"⚠️",update:"🆕"};
+  raw.forEach(function(a){
+    var d=document.createElement("div");d.className="acard "+(a.type||"info");
+    d.innerHTML='<div class="atitle">'+(ico[a.type]||"📢")+" "+esc(a.title||"")+'</div><div class="amsg">'+esc(a.message||"")+'</div><div class="adate">'+esc(a.date||"")+'</div>';
     box.appendChild(d);
   });
 }
 async function checkAnn() {
-  var raw = await sb("GET","announcements",null,"?select=id&limit=1");
-  if (Array.isArray(raw) && raw.length) {
-    document.getElementById("ann-banner").style.display = "block";
-    badge("ann", raw.length);
-  }
+  var raw=await sb("GET","announcements",null,"?select=id&limit=1");
+  if(Array.isArray(raw)&&raw.length){document.getElementById("ann-banner").style.display="block";badge("ann",raw.length);}
 }
 
-// ══ CHAT ══════════════════════════════════════════════════
-var SYS = "Você é assistente especializado em \"Floppa's Schoolhouse 2\" (Roblox). NUNCA invente. Responda em português do Brasil.\n" +
-  "OBJETIVO: Coletar 7 livros e encontrar a saída correta. Saída errada vira parede.\n" +
-  "TUTORIAL: Jogo começa com Baldi na entrada. Cada livro tem 3 questões. Errar UMA = só ela marcada. Errar TODAS = livro errado. Ao errar = cutscene Baldi morre, Floppa persegue.\n" +
-  "MECÂNICAS: Cada erro = Floppa mais rápido. 7 livros = Floppa mais rápido. Stamina recupera ao pegar livro ou bebedouro.\n" +
-  "PERSONAGENS: Floppa(perseguidor,audição), Baldi(início,morre), Carro vermelho(após 2 livros,a cada 20s,espere 10-12s), X9(chega ~10m revela posição ao Floppa por 60s).\n" +
-  "ITENS: Fita Cassete — Floppa persegue o som por 60s.\n" +
-  "SALAS: Aula(livros,porta cinza), Supplies(carro,porta amarela), Cafeteria(saída), Corredores(bebedouros), Detenção, Funcionários.\n" +
-  "BUG REPORT: após investigar, inicie com BUG_REPORT: [resumo] e continue.";
+// ══ CHAT GERAL ════════════════════════════════════════════
+var geralPollTimer = null;
+var geralLastId = "";
+var geralSending = false;
+
+function startGeralPolling() {
+  if (geralPollTimer) return;
+  loadGeralMessages(true);
+  geralPollTimer = setInterval(function(){loadGeralMessages(false);}, 3000);
+}
+
+async function loadGeralMessages(initial) {
+  var filter = "?select=*&order=id.asc&limit=80";
+  var raw = await sb("GET","messages",null,filter);
+  if (!Array.isArray(raw)) return;
+
+  var box = document.getElementById("gchat");
+  if (!box) return;
+
+  // Verifica se tem mensagens novas
+  var lastRaw = raw.length ? raw[raw.length-1].id : "";
+  if (!initial && lastRaw === geralLastId) return;
+  geralLastId = lastRaw;
+
+  var wasAtBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 60;
+  box.innerHTML = "";
+
+  raw.forEach(function(m) {
+    var isSelf = m.username === USERNAME;
+    var isDev  = !!m.is_dev;
+    var div = document.createElement("div");
+    div.className = "gmsg" + (isSelf?" self":"") + (isDev?" devmsg":"");
+    var nameClass = isDev ? "dev" : (isSelf ? "user-self" : "normal");
+    var prefix = isDev ? "👑 " : "";
+    div.innerHTML =
+      '<div class="gname '+nameClass+'">'+prefix+esc(m.username)+'</div>'+
+      '<div class="gtext">'+esc(m.text)+'</div>'+
+      '<div class="gtime">'+esc(m.date||"")+'</div>';
+    box.appendChild(div);
+  });
+
+  if (initial || wasAtBottom) box.scrollTop = box.scrollHeight;
+  if (!initial) badge("geral","");
+}
+
+async function sendGeral() {
+  if (geralSending) return;
+  var inp = document.getElementById("ginput");
+  var text = inp.value.trim();
+  if (!text) return;
+  if (text.length > 200) { toast("⚠️ Mensagem muito longa (máx 200).","toast-err"); return; }
+  if (checkBadWords(text)) { toast("❌ Mensagem bloqueada: conteúdo impróprio.","toast-err"); inp.value=""; return; }
+
+  // Rate limit simples: 1 mensagem por 2 segundos
+  var now = Date.now();
+  var last = parseInt(localStorage.getItem("fai_gchat_last")||"0");
+  if (now - last < 2000) { toast("⏳ Aguarde um momento...","toast-info"); return; }
+  localStorage.setItem("fai_gchat_last", now);
+
+  geralSending = true;
+  inp.value = "";
+  document.getElementById("gsend").disabled = true;
+
+  var msg = {id:genMsgId(), username:USERNAME, text:text, date:nowStr(), is_dev:IS_DEV};
+  var ok = await sb("POST","messages",msg);
+  if (!ok) { toast("❌ Erro ao enviar.","toast-err"); }
+  await loadGeralMessages(false);
+  geralSending = false;
+  document.getElementById("gsend").disabled = false;
+}
+
+document.getElementById("ginput").addEventListener("keydown",function(e){
+  if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendGeral();}
+});
+
+// ══ AI CHAT ═══════════════════════════════════════════════
+var SYS = 'Você é assistente especializado em "Floppa\'s Schoolhouse 2" (Roblox). NUNCA invente. Responda em português do Brasil.\n'+
+  'OBJETIVO: Coletar 7 livros e encontrar a saída correta. Saída errada vira parede.\n'+
+  'TUTORIAL: Jogo começa com Baldi na entrada. Cada livro tem 3 questões. Errar UMA = só ela marcada. Errar TODAS = livro errado. Ao errar = cutscene Baldi morre, Floppa persegue.\n'+
+  'MECÂNICAS: Cada erro = Floppa mais rápido. 7 livros = Floppa mais rápido. Stamina recupera ao pegar livro ou bebedouro.\n'+
+  'PERSONAGENS: Floppa(perseguidor,audição), Baldi(início,morre), Carro vermelho(após 2 livros,a cada 20s,espere 10-12s), X9(chega ~10m revela posição ao Floppa por 60s).\n'+
+  'ITENS: Fita Cassete — Floppa persegue o som por 60s.\n'+
+  'SALAS: Aula(livros,porta cinza), Supplies(carro,porta amarela), Cafeteria(saída), Corredores(bebedouros), Detenção, Funcionários.\n'+
+  'BUG REPORT: após investigar, inicie com BUG_REPORT: [resumo] e continue.';
 
 var hist = [];
 var chatEl = document.getElementById("chat");
-var ci     = document.getElementById("cinput");
+var ci = document.getElementById("cinput");
 
 function addMsg(role, text) {
-  var row = document.createElement("div"); row.className = "mrow " + role;
-  var b   = document.createElement("div"); b.className   = "bub "  + role;
-  if      (role === "user") b.innerHTML = '<div class="lbl">Você</div>'         + md(text);
-  else if (role === "ai")   b.innerHTML = '<div class="lbl">FloppaAI 🐱</div>'  + md(text);
-  else                      b.innerHTML = esc(text);
-  row.appendChild(b); chatEl.appendChild(row); chatEl.scrollTop = chatEl.scrollHeight;
+  var row=document.createElement("div");row.className="mrow "+role;
+  var b=document.createElement("div");b.className="bub "+role;
+  if(role==="user")b.innerHTML='<div class="lbl">Você</div>'+md(text);
+  else if(role==="ai")b.innerHTML='<div class="lbl">FloppaAI 🐱</div>'+md(text);
+  else b.innerHTML=esc(text);
+  row.appendChild(b);chatEl.appendChild(row);chatEl.scrollTop=chatEl.scrollHeight;
 }
-function addTyping() {
-  var row = document.createElement("div"); row.className = "mrow ai"; row.id = "typ";
-  var b   = document.createElement("div"); b.className   = "bub ai";
-  b.innerHTML = '<div class="lbl">FloppaAI 🐱</div><div class="dots"><span></span><span></span><span></span></div>';
-  row.appendChild(b); chatEl.appendChild(row); chatEl.scrollTop = chatEl.scrollHeight;
+function addTyping(){
+  var row=document.createElement("div");row.className="mrow ai";row.id="typ";
+  var b=document.createElement("div");b.className="bub ai";
+  b.innerHTML='<div class="lbl">FloppaAI 🐱</div><div class="dots"><span></span><span></span><span></span></div>';
+  row.appendChild(b);chatEl.appendChild(row);chatEl.scrollTop=chatEl.scrollHeight;
 }
-function rmTyping() { var t = document.getElementById("typ"); if (t) t.remove(); }
+function rmTyping(){var t=document.getElementById("typ");if(t)t.remove();}
 
 async function sendChat() {
-  var text = ci.value.trim(); if (!text) return;
-  ci.value = ""; document.getElementById("csend").disabled = true;
-  addMsg("user", text); hist.push({role:"user", content:text}); addTyping();
+  var text=ci.value.trim();if(!text)return;
+  ci.value="";document.getElementById("csend").disabled=true;
+  addMsg("user",text);hist.push({role:"user",content:text});addTyping();
   try {
-    var r = await fetch(GROQ_URL, {
-      method: "POST",
-      headers: {"Content-Type":"application/json","Authorization":"Bearer "+GROQ_KEY},
-      body: JSON.stringify({model:"llama-3.1-8b-instant", messages:[{role:"system",content:SYS}].concat(hist.slice(-14)), max_tokens:900, temperature:.3})
-    });
-    var d = await r.json();
-    if (!r.ok) throw new Error(d.error && d.error.message ? d.error.message : "Erro API");
-    var reply = d.choices[0].message.content;
-    if (reply.startsWith("BUG_REPORT:")) {
-      var lines   = reply.split("\n");
-      var summary = lines[0].replace("BUG_REPORT:","").trim();
-      reply = lines.slice(1).join("\n").trim();
+    var r=await fetch(GROQ_URL,{method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+GROQ_KEY},
+      body:JSON.stringify({model:"llama-3.1-8b-instant",messages:[{role:"system",content:SYS}].concat(hist.slice(-14)),max_tokens:600,temperature:.3})});
+    var d=await r.json();
+    if(!r.ok)throw new Error(d.error&&d.error.message?d.error.message:"Erro API");
+    var reply=d.choices[0].message.content;
+    if(reply.startsWith("BUG_REPORT:")){
+      var lines=reply.split("\n");
+      var summary=lines[0].replace("BUG_REPORT:","").trim();
+      reply=lines.slice(1).join("\n").trim();
       sb("POST","bugs",{id:genId(),date:nowStr(),summary:summary,response:"",status:"pendente",platform:"mobile"});
-      dbg("info","Bug reportado: "+summary);
     }
-    hist.push({role:"assistant", content:reply});
-    rmTyping(); addMsg("ai", reply);
-  } catch(e) {
-    rmTyping(); addMsg("ai","⚠️ Erro: "+e.message);
-    dbg("err","Chat error: "+e.message);
+    hist.push({role:"assistant",content:reply});rmTyping();addMsg("ai",reply);
+  }catch(e){
+    rmTyping();
+    if(e.message.includes("Rate limit")||e.message.includes("rate_limit")) {
+      addMsg("ai","⏳ Muitas perguntas em pouco tempo! Aguarde alguns segundos e tente novamente.");
+    } else {
+      addMsg("ai","⚠️ Erro: "+e.message);
+    }
+    dbg("err","Chat: "+e.message);
   }
-  document.getElementById("csend").disabled = false;
+  document.getElementById("csend").disabled=false;
 }
-function qa(p) { ci.value = p; sendChat(); }
-ci.addEventListener("keydown", function(e){ if (e.key==="Enter" && !e.shiftKey) sendChat(); });
+function qa(p){ci.value=p;sendChat();}
+ci.addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey)sendChat();});
 
 // ══ INIT ══════════════════════════════════════════════════
 function onReady() {
-  dbg("ok","App iniciado! Supabase: " + SB_URL);
-  addMsg("sys","👋 Olá! Sou o FloppaAI.\nUse o Chat para perguntas ou 🎧 Suporte para abrir um ticket!\n\nAba 🐛 Console para ver logs de debug.");
+  dbg("ok","Iniciado como: "+USERNAME+(IS_DEV?" [DEV]":""));
+  addMsg("sys","👋 Olá, "+USERNAME+"!\nUse o Chat para perguntas sobre o jogo.\nToque em 💬 para o Chat Geral com todos os jogadores!");
   checkAnn();
 }
-onReady();
+
+// Inicializa
+USERNAME = localStorage.getItem("fai_username") || "";
+IS_DEV   = localStorage.getItem("fai_is_dev") === "1";
+if (USERNAME) {
+  document.getElementById("login-screen").style.display = "none";
+  document.getElementById("header-user").textContent = "Olá, " + USERNAME + "!";
+  onReady();
+}
+document.getElementById("login-input").addEventListener("keydown",function(e){if(e.key==="Enter")doLogin();});
 </script>
 </body>
 </html>

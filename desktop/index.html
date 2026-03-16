@@ -10,12 +10,22 @@
   --bg:#0d0d0d;--bg2:#111;--bg3:#1a1a1a;--bg4:#0f0f0f;
   --red:#ff2200;--red2:#cc1100;--red3:#2a0000;
   --blue:#0088ff;--blue2:#003a7a;
-  --green:#00cc66;--green2:#003300;
-  --orange:#ff8844;--yellow:#ffcc44;
+  --green:#00cc66;--orange:#ff8844;--yellow:#ffcc44;
+  --gold:#ffd700;
   --text:#e0e0e0;--muted:#888;--faint:#444;--radius:14px
 }
 html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text)}
 #app{display:flex;height:100vh}
+/* LOGIN */
+#login-screen{position:fixed;inset:0;background:#050505;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-box{background:#111;border-radius:20px;padding:28px;width:100%;max-width:360px;text-align:center}
+.login-box .logo{font-size:3rem;margin-bottom:12px}
+.login-box h2{font-size:1.1rem;font-weight:700;color:var(--orange);margin-bottom:6px}
+.login-box p{font-size:.76rem;color:var(--muted);margin-bottom:18px;line-height:1.5}
+#login-input{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:11px 16px;color:var(--text);font-size:.95rem;outline:none;font-family:inherit;text-align:center}
+#login-input:focus{border-color:var(--orange)}
+#login-err{font-size:.72rem;color:#ff6666;margin-top:6px;display:none}
+#login-btn{width:100%;margin-top:12px;padding:12px;background:var(--red);border:none;border-radius:10px;color:#fff;font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit}
 /* SIDEBAR */
 #sidebar{width:215px;min-width:215px;background:var(--bg4);border-right:1px solid #1a1a1a;display:flex;flex-direction:column;overflow-y:auto}
 #sidebar::-webkit-scrollbar{width:3px}
@@ -23,6 +33,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 .sb-logo{padding:18px 12px 8px;text-align:center}
 .sb-logo h1{font-size:1.05rem;font-weight:700;color:var(--red)}
 .sb-logo p{font-size:.63rem;color:var(--muted);margin-top:2px}
+#sb-user{font-size:.68rem;color:var(--orange);margin-top:4px;font-weight:700}
 .sb-sep{height:1px;background:#1e1e1e;margin:6px 10px}
 .sb-label{font-size:.6rem;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.07em;padding:4px 12px 2px}
 .sb-action{font-size:.76rem;color:#bbb;padding:6px 12px;cursor:pointer;border-radius:7px;margin:1px 6px;transition:.1s;display:block;border:none;background:none;width:calc(100% - 12px);text-align:left;font-family:inherit}
@@ -35,19 +46,22 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 #main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 .panel{display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0}
 .panel.active{display:flex}
-/* HEADER */
+/* HEADERS */
 .phdr{display:flex;align-items:center;gap:10px;padding:10px 16px;background:linear-gradient(135deg,#1a0000,#2a0000);border-bottom:1px solid #ff220020;flex-shrink:0;min-height:50px}
 .phdr.blue{background:linear-gradient(135deg,#001a33,#002244);border-bottom-color:#0088ff20}
-.avatar{width:34px;height:34px;background:linear-gradient(135deg,var(--red),var(--red2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;box-shadow:0 0 8px #ff220033}
+.phdr.dark{background:#0a0a0a;border-bottom:1px solid #222}
+.phdr.gchat-hdr{background:linear-gradient(135deg,#001a33,#00224a);border-bottom:1px solid #0088ff22}
+.avatar{width:34px;height:34px;background:linear-gradient(135deg,var(--red),var(--red2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
 .hinfo h2{font-size:.9rem;font-weight:700}.hinfo p{font-size:.6rem;color:var(--orange)}
-.phdr.blue .hinfo p{color:#44aaff}
+.phdr.blue .hinfo p,.phdr.gchat-hdr .hinfo p{color:#44aaff}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 #srv-lbl{font-size:.65rem;color:var(--faint);margin-left:auto}
 .back-btn{margin-left:auto;background:#2a0000;border:none;color:#ff8866;font-size:.73rem;padding:5px 11px;border-radius:8px;cursor:pointer;font-family:inherit}
 .back-btn:hover{background:#440000}
 .back-btn.blue{background:#001a33;color:#44aaff}.back-btn.blue:hover{background:#003366}
-/* CHAT */
+.back-btn.dim{background:#1a1a1a;color:var(--muted);margin-left:auto}.back-btn.dim:hover{background:#2a2a2a}
+/* CHAT IA */
 #chat-box{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:5px;background:var(--bg)}
 #chat-box::-webkit-scrollbar{width:4px}
 #chat-box::-webkit-scrollbar-thumb{background:#2a0000;border-radius:2px}
@@ -68,6 +82,25 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 #cinput:focus{border-color:var(--red)}
 #csend{background:var(--red);border:none;border-radius:50%;width:42px;height:42px;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;transition:.1s;display:flex;align-items:center;justify-content:center}
 #csend:hover{background:var(--red2)}#csend:active{transform:scale(.9)}
+/* GERAL CHAT */
+#gchat{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:4px;background:var(--bg)}
+#gchat::-webkit-scrollbar{width:4px}
+#gchat::-webkit-scrollbar-thumb{background:#2a2a2a}
+.gmsg{display:flex;flex-direction:column;animation:fi .15s ease}
+.gmsg .gname{font-size:.65rem;font-weight:700;margin-bottom:2px;padding:0 4px}
+.gmsg .gname.dev{color:var(--gold);text-shadow:0 0 8px #ffd70055}
+.gmsg .gname.user-self{color:#88ff44}
+.gmsg .gname.normal{color:#44aaff}
+.gmsg .gtext{background:var(--bg3);border-radius:10px;padding:8px 12px;font-size:.85rem;line-height:1.5;word-break:break-word;max-width:60%}
+.gmsg.self{align-items:flex-end}
+.gmsg.self .gtext{background:#1a3a0a}
+.gmsg.devmsg .gtext{background:#1a1400;border:1px solid #ffd70033}
+.gmsg .gtime{font-size:.6rem;color:var(--faint);margin-top:2px;padding:0 4px}
+#gchat-ft{background:#111;border-top:1px solid #1e1e1e;padding:10px 14px;display:flex;gap:8px;align-items:center;flex-shrink:0}
+#ginput{flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:22px;padding:10px 18px;color:var(--text);font-size:.86rem;outline:none;font-family:inherit}
+#ginput:focus{border-color:var(--blue)}
+#gsend{background:var(--blue2);border:none;border-radius:50%;width:42px;height:42px;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+#gsend:hover{background:#0055bb}
 /* PANELS */
 .pscroll{flex:1;overflow-y:auto;padding:16px}
 .pscroll::-webkit-scrollbar{width:4px}
@@ -82,7 +115,6 @@ select.finp{cursor:pointer}
 .btn{width:100%;padding:11px;border:none;border-radius:10px;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit;transition:.1s}
 .btn:active{transform:scale(.98)}
 .btn-blue{background:var(--blue2);color:#fff}.btn-blue:hover{background:#0055bb}
-.btn-green{background:#003300;color:#88ff44}.btn-green:hover{background:#004400}
 .smsg{font-size:.75rem;padding:8px 10px;border-radius:8px;margin-top:8px;display:none}
 .sok{background:#003300;color:var(--green)}.serr{background:#330000;color:#ff6666}.swarn{background:#332200;color:var(--yellow)}
 .tcard{background:var(--bg3);border-radius:9px;padding:10px;margin-bottom:7px;border-left:3px solid var(--faint);cursor:pointer;transition:.1s}
@@ -91,109 +123,99 @@ select.finp{cursor:pointer}
 .tc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
 .tc-id{font-size:.6rem;color:var(--faint);font-family:monospace}.tc-stat{font-size:.66rem;font-weight:700}
 .tc-prev{font-size:.77rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.acard{border-radius:10px;padding:13px;margin-bottom:10px}
-.acard.info{background:#001a33}.acard.aviso{background:#2a1a00}.acard.update{background:#002200}
-.atitle{font-size:.87rem;font-weight:700;margin-bottom:4px}.amsg{font-size:.79rem;color:var(--muted);line-height:1.5}.adate{font-size:.61rem;color:var(--faint);margin-top:5px}
+.detail-box{background:#0d0d0d;border-radius:10px;padding:12px;min-height:80px;font-size:.84rem;line-height:1.6;color:var(--muted);margin-bottom:12px;white-space:pre-wrap;word-break:break-word}
 .empty{text-align:center;padding:36px 20px;color:var(--faint);font-size:.83rem}.eico{font-size:2.5rem;margin-bottom:10px}
 .stitle{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px}
 .rbtn{background:none;border:1px solid #2a2a2a;border-radius:9px;padding:5px 13px;color:var(--muted);font-size:.71rem;cursor:pointer;margin-bottom:12px;font-family:inherit}
 .rbtn:hover{background:#1a1a1a}
-.irow{display:flex;gap:8px;margin-top:8px;align-items:center}
-.irow .finp{flex:1;margin:0}.irow .btn{width:auto;padding:9px 14px;margin:0}
-.detail-box{background:#0d0d0d;border-radius:10px;padding:12px;min-height:80px;font-size:.84rem;line-height:1.6;color:var(--muted);margin-bottom:12px;white-space:pre-wrap;word-break:break-word}
 .toast{position:fixed;bottom:22px;right:22px;padding:10px 18px;border-radius:16px;font-size:.77rem;z-index:9999;pointer-events:none;animation:fi .3s ease;white-space:nowrap}
 .toast-ok{background:#003300;color:var(--green);border:1px solid #004400}
 .toast-info{background:#001a33;color:#66aaff;border:1px solid #002244}
 .toast-err{background:#330000;color:#ff6666;border:1px solid #440000}
-/* DEBUG PANEL */
-.phdr.dark{background:#0a0a0a;border-bottom:1px solid #222}
-.back-btn.dim{background:#1a1a1a;color:var(--muted);margin-left:auto}
-.back-btn.dim:hover{background:#2a2a2a}
+/* DEBUG */
 #dbg-log{flex:1;overflow-y:auto;padding:10px;font-family:monospace;font-size:.72rem;display:flex;flex-direction:column;gap:3px;background:var(--bg)}
-#dbg-log::-webkit-scrollbar{width:3px}
-#dbg-log::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
 .dlog-err{color:#ff6666;background:#1a0000;padding:4px 8px;border-radius:4px;border-left:3px solid #ff2200}
 .dlog-warn{color:#ffcc44;background:#1a1400;padding:4px 8px;border-radius:4px;border-left:3px solid #ffaa00}
 .dlog-info{color:#44aaff;background:#001a33;padding:4px 8px;border-radius:4px;border-left:3px solid #0088ff}
 .dlog-ok{color:#44ff88;background:#001a00;padding:4px 8px;border-radius:4px;border-left:3px solid #00cc66}
 .dlog-log{color:#888;padding:4px 8px;border-radius:4px}
 .dlog-time{color:#444;margin-right:6px;font-size:.65rem}
-/* SETUP overlay */
-#setup-overlay{position:fixed;inset:0;background:#050505ee;z-index:999;display:none;align-items:center;justify-content:center;padding:20px}
-.sbox{background:#111;border-radius:20px;padding:24px;width:100%;max-width:420px}
-.sbox h2{font-size:1.05rem;font-weight:700;color:var(--orange);margin-bottom:6px}
-.sbox p{font-size:.76rem;color:var(--muted);line-height:1.5;margin-bottom:14px}
-.sstep{background:#1a1a1a;border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:.74rem;color:var(--muted);line-height:1.7}
-.sstep b{color:var(--text)}
-#setup-err{font-size:.74rem;color:#ff6666;margin-top:5px;display:none}
 </style>
 </head>
 <body>
 <div id="app">
-<!-- SETUP OVERLAY -->
-<div id="setup-overlay">
-  <div class="sbox">
-    <h2>🔥 Configurar FloppaAI PC</h2>
-    <p>Configure o Supabase para tickets e anúncios funcionarem de qualquer lugar, sem servidor local.</p>
-    <div class="sstep"><b>1.</b> Acesse <b style="color:#44aaff">supabase.com</b> e crie uma conta grátis<br><b>2.</b> Crie um projeto → <b>Settings → API</b><br><b>3.</b> Copie a <b>Project URL</b> e a <b>anon key</b></div>
-    <label class="flbl">Project URL:</label>
-    <input id="setup-url" class="finp" type="url" placeholder="https://xxxx.supabase.co">
-    <label class="flbl">Anon Key:</label>
-    <input id="setup-key" class="finp" type="text" placeholder="eyJhbGciOiJ...">
-    <div id="setup-err">❌ Preencha a URL e a chave corretamente.</div>
-    <div style="display:flex;gap:8px;margin-top:12px">
-      <button class="btn btn-blue" onclick="saveSetup()">✅ Salvar e Entrar</button>
-      <button class="btn" style="background:#1a1a1a;color:var(--muted)" onclick="skipSetup()">Só chat</button>
-    </div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="logo">🐱</div>
+    <h2>Bem-vindo ao FloppaAI PC</h2>
+    <p>Digite seu nome de usuário para entrar.<br>Você pode trocar nas configurações ⚙️</p>
+    <input id="login-input" type="text" placeholder="Seu nome..." maxlength="24" autocomplete="off">
+    <div id="login-err">⚠️ Nome inválido (3-24 caracteres, sem palavrões).</div>
+    <button id="login-btn" onclick="doLogin()">Entrar →</button>
   </div>
 </div>
 
-
-
 <!-- SIDEBAR -->
 <div id="sidebar">
-  <div class="sb-logo"><h1>🐱 FloppaAI</h1><p>v1.0.0 — PC</p></div>
+  <div class="sb-logo"><h1>🐱 FloppaAI</h1><p>v1.0.0 — PC</p><div id="sb-user"></div></div>
   <div class="sb-sep"></div>
   <div class="sb-label">Ações Rápidas</div>
   <button class="sb-action" onclick="qa('Qual é o objetivo do jogo?')">🎯 Objetivo</button>
   <button class="sb-action" onclick="qa('Me fale sobre todos os personagens.')">👾 Personagens</button>
-  <button class="sb-action" onclick="qa('Como funciona o tutorial/início do jogo?')">📖 Tutorial</button>
-  <button class="sb-action" onclick="qa('Quais são as salas do mapa?')">🗺️ Salas do mapa</button>
-  <button class="sb-action" onclick="qa('Como funcionam os livros e as questões?')">📚 Livros e questões</button>
-  <button class="sb-action" onclick="qa('Como funciona o Carro?')">🚗 O Carro</button>
+  <button class="sb-action" onclick="qa('Como funciona o tutorial?')">📖 Tutorial</button>
+  <button class="sb-action" onclick="qa('Quais são as salas do mapa?')">🗺️ Salas</button>
+  <button class="sb-action" onclick="qa('Como funcionam os livros?')">📚 Livros</button>
+  <button class="sb-action" onclick="qa('Como funciona o Carro?')">🚗 Carro</button>
   <button class="sb-action" onclick="qa('Como funciona a fita cassete?')">📼 Fita Cassete</button>
-  <button class="sb-action" onclick="qa('Me dê dicas para sobreviver no jogo.')">💡 Dicas</button>
-  <button class="sb-action" onclick="qa('Quero reportar um bug no jogo.')">🐛 Reportar bug</button>
-  <button class="sb-action" onclick="qa('Quais são as curiosidades do jogo?')">❓ Curiosidades</button>
+  <button class="sb-action" onclick="qa('Me dê dicas para sobreviver.')">💡 Dicas</button>
+  <button class="sb-action" onclick="qa('Quero reportar um bug.')">🐛 Reportar bug</button>
   <div class="sb-sep"></div>
-  <button class="sb-btn active" id="btn-chat" onclick="showPanel('chat')">🗨️ Chat</button>
-  <button class="sb-btn" id="btn-bugs" onclick="showPanel('bugs')">🐛 Respostas de Bug</button>
-  <button class="sb-btn" id="btn-sup"  onclick="showPanel('sup')">🎧 Suporte</button>
-  <button class="sb-btn" id="btn-dbg"  onclick="showPanel('dbg')">🖥️ Console Debug</button>
+  <button class="sb-btn active" id="btn-chat"  onclick="showPanel('chat')">🗨️ Chat IA</button>
+  <button class="sb-btn"        id="btn-geral" onclick="showPanel('geral')">💬 Chat Geral</button>
+  <button class="sb-btn"        id="btn-bugs"  onclick="showPanel('bugs')">🐛 Respostas de Bug</button>
+  <button class="sb-btn"        id="btn-sup"   onclick="showPanel('sup')">🎧 Suporte</button>
+  <button class="sb-btn"        id="btn-dbg"   onclick="showPanel('dbg')">🖥️ Console Debug</button>
   <div class="sb-bottom">
     <div class="sb-sep"></div>
     <button class="sb-btn" onclick="clearChat()">🗑️ Limpar chat</button>
-    <button class="sb-btn" onclick="openConfig()">⚙️ Configurar Supabase</button>
+    <button class="sb-btn" onclick="openConfig()">⚙️ Configurações</button>
     <div id="upd-sb" style="display:none"><div class="sb-sep"></div>
-      <button class="sb-btn" onclick="alert('Nova versão disponível! Acesse o GitHub.')" style="color:var(--yellow)">🆕 Atualização!</button>
+      <button class="sb-btn" style="color:var(--yellow)" onclick="alert('Nova versão! Acesse o GitHub.')">🆕 Atualização!</button>
     </div>
   </div>
 </div>
 
 <!-- MAIN -->
 <div id="main">
-  <!-- CHAT -->
+
+  <!-- CHAT IA -->
   <div class="panel active" id="panel-chat">
     <div class="phdr">
       <div class="avatar">🐱</div>
       <div class="hinfo"><h2>FloppaAI</h2><p>Assistente de Floppa's Schoolhouse 2</p></div>
       <div class="dot"></div>
-      <span id="srv-lbl">⚪ offline</span>
+      <span id="srv-lbl">🟢 Supabase</span>
     </div>
     <div id="chat-box"></div>
     <div id="chat-ft">
       <input id="cinput" type="text" placeholder="Digite sua mensagem..." autocomplete="off">
       <button id="csend" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+
+  <!-- CHAT GERAL -->
+  <div class="panel" id="panel-geral">
+    <div class="phdr gchat-hdr">
+      <span style="font-size:1.3rem">💬</span>
+      <div class="hinfo"><h2>Chat Geral</h2><p id="gchat-user-lbl">conectando...</p></div>
+      <span id="gchat-count" style="font-size:.65rem;color:var(--faint);margin-left:auto"></span>
+    </div>
+    <div id="gchat"></div>
+    <div id="gchat-ft">
+      <input id="ginput" type="text" placeholder="Mensagem para todos..." maxlength="200" autocomplete="off">
+      <button id="gsend" onclick="sendGeral()">➤</button>
     </div>
   </div>
 
@@ -220,13 +242,13 @@ select.finp{cursor:pointer}
     </div>
     <div class="pscroll">
       <div class="card">
-        <div class="ctitle">✉️ Nova mensagem de suporte</div>
+        <div class="ctitle">✉️ Nova mensagem</div>
         <label class="flbl">Seu nome (Roblox):</label>
         <input id="sup-name" class="finp" type="text" placeholder="Ex: HeitorDanielS" maxlength="40">
         <label class="flbl">Assunto:</label>
         <select id="sup-sub" class="finp">
           <option value="">— Selecione —</option>
-          <option value="bug">🐛 Bug no jogo</option>
+          <option value="bug">🐛 Bug</option>
           <option value="duvida">❓ Dúvida</option>
           <option value="sugestao">💡 Sugestão</option>
           <option value="outro">🔧 Outro</option>
@@ -239,7 +261,7 @@ select.finp{cursor:pointer}
       </div>
       <div style="height:1px;background:#1e1e1e;margin:4px 0 14px"></div>
       <div class="stitle">Tickets enviados</div>
-      <button class="rbtn" onclick="loadTickets()">🔄 Atualizar respostas</button>
+      <button class="rbtn" onclick="loadTickets()">🔄 Atualizar</button>
       <div id="sup-list"></div>
       <div style="height:1px;background:#1e1e1e;margin:14px 0"></div>
       <div class="stitle">Ticket selecionado</div>
@@ -247,28 +269,29 @@ select.finp{cursor:pointer}
     </div>
   </div>
 
-  <!-- DEBUG CONSOLE (aba) -->
+  <!-- DEBUG -->
   <div class="panel" id="panel-dbg">
     <div class="phdr dark">
       <span style="font-size:1.3rem">🖥️</span>
-      <div class="hinfo"><h2>Console Debug</h2><p>Logs de erros, warns e requisições</p></div>
+      <div class="hinfo"><h2>Console Debug</h2><p>Logs de erros, warns e requests</p></div>
       <button class="back-btn dim" onclick="clearDbg()">🗑 Limpar</button>
     </div>
     <div id="dbg-log"></div>
   </div>
-</div>
-</div>
+
+</div><!-- /main -->
+</div><!-- /app -->
 
 <script>
 const GROQ_KEY="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";
 const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
 const VER_URL ="https://raw.githubusercontent.com/Heitorcoser/floppaai-mobile/main/version.json";
-const SB_URL="https://gxjmolabyaiuuwvioyuw.supabase.co";
-const SB_KEY="sb_publishable_nLx32tzEkLUyXe3J4YfHKg_apSpDoI0";
-let _bugId=null,_tktId=null;
+const SB_URL  ="https://gxjmolabyaiuuwvioyuw.supabase.co";
+const SB_KEY  ="sb_publishable_nLx32tzEkLUyXe3J4YfHKg_apSpDoI0";
+const DEV_HASH="0f5fdb20028e7514a755f4c2648b7fc26a888b8fed25edfafb3fc1287ac420e6";
+let USERNAME="", IS_DEV=false, _bugId=null, _tktId=null;
 
-// ══ DEBUG CONSOLE ═════════════════════════════════════════
-let dbgOpen=false;
+// ══ DEBUG ═════════════════════════════════════════════════
 function dbg(type,msg){
   const log=document.getElementById("dbg-log");if(!log)return;
   const d=document.createElement("div");d.className="dlog-"+type;
@@ -280,48 +303,82 @@ function clearDbg(){document.getElementById("dbg-log").innerHTML="";}
 const _ce=console.error,_cw=console.warn,_cl=console.log;
 console.error=function(){_ce.apply(console,arguments);dbg("err",Array.from(arguments).join(" "));};
 console.warn =function(){_cw.apply(console,arguments);dbg("warn",Array.from(arguments).join(" "));};
-console.log  =function(){_cl.apply(console,arguments);dbg("log",Array.from(arguments).join(" "));};
-window.onerror=function(msg,src,line){dbg("err","JS ERROR: "+msg+" (linha "+line+")");return false;};
-window.onunhandledrejection=function(e){dbg("err","Promise rejected: "+(e.reason||e));};
+window.onerror=function(msg,src,line){dbg("err","JS: "+msg+" L"+line);return false;};
+window.onunhandledrejection=function(e){dbg("err","Promise: "+(e.reason||e));};
 
-// ══ SUPABASE API ══════════════════════════════════════════
-async function sb(method, table, body, filter=""){
+// ══ SUPABASE ══════════════════════════════════════════════
+async function sb(method,table,body,filter=""){
   try{
-    const isGet = method==="GET";
-    const headers = {
-      "Content-Type": "application/json",
-      "apikey": SB_KEY,
-      "Authorization": "Bearer "+SB_KEY
-    };
-    if(!isGet) headers["Prefer"] = "return=representation";
-    const opts = {method, headers};
-    if(body) opts.body = JSON.stringify(body);
+    const h={"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY};
+    if(method!=="GET")h["Prefer"]="return=representation";
+    const opts={method,headers:h};if(body)opts.body=JSON.stringify(body);
     dbg("info","SB "+method+" "+table+filter);
-    const r = await fetch(`${SB_URL}/rest/v1/${table}${filter}`, opts);
-    if(!r.ok){ const txt=await r.text(); dbg("err","SB "+r.status+" "+table+": "+txt); return null; }
-    if(isGet){ const data=await r.json(); dbg("ok","SB GET "+table+" ok, "+(Array.isArray(data)?data.length+" items":"ok")); return data; }
-    if(r.status===204){ dbg("ok","SB "+method+" "+table+" 204 ok"); return true; }
+    const r=await fetch(`${SB_URL}/rest/v1/${table}${filter}`,opts);
+    if(!r.ok){const t=await r.text();dbg("err","SB "+r.status+": "+t);return null;}
+    if(method==="GET"){const d=await r.json();dbg("ok","SB GET "+table+" "+(Array.isArray(d)?d.length+" items":"ok"));return d;}
+    if(r.status===204)return true;
     return r.json().catch(()=>true);
-  }catch(e){ console.error("SB exception", e); return null; }
+  }catch(e){dbg("err","SB exc: "+e.message);return null;}
 }
 
-// ══ SETUP (hardcoded, sem tela de config) ════════════════
-function checkSetup(){ updateSrvLabel(); onReady(); }
-function saveSetup(){ onReady(); }
-function skipSetup(){ onReady(); }
-function openConfig(){ toast("✅ Supabase configurado automaticamente!","toast-ok"); }
-function updateSrvLabel(){
-  const el=document.getElementById("srv-lbl");if(!el)return;
-  el.textContent="🟢 Supabase";el.style.color="#44ff88";
+// ══ LOGIN ═════════════════════════════════════════════════
+const BAD_NAME=["porra","caralho","merda","fdp","fuck","shit","bitch","cuzao","buceta","viado"];
+async function sha256(msg){
+  const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+function doLogin(){
+  const val=document.getElementById("login-input").value.trim();
+  const err=document.getElementById("login-err");
+  if(val.length<3||val.length>24){err.style.display="block";return;}
+  if(BAD_NAME.some(w=>val.toLowerCase().includes(w))){err.style.display="block";return;}
+  err.style.display="none";
+  USERNAME=val;
+  localStorage.setItem("pc_username",USERNAME);
+  document.getElementById("login-screen").style.display="none";
+  document.getElementById("sb-user").textContent="Olá, "+USERNAME+(IS_DEV?" 👑":"");
+  onReady();
+}
+function openConfig(){
+  const op=prompt("Configurações:\n\n1. Trocar nome de usuário\n2. Ativar Modo Dev\n3. Desativar Modo Dev\n\nDigite 1, 2 ou 3:","1");
+  if(!op)return;
+  if(op.trim()==="1"){
+    const novo=prompt("Novo nome:",USERNAME);
+    if(!novo||novo.trim().length<3)return;
+    USERNAME=novo.trim();localStorage.setItem("pc_username",USERNAME);
+    document.getElementById("sb-user").textContent="Olá, "+USERNAME+(IS_DEV?" 👑":"");
+    toast("✅ Nome atualizado!","toast-ok");
+  }else if(op.trim()==="2"){
+    const pwd=prompt("Senha de desenvolvedor:");
+    if(!pwd)return;
+    sha256(pwd).then(hash=>{
+      if(hash===DEV_HASH){IS_DEV=true;localStorage.setItem("pc_is_dev","1");document.getElementById("sb-user").textContent="Olá, "+USERNAME+" 👑";toast("🔑 Modo Dev ativado!","toast-ok");}
+      else toast("❌ Senha incorreta.","toast-err");
+    });
+  }else if(op.trim()==="3"){
+    IS_DEV=false;localStorage.removeItem("pc_is_dev");
+    document.getElementById("sb-user").textContent="Olá, "+USERNAME;
+    toast("Modo Dev desativado.","toast-info");
+  }
+}
+
+// ══ MODERAÇÃO ════════════════════════════════════════════
+const BAD_WORDS=["porra","caralho","merda","viado","fdp","vsf","fuck","shit","bitch","cuzao","buceta",
+  "heitorcoser lixo","heitordc lixo","criador lixo","criador idiota","dono lixo","jogo lixo","jogo merda",
+  "jogo ruim","jogo horrivel","jogo pessimo","heitor idiota","heitor lixo","floppa lixo","floppa merda"];
+function checkBadWords(text){
+  const t=text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  return BAD_WORDS.some(w=>t.includes(w));
+}
+function checkSpam(name){
+  const log=JSON.parse(localStorage.getItem("pc_sp")||"[]"),now=Date.now(),win=600000;
+  if(log.filter(e=>e.n===name.toLowerCase()&&now-e.t<win).length>=3)return false;
+  log.push({n:name.toLowerCase(),t:now});localStorage.setItem("pc_sp",JSON.stringify(log.filter(e=>now-e.t<win*2)));return true;
 }
 
 // ══ UTILS ════════════════════════════════════════════════
-function genId(){
-  const d=new Date();
-  const dt=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
-  const rnd=Math.random().toString(36).slice(2,6).toUpperCase();
-  return `TKT-${dt}-${rnd}`;
-}
+function genId(){const d=new Date();return`TKT-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;}
+function genMsgId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,5);}
 function nowStr(){const d=new Date(),p=n=>String(n).padStart(2,"0");return`${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;}
 function esc(t){return(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");}
 function md(t){return esc(t).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");}
@@ -331,51 +388,80 @@ function showPanel(name){
   document.querySelectorAll(".sb-btn").forEach(b=>b.classList.remove("active"));
   document.getElementById("panel-"+name).classList.add("active");
   const btn=document.getElementById("btn-"+name);if(btn)btn.classList.add("active");
-  if(name==="bugs")loadBugs();if(name==="sup")loadTickets();
+  if(name==="bugs")loadBugs();
+  if(name==="sup")loadTickets();
+  if(name==="geral"){startGeralPolling();}
 }
 function clearChat(){hist=[];document.getElementById("chat-box").innerHTML="";addMsg("sys","Chat limpo!");}
-const BAD=["porra","caralho","merda","viado","fdp","vsf","fuck","shit","bitch"];
-function checkSpam(name){
-  const log=JSON.parse(localStorage.getItem("pc_sp")||"[]"),now=Date.now(),win=600000;
-  if(log.filter(e=>e.n===name.toLowerCase()&&now-e.t<win).length>=3)return false;
-  log.push({n:name.toLowerCase(),t:now});localStorage.setItem("pc_sp",JSON.stringify(log.filter(e=>now-e.t<win*2)));return true;
-}
 
-// ══ BUGS ═════════════════════════════════════════════════
+// ══ CHAT GERAL ════════════════════════════════════════════
+let geralPollTimer=null, geralLastId="", geralSending=false;
+function startGeralPolling(){
+  if(geralPollTimer)return;
+  loadGeralMessages(true);
+  geralPollTimer=setInterval(()=>loadGeralMessages(false),3000);
+}
+async function loadGeralMessages(initial){
+  const raw=await sb("GET","messages",null,"?select=*&order=id.asc&limit=100");
+  if(!Array.isArray(raw))return;
+  const box=document.getElementById("gchat");if(!box)return;
+  const lastRaw=raw.length?raw[raw.length-1].id:"";
+  if(!initial&&lastRaw===geralLastId)return;
+  geralLastId=lastRaw;
+  const wasAtBottom=box.scrollHeight-box.scrollTop-box.clientHeight<80;
+  box.innerHTML="";
+  raw.forEach(m=>{
+    const isSelf=m.username===USERNAME, isDev=!!m.is_dev;
+    const div=document.createElement("div");
+    div.className="gmsg"+(isSelf?" self":"")+(isDev?" devmsg":"");
+    const nameClass=isDev?"dev":(isSelf?"user-self":"normal");
+    const prefix=isDev?"👑 ":"";
+    div.innerHTML=`<div class="gname ${nameClass}">${prefix}${esc(m.username)}</div><div class="gtext">${esc(m.text)}</div><div class="gtime">${esc(m.date||"")}</div>`;
+    box.appendChild(div);
+  });
+  if(initial||wasAtBottom)box.scrollTop=box.scrollHeight;
+  document.getElementById("gchat-count").textContent=raw.length+" msgs";
+  document.getElementById("gchat-user-lbl").textContent="Você: "+USERNAME+(IS_DEV?" 👑":"");
+}
+async function sendGeral(){
+  if(geralSending)return;
+  const inp=document.getElementById("ginput"), text=inp.value.trim();
+  if(!text)return;
+  if(checkBadWords(text)){toast("❌ Conteúdo impróprio bloqueado.","toast-err");inp.value="";return;}
+  const now=Date.now(), last=parseInt(localStorage.getItem("pc_gchat_last")||"0");
+  if(now-last<2000){toast("⏳ Aguarde um momento...","toast-info");return;}
+  localStorage.setItem("pc_gchat_last",now);
+  geralSending=true; inp.value=""; document.getElementById("gsend").disabled=true;
+  const msg={id:genMsgId(),username:USERNAME,text,date:nowStr(),is_dev:IS_DEV};
+  await sb("POST","messages",msg);
+  await loadGeralMessages(false);
+  geralSending=false; document.getElementById("gsend").disabled=false;
+}
+document.getElementById("ginput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey)sendGeral();});
+
+// ══ BUGS ══════════════════════════════════════════════════
 async function loadBugs(){
   const box=document.getElementById("bugs-list");
   const bugs=JSON.parse(localStorage.getItem("pc_bugs")||"[]");
-  if(!bugs.length){box.innerHTML=`<div class="empty"><div class="eico">🐛</div>Nenhum bug reportado ainda.</div>`;return;}
+  if(!bugs.length){box.innerHTML='<div class="empty"><div class="eico">🐛</div>Nenhum bug ainda.</div>';return;}
   box.innerHTML="";
   for(const b of [...bugs].reverse()){
     const hasR=!!b.response;
     const c=document.createElement("div");c.className="tcard "+(hasR?"done":"pend");
-    c.innerHTML=`<div class="tc-head"><span class="tc-id">#${b.id}</span><span class="tc-stat" style="color:${hasR?"#44ff88":"#ffaa44"}">${hasR?"✅ Respondido":"⏳ Aguardando"}</span></div><div class="tc-prev">${b.summary}</div>`;
-    c.onclick=()=>{_bugId=b.id;document.getElementById("bug-detail").innerHTML=`🐛 <b>${esc(b.summary)}</b>\n\n`+(b.response?`💬 Resposta:\n${esc(b.response)}`:"⏳ Aguardando...");};
+    c.innerHTML=`<div class="tc-head"><span class="tc-id">#${b.id}</span><span class="tc-stat" style="color:${hasR?"#44ff88":"#ffaa44"}">${hasR?"✅":"⏳"}</span></div><div class="tc-prev">${b.summary}</div>`;
+    c.onclick=()=>{_bugId=b.id;document.getElementById("bug-detail").innerHTML=`🐛 <b>${esc(b.summary)}</b>\n\n`+(b.response?`💬 ${esc(b.response)}`:"⏳ Aguardando...");};
     box.appendChild(c);
   }
-}
-async function saveBugResp(){
-  const resp=document.getElementById("bug-resp").value.trim();
-  if(!resp||!_bugId){toast("⚠️ Selecione um bug e cole a resposta.","toast-err");return;}
-  const bugs=JSON.parse(localStorage.getItem("pc_bugs")||"[]");
-  bugs.forEach(b=>{if(b.id===_bugId)b.response=resp;});
-  localStorage.setItem("pc_bugs",JSON.stringify(bugs));
-  // Atualiza no Supabase também
-  await sb("PATCH","bugs",{response:resp},`?id=eq.${_bugId}`);
-  document.getElementById("bug-resp").value="";loadBugs();toast("✅ Resposta salva!","toast-ok");
-  const sel=bugs.find(b=>b.id===_bugId);
-  if(sel)document.getElementById("bug-detail").innerHTML=`🐛 <b>${esc(sel.summary)}</b>\n\n💬 Resposta:\n${esc(sel.response)}`;
 }
 function registerBug(summary){
   const bug={id:genId(),date:nowStr(),summary,response:"",status:"pendente",platform:"pc"};
   const bugs=JSON.parse(localStorage.getItem("pc_bugs")||"[]");
   bugs.push(bug);localStorage.setItem("pc_bugs",JSON.stringify(bugs));
-  if(SB_URL&&SB_KEY)sb("POST","bugs",bug);
+  sb("POST","bugs",bug);
   document.getElementById("btn-bugs").textContent=`🐛 Respostas de Bug (${bugs.length})`;
 }
 
-// ══ TICKETS ══════════════════════════════════════════════
+// ══ TICKETS ═══════════════════════════════════════════════
 async function sendTicket(){
   const name=document.getElementById("sup-name").value.trim();
   const sub=document.getElementById("sup-sub").value;
@@ -385,33 +471,25 @@ async function sendTicket(){
   if(!name){show("⚠️ Informe seu nome.","swarn");return;}
   if(!sub){show("⚠️ Selecione o assunto.","swarn");return;}
   if(msg.length<10){show("⚠️ Mensagem muito curta.","swarn");return;}
+  if(checkBadWords(msg)){show("❌ Conteúdo impróprio bloqueado.","serr");return;}
   if(!checkSpam(name)){show("🚫 Aguarde 10 minutos.","serr");return;}
-  if(BAD.some(w=>msg.toLowerCase().includes(w))){show("❌ Conteúdo impróprio.","serr");return;}
-  btn.disabled=true;btn.textContent="⏳ Enviando...";show("Enviando...","swarn");
+  btn.disabled=true;btn.textContent="⏳...";show("Enviando...","swarn");
   const tkt={id:genId(),date:nowStr(),name,subject:sub,message:msg,response:"",platform:"pc"};
   const local=JSON.parse(localStorage.getItem("pc_tkt")||"[]");
   local.push(tkt);localStorage.setItem("pc_tkt",JSON.stringify(local));
   const ok=await sb("POST","tickets",tkt);
   btn.disabled=false;btn.textContent="📨 Enviar Ticket";
-  if(ok!==false){
-    show("✅ Ticket enviado!","sok");
-    ["sup-name","sup-sub","sup-msg"].forEach(id=>document.getElementById(id).value="");
-    document.getElementById("sup-cnt").textContent="0";loadTickets();
-  }else show("❌ Erro ao enviar.","serr");
+  if(ok!==null){show("✅ Ticket "+tkt.id+" enviado!","sok");["sup-name","sup-sub","sup-msg"].forEach(id=>document.getElementById(id).value="");document.getElementById("sup-cnt").textContent="0";loadTickets();}
+  else show("❌ Erro. Veja Debug.","serr");
 }
 document.getElementById("sup-msg").addEventListener("input",function(){document.getElementById("sup-cnt").textContent=this.value.length;});
-
 async function loadTickets(){
   const box=document.getElementById("sup-list");
   const local=JSON.parse(localStorage.getItem("pc_tkt")||"[]");
-  if(!local.length){box.innerHTML=`<div class="empty"><div class="eico">📭</div>Nenhum ticket ainda.</div>`;return;}
-
-  // Busca respostas no Supabase — sem aspas nos IDs (PostgREST text)
+  if(!local.length){box.innerHTML='<div class="empty"><div class="eico">📭</div>Nenhum ticket.</div>';return;}
   const ids=local.map(t=>t.id).join(",");
   const raw=await sb("GET","tickets",null,`?id=in.(${ids})&select=id,response`);
-  let cloud={};
-  if(Array.isArray(raw)) raw.forEach(t=>{cloud[t.id]=t;});
-
+  let cloud={};if(Array.isArray(raw))raw.forEach(t=>{cloud[t.id]=t;});
   const upd=local.map(t=>cloud[t.id]?{...t,response:cloud[t.id].response||""}:t);
   localStorage.setItem("pc_tkt",JSON.stringify(upd));
   box.innerHTML="";
@@ -419,72 +497,21 @@ async function loadTickets(){
   for(const t of [...upd].reverse()){
     const hasR=!!(t.response&&t.response.trim());
     const c=document.createElement("div");c.className="tcard "+(hasR?"done":"pend");
-    c.innerHTML=`<div class="tc-head">
-      <span class="tc-id">🎫 ${t.id}</span>
-      <span class="tc-stat" style="color:${hasR?"#44ff88":"#ffaa44"}">${hasR?"✅ Respondido":"⏳ Aguardando"}</span>
-    </div>
-    <div class="tc-prev">${slbl[t.subject]||"Suporte"} • ${t.date} — ${t.message.slice(0,45)}...</div>`;
-    c.onclick=()=>{
-      _tktId=t.id;
-      document.getElementById("sup-detail").innerHTML=
-        `👤 <b>${esc(t.name)}</b> • ${t.date}\n🎫 ${t.id}\n${slbl[t.subject]||""}\n\n${esc(t.message)}\n\n`+
-        (t.response?`💬 Resposta da equipe:\n${esc(t.response)}`:"⏳ Aguardando resposta da equipe...");
-    };
+    c.innerHTML=`<div class="tc-head"><span class="tc-id">🎫 ${t.id}</span><span class="tc-stat" style="color:${hasR?"#44ff88":"#ffaa44"}">${hasR?"✅ Respondido":"⏳ Aguardando"}</span></div><div class="tc-prev">${slbl[t.subject]||"Suporte"} • ${t.date}</div>`;
+    c.onclick=()=>{_tktId=t.id;document.getElementById("sup-detail").innerHTML=`👤 <b>${esc(t.name)}</b> • ${t.date}\n🎫 ${t.id}\n\n${esc(t.message)}\n\n`+(t.response?`💬 Resposta:\n${esc(t.response)}`:"⏳ Aguardando...");};
     box.appendChild(c);
   }
 }
-async function saveSupResp(){
-  const resp=document.getElementById("sup-resp").value.trim();
-  if(!resp||!_tktId){toast("⚠️ Selecione um ticket.","toast-err");return;}
-  const tkts=JSON.parse(localStorage.getItem("pc_tkt")||"[]");
-  tkts.forEach(t=>{if(t.id===_tktId)t.response=resp;});
-  localStorage.setItem("pc_tkt",JSON.stringify(tkts));
-  await sb("PATCH","tickets",{response:resp},`?id=eq.${_tktId}`);
-  document.getElementById("sup-resp").value="";loadTickets();toast("✅ Resposta salva! Usuário verá automaticamente.","toast-ok");
-  const sel=tkts.find(t=>t.id===_tktId);
-  if(sel)document.getElementById("sup-detail").innerHTML=`👤 <b>${esc(sel.name)}</b>\n\n${esc(sel.message)}\n\n💬 Resposta:\n${esc(sel.response)}`;
-}
 
-// ══ ANÚNCIOS ═════════════════════════════════════════════
-async function loadAnn(){
-  const box=document.getElementById("ann-list");
-  if(!SB_URL||!SB_KEY){box.innerHTML=`<div class="empty"><div class="eico">📡</div>Configure o Supabase.</div>`;return;}
-  const raw=await sb("GET","announcements",null,"?select=*&order=id.desc");
-  const anns=Array.isArray(raw)?raw:[];
-  if(!anns.length){box.innerHTML=`<div class="empty"><div class="eico">📢</div>Nenhum anúncio.</div>`;return;}
-  const ico={info:"ℹ️",aviso:"⚠️",update:"🆕"};
-  box.innerHTML="";
-  for(const a of anns){
-    const d=document.createElement("div");d.className="acard "+(a.type||"info");
-    d.innerHTML=`<div class="atitle">${ico[a.type]||"📢"} ${esc(a.title||"")}</div><div class="amsg">${esc(a.message||"")}</div><div class="adate">${a.date||""}</div>`;
-    box.appendChild(d);
-  }
-}
-async function postAnn(){
-  const title=document.getElementById("ann-title").value.trim();
-  const msg=document.getElementById("ann-msg").value.trim();
-  const type=document.getElementById("ann-type").value;
-  const st=document.getElementById("ann-st");
-  const show=(t,c)=>{st.textContent=t;st.className="smsg "+c;st.style.display="block";};
-  if(!title||!msg){show("⚠️ Preencha o título e a mensagem.","swarn");return;}
-  if(!SB_URL||!SB_KEY){show("❌ Configure o Supabase primeiro.","serr");return;}
-  const ok=await sb("POST","announcements",{title,message:msg,type,date:nowStr()});
-  if(ok!==false){
-    show("✅ Anúncio publicado!","sok");
-    document.getElementById("ann-title").value="";document.getElementById("ann-msg").value="";
-    loadAnn();
-  }else show("❌ Erro ao publicar.","serr");
-}
-
-// ══ CHAT ═════════════════════════════════════════════════
+// ══ CHAT IA ═══════════════════════════════════════════════
 const SYS=`Você é assistente especializado em "Floppa's Schoolhouse 2" (Roblox). NUNCA invente. Responda em português do Brasil.
 OBJETIVO: Coletar 7 livros e encontrar a saída correta. Saída errada vira parede.
-TUTORIAL: Jogo começa com Baldi na entrada. Cada livro tem 3 questões. Errar UMA = só ela marcada. Errar TODAS = livro errado. Ao errar = cutscene Baldi morre, Floppa persegue.
-MECÂNICAS: Cada erro = Floppa mais rápido. 7 livros = Floppa mais rápido. Stamina recupera ao pegar livro ou bebedouro.
-PERSONAGENS: Floppa(perseguidor,audição), Baldi(início,morre), Carro vermelho(após 2 livros,a cada 20s,espere 10-12s), X9(chega ~10m → revela posição ao Floppa por 60s).
-ITENS: Fita Cassete — Floppa persegue o som por 60s.
+TUTORIAL: Baldi na entrada. Livros têm 3 questões. Errar TODAS = livro errado. Ao errar = cutscene Baldi morre, Floppa persegue.
+MECÂNICAS: Cada erro = Floppa mais rápido. 7 livros = Floppa mais rápido. Stamina recupera no livro ou bebedouro.
+PERSONAGENS: Floppa(perseguidor,audição), Baldi(início,morre), Carro vermelho(após 2 livros,20s,espere 10-12s), X9(10m → revela posição por 60s).
+ITENS: Fita Cassete — Floppa persegue som por 60s.
 SALAS: Aula(livros,porta cinza), Supplies(carro,porta amarela), Cafeteria(saída), Corredores(bebedouros), Detenção, Funcionários.
-BUG REPORT: após investigar, inicie com 🐛BUG_REPORT: [resumo] e continue.`;
+BUG REPORT: inicie com 🐛BUG_REPORT: [resumo] e continue.`;
 
 let hist=[];
 const chatBox=document.getElementById("chat-box"),ci=document.getElementById("cinput");
@@ -496,35 +523,45 @@ function addMsg(role,text){
   else b.innerHTML=esc(text);
   row.appendChild(b);chatBox.appendChild(row);chatBox.scrollTop=chatBox.scrollHeight;return row;
 }
-function addTyping(){
-  const r=addMsg("ai","");r.id="typ";
-  r.querySelector(".bub").innerHTML='<div class="blbl">FloppaAI 🐱</div><div class="dots"><span></span><span></span><span></span></div>';return r;
-}
+function addTyping(){const r=addMsg("ai","");r.id="typ";r.querySelector(".bub").innerHTML='<div class="blbl">FloppaAI 🐱</div><div class="dots"><span></span><span></span><span></span></div>';return r;}
 async function sendChat(){
   const text=ci.value.trim();if(!text)return;
   ci.value="";document.getElementById("csend").disabled=true;
   addMsg("user",text);hist.push({role:"user",content:text});const tr=addTyping();
   try{
-    const r=await fetch(GROQ_URL,{method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+GROQ_KEY},
-      body:JSON.stringify({model:"llama-3.1-8b-instant",messages:[{role:"system",content:SYS},...hist.slice(-14)],max_tokens:900,temperature:.3})});
+    const r=await fetch(GROQ_URL,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+GROQ_KEY},
+      body:JSON.stringify({model:"llama-3.1-8b-instant",messages:[{role:"system",content:SYS},...hist.slice(-14)],max_tokens:700,temperature:.3})});
     const d=await r.json();if(!r.ok)throw new Error(d.error?.message||"Erro API");
     let reply=d.choices[0].message.content;
-    if(reply.startsWith("🐛BUG_REPORT:")){
-      const[l,...rest]=reply.split("\n");registerBug(l.replace("🐛BUG_REPORT:","").trim());reply=rest.join("\n").trim();
-    }
+    if(reply.startsWith("🐛BUG_REPORT:")){const[l,...rest]=reply.split("\n");registerBug(l.replace("🐛BUG_REPORT:","").trim());reply=rest.join("\n").trim();}
     hist.push({role:"assistant",content:reply});tr.remove();addMsg("ai",reply);
-  }catch(e){tr.remove();addMsg("ai","⚠️ Erro: "+e.message);}
+  }catch(e){
+    tr.remove();
+    if(e.message.includes("Rate limit")||e.message.includes("rate_limit"))addMsg("ai","⏳ Muitas perguntas! Aguarde um momento.");
+    else addMsg("ai","⚠️ Erro: "+e.message);
+  }
   document.getElementById("csend").disabled=false;
 }
 function qa(p){ci.value=p;sendChat();}
 ci.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey)sendChat();});
 
-// ══ INIT ═════════════════════════════════════════════════
+// ══ INIT ══════════════════════════════════════════════════
 function onReady(){
-  dbg("ok","App iniciado! Supabase: "+SB_URL);
-  addMsg("sys","👋 Bem-vindo ao FloppaAI PC!\nUse as ações na barra lateral ou digite sua pergunta.\n\nVeja logs de debug na aba 🖥️ Console Debug na barra lateral.");
+  dbg("ok","Iniciado como: "+USERNAME+(IS_DEV?" [DEV]":""));
+  addMsg("sys","👋 Bem-vindo ao FloppaAI PC, "+USERNAME+"!\nUse as ações na sidebar ou digite sua pergunta.\nNovo: 💬 Chat Geral para falar com todos!");
 }
 async function checkVer(){try{const d=await(await fetch(VER_URL)).json();if(d.version>"1.0.0")document.getElementById("upd-sb").style.display="block";}catch{}}
-checkSetup();checkVer();
-</script></body></html>
+
+// Inicializa
+USERNAME=localStorage.getItem("pc_username")||"";
+IS_DEV=localStorage.getItem("pc_is_dev")==="1";
+if(USERNAME){
+  document.getElementById("login-screen").style.display="none";
+  document.getElementById("sb-user").textContent="Olá, "+USERNAME+(IS_DEV?" 👑":"");
+  onReady();
+}
+document.getElementById("login-input").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
+checkVer();
+</script>
+</body>
+</html>

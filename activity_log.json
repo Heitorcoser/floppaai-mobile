@@ -153,5 +153,15 @@
     "time": "16/03/2026 12:32:43",
     "action": "CRIOU ANÚNCIO",
     "detail": "FloppaAI"
+  },
+  {
+    "time": "16/03/2026 20:02:56",
+    "action": "LOGIN",
+    "detail": "Desenvolvedor autenticado"
+  },
+  {
+    "time": "16/03/2026 20:04:02",
+    "action": "CRIOU ANÚNCIO",
+    "detail": "Nova Update!!!"
   }
 ]

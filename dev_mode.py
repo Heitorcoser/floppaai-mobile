@@ -768,34 +768,36 @@ class DevMode(ctk.CTk):
         body=ctk.CTkScrollableFrame(self.content,fg_color="transparent")
         body.pack(fill="both",expand=True,padx=16,pady=10)
 
-        # Firebase config
-        from cloud_db import CloudDB, FIREBASE_URL_FILE
-        fb_url = ""
+        # Ngrok config
+        ngrok_url_saved = ""
         try:
-            with open(FIREBASE_URL_FILE,"r") as f: fb_url=f.read().strip()
+            with open(NGROK_URL_FILE,"r") as f: ngrok_url_saved=f.read().strip()
         except: pass
-        fb_sec=ctk.CTkFrame(body,fg_color="#001a33",corner_radius=12); fb_sec.pack(fill="x",pady=(0,14))
-        ctk.CTkLabel(fb_sec,text="🔥  Firebase — Conexão com a Nuvem",
+        ng_sec=ctk.CTkFrame(body,fg_color="#001a33",corner_radius=12); ng_sec.pack(fill="x",pady=(0,14))
+        ctk.CTkLabel(ng_sec,text="🌐  Servidor ngrok — Conexão com App Web",
                      font=ctk.CTkFont(size=12,weight="bold"),text_color="#44aaff").pack(anchor="w",padx=14,pady=(10,4))
-        ctk.CTkLabel(fb_sec,text="URL do seu Firebase Realtime Database (ex: https://SEU-PROJETO.firebaseio.com)",
+        ctk.CTkLabel(ng_sec,text="URL gerada pelo ngrok ao rodar INICIAR_SERVIDOR.bat (ex: https://xxxx.ngrok-free.app)",
                      font=ctk.CTkFont(size=10),text_color="#555",wraplength=540).pack(anchor="w",padx=14)
-        fb_row=ctk.CTkFrame(fb_sec,fg_color="transparent"); fb_row.pack(fill="x",padx=14,pady=(4,4))
-        fb_entry=ctk.CTkEntry(fb_row,height=36,font=ctk.CTkFont(size=11),placeholder_text="https://SEU-PROJETO.firebaseio.com")
-        fb_entry.insert(0,fb_url); fb_entry.pack(side="left",fill="x",expand=True,padx=(0,8))
-        fb_status=ctk.CTkLabel(fb_sec,text="",font=ctk.CTkFont(size=10),text_color="#888")
-        fb_status.pack(anchor="w",padx=14,pady=(0,4))
-        def _save_fb():
-            url=fb_entry.get().strip().rstrip("/")
+        ng_row=ctk.CTkFrame(ng_sec,fg_color="transparent"); ng_row.pack(fill="x",padx=14,pady=(4,4))
+        ng_entry=ctk.CTkEntry(ng_row,height=36,font=ctk.CTkFont(size=11),placeholder_text="https://xxxx.ngrok-free.app")
+        ng_entry.insert(0,ngrok_url_saved); ng_entry.pack(side="left",fill="x",expand=True,padx=(0,8))
+        ng_status=ctk.CTkLabel(ng_sec,text="",font=ctk.CTkFont(size=10),text_color="#888")
+        ng_status.pack(anchor="w",padx=14,pady=(0,4))
+        def _save_ng():
+            import requests as _req
+            url=ng_entry.get().strip().rstrip("/")
             if not url.startswith("https://"):
-                fb_status.configure(text="❌ URL inválida. Use https://...",text_color="#ff4444"); return
-            with open(FIREBASE_URL_FILE,"w") as f: f.write(url)
-            ok=CloudDB(url).test_connection()
-            if ok: fb_status.configure(text="✅ Conectado! Firebase funcionando.",text_color="#44ff88")
-            else:  fb_status.configure(text="⚠️ Salvo, mas conexão falhou. Verifique a URL.",text_color="#ffaa44")
-            log_activity("CONFIGUROU FIREBASE",url)
-        ctk.CTkButton(fb_sec,text="💾 Salvar & Testar",width=130,height=32,
+                ng_status.configure(text="❌ URL inválida. Use https://...",text_color="#ff4444"); return
+            with open(NGROK_URL_FILE,"w") as f: f.write(url)
+            try:
+                r=_req.get(f"{url}/api/ping",timeout=5,headers={"ngrok-skip-browser-warning":"1"})
+                if r.ok: ng_status.configure(text="✅ Servidor online e acessível!",text_color="#44ff88")
+                else:    ng_status.configure(text="⚠️ Salvo, mas servidor retornou erro.",text_color="#ffaa44")
+            except:      ng_status.configure(text="⚠️ Salvo, mas servidor offline ou URL incorreta.",text_color="#ffaa44")
+            log_activity("CONFIGUROU NGROK",url)
+        ctk.CTkButton(ng_sec,text="💾 Salvar & Testar",width=130,height=32,
                       fg_color="#003a7a",hover_color="#0055bb",font=ctk.CTkFont(size=11),
-                      command=_save_fb).pack(anchor="w",padx=14,pady=(0,12))
+                      command=_save_ng).pack(anchor="w",padx=14,pady=(0,12))
 
         # Senha
         sec=ctk.CTkFrame(body,fg_color="#111",corner_radius=12); sec.pack(fill="x",pady=(0,14))

@@ -402,7 +402,7 @@ function startGeralPolling(){
   geralPollTimer=setInterval(()=>loadGeralMessages(false),3000);
 }
 async function loadGeralMessages(initial){
-  const raw=await sb("GET","messages",null,"?select=*&order=id.asc&limit=100");
+  const raw=await sb("GET","chat_messages",null,"?select=*&order=id.asc&limit=100");
   if(!Array.isArray(raw))return;
   const box=document.getElementById("gchat");if(!box)return;
   const lastRaw=raw.length?raw[raw.length-1].id:"";
@@ -433,7 +433,7 @@ async function sendGeral(){
   localStorage.setItem("pc_gchat_last",now);
   geralSending=true; inp.value=""; document.getElementById("gsend").disabled=true;
   const msg={id:genMsgId(),username:USERNAME,text,date:nowStr(),is_dev:IS_DEV};
-  await sb("POST","messages",msg);
+  await sb("POST","chat_messages",msg);
   await loadGeralMessages(false);
   geralSending=false; document.getElementById("gsend").disabled=false;
 }

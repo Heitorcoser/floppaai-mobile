@@ -496,7 +496,7 @@ function startGeralPolling() {
 
 async function loadGeralMessages(initial) {
   var filter = "?select=*&order=id.asc&limit=80";
-  var raw = await sb("GET","messages",null,filter);
+  var raw = await sb("GET","chat_messages",null,filter);
   if (!Array.isArray(raw)) return;
 
   var box = document.getElementById("gchat");
@@ -547,7 +547,7 @@ async function sendGeral() {
   document.getElementById("gsend").disabled = true;
 
   var msg = {id:genMsgId(), username:USERNAME, text:text, date:nowStr(), is_dev:IS_DEV};
-  var ok = await sb("POST","messages",msg);
+  var ok = await sb("POST","chat_messages",msg);
   if (!ok) { toast("❌ Erro ao enviar.","toast-err"); }
   await loadGeralMessages(false);
   geralSending = false;

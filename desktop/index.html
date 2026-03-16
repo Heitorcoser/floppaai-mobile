@@ -300,7 +300,12 @@ function updateSrvLabel(){
 }
 
 // ══ UTILS ════════════════════════════════════════════════
-function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function genId(){
+  const d=new Date();
+  const dt=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+  const rnd=Math.random().toString(36).slice(2,6).toUpperCase();
+  return `TKT-${dt}-${rnd}`;
+}
 function nowStr(){const d=new Date(),p=n=>String(n).padStart(2,"0");return`${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;}
 function esc(t){return(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");}
 function md(t){return esc(t).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");}
@@ -385,23 +390,30 @@ async function loadTickets(){
   const box=document.getElementById("sup-list");
   const local=JSON.parse(localStorage.getItem("pc_tkt")||"[]");
   if(!local.length){box.innerHTML=`<div class="empty"><div class="eico">📭</div>Nenhum ticket ainda.</div>`;return;}
+
+  // Busca respostas no Supabase — sem aspas nos IDs (PostgREST text)
+  const ids=local.map(t=>t.id).join(",");
+  const raw=await sb("GET","tickets",null,`?id=in.(${ids})&select=id,response`);
   let cloud={};
-  if(SB_URL&&SB_KEY){
-    const ids=local.map(t=>`'${t.id}'`).join(",");
-    const raw=await sb("GET","tickets",null,`?id=in.(${ids})&select=id,response`);
-    if(Array.isArray(raw))raw.forEach(t=>{cloud[t.id]=t;});
-  }
-  const upd=local.map(t=>cloud[t.id]?{...t,...cloud[t.id]}:t);
+  if(Array.isArray(raw)) raw.forEach(t=>{cloud[t.id]=t;});
+
+  const upd=local.map(t=>cloud[t.id]?{...t,response:cloud[t.id].response||""}:t);
   localStorage.setItem("pc_tkt",JSON.stringify(upd));
   box.innerHTML="";
   const slbl={bug:"🐛 Bug",duvida:"❓ Dúvida",sugestao:"💡 Sugestão",outro:"🔧 Outro"};
   for(const t of [...upd].reverse()){
     const hasR=!!(t.response&&t.response.trim());
     const c=document.createElement("div");c.className="tcard "+(hasR?"done":"pend");
-    c.innerHTML=`<div class="tc-head"><span class="tc-id">#${t.id}</span><span class="tc-stat" style="color:${hasR?"#44ff88":"#ffaa44"}">${hasR?"✅ Respondido":"⏳ Aguardando"}</span></div><div class="tc-prev">${slbl[t.subject]||"Suporte"} • ${t.date} — ${t.message.slice(0,45)}...</div>`;
+    c.innerHTML=`<div class="tc-head">
+      <span class="tc-id">🎫 ${t.id}</span>
+      <span class="tc-stat" style="color:${hasR?"#44ff88":"#ffaa44"}">${hasR?"✅ Respondido":"⏳ Aguardando"}</span>
+    </div>
+    <div class="tc-prev">${slbl[t.subject]||"Suporte"} • ${t.date} — ${t.message.slice(0,45)}...</div>`;
     c.onclick=()=>{
       _tktId=t.id;
-      document.getElementById("sup-detail").innerHTML=`👤 <b>${esc(t.name)}</b> • ${t.date}\n${slbl[t.subject]||""}\n\n${esc(t.message)}\n\n`+(t.response?`💬 Resposta:\n${esc(t.response)}`:"⏳ Aguardando resposta...");
+      document.getElementById("sup-detail").innerHTML=
+        `👤 <b>${esc(t.name)}</b> • ${t.date}\n🎫 ${t.id}\n${slbl[t.subject]||""}\n\n${esc(t.message)}\n\n`+
+        (t.response?`💬 Resposta da equipe:\n${esc(t.response)}`:"⏳ Aguardando resposta da equipe...");
     };
     box.appendChild(c);
   }

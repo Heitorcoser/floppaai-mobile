@@ -250,7 +250,13 @@ function openConfig(){
 }
 
 // ══ UTILS ════════════════════════════════════════════════
-function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+// Código único legível: TKT-YYYYMMDD-XXXX (ex: TKT-20260316-A3F9)
+function genId(){
+  const d=new Date();
+  const dt=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+  const rnd=Math.random().toString(36).slice(2,6).toUpperCase();
+  return `TKT-${dt}-${rnd}`;
+}
 function nowStr(){const d=new Date(),p=n=>String(n).padStart(2,"0");return`${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;}
 function esc(t){return(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");}
 function md(t){return esc(t).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");}
@@ -298,26 +304,39 @@ document.getElementById("sup-msg").addEventListener("input",function(){document.
 
 async function loadTickets(){
   const box=document.getElementById("tkt-list");
-  box.innerHTML=`<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Buscando...</div>`;
+  box.innerHTML=`<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Buscando respostas...</div>`;
   const local=JSON.parse(localStorage.getItem("my_tkt")||"[]");
   if(!local.length){box.innerHTML=`<div class="empty"><div class="eico">📭</div>Nenhum ticket enviado ainda.</div>`;return;}
+
+  // Busca respostas atualizadas do Supabase para cada ticket local
+  const ids=local.map(t=>t.id).join(","); // sem aspas — PostgREST aceita assim
+  const raw=await sb("GET","tickets",null,`?id=in.(${ids})&select=id,response`);
   let cloud={};
-  if(SB_URL&&SB_KEY){
-    const ids=local.map(t=>`'${t.id}'`).join(",");
-    const raw=await sb("GET","tickets",null,`?id=in.(${ids})&select=id,response`);
-    if(Array.isArray(raw))raw.forEach(t=>{cloud[t.id]=t;});
-  }
-  const upd=local.map(t=>cloud[t.id]?{...t,...cloud[t.id]}:t);
+  if(Array.isArray(raw)) raw.forEach(t=>{cloud[t.id]=t;});
+
+  // Atualiza local com resposta da nuvem
+  const upd=local.map(t=>cloud[t.id]?{...t,response:cloud[t.id].response||""}:t);
   localStorage.setItem("my_tkt",JSON.stringify(upd));
-  badge("tkt",upd.filter(t=>t.response&&t.response.trim()).length||"");
+
+  const respondidos=upd.filter(t=>t.response&&t.response.trim()).length;
+  badge("tkt",respondidos||"");
   box.innerHTML="";
   const slbl={bug:"🐛 Bug",duvida:"❓ Dúvida",sugestao:"💡 Sugestão",outro:"🔧 Outro"};
   for(const t of [...upd].reverse()){
     const hasR=!!(t.response&&t.response.trim());
     const c=document.createElement("div");c.className="tcard "+(hasR?"done":"pend");
-    c.innerHTML=`<div class="thead2"><span class="tid">#${t.id}</span><span class="tstat" style="color:${hasR?"#44ff88":"#ffaa44"}">${hasR?"✅ Respondido":"⏳ Aguardando"}</span></div>
+    c.innerHTML=`<div class="thead2">
+      <span class="tid">🎫 ${t.id}</span>
+      <span class="tstat" style="color:${hasR?"#44ff88":"#ffaa44"}">${hasR?"✅ Respondido":"⏳ Aguardando"}</span>
+    </div>
     <div style="font-size:.7rem;color:var(--muted);margin-bottom:5px">${slbl[t.subject]||"Suporte"} • ${t.date}</div>
     <div class="tmsg">${esc(t.message)}</div>
+    ${hasR
+      ?`<div style="font-size:.7rem;color:#44ff88;margin:5px 0 3px">💬 Resposta da equipe:</div><div class="treply">${esc(t.response)}</div>`
+      :`<div style="font-size:.7rem;color:var(--faint);margin-top:5px">Ainda sem resposta. Toque em 🔄 para verificar.</div>`}`;
+    box.appendChild(c);
+  }
+}
     ${hasR?`<div style="font-size:.7rem;color:#44ff88;margin:5px 0 3px">💬 Resposta:</div><div class="treply">${esc(t.response)}</div>`
     :`<div style="font-size:.7rem;color:var(--faint);margin-top:5px">Ainda sem resposta.</div>`}`;
     box.appendChild(c);

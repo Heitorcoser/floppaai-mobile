@@ -98,5 +98,25 @@
     "time": "16/03/2026 00:59:27",
     "action": "RESPOSTA TICKET",
     "detail": "#mmsnlmsym6u9 Oir"
+  },
+  {
+    "time": "16/03/2026 01:04:12",
+    "action": "LOGIN",
+    "detail": "Desenvolvedor autenticado"
+  },
+  {
+    "time": "16/03/2026 01:04:29",
+    "action": "CRIOU ANÚNCIO",
+    "detail": "update"
+  },
+  {
+    "time": "16/03/2026 01:05:25",
+    "action": "RESPOSTA TICKET",
+    "detail": "#mmsnu9df64uf Ougicyy9ffy9yd9"
+  },
+  {
+    "time": "16/03/2026 01:05:41",
+    "action": "RESPOSTA TICKET",
+    "detail": "#mmsnu9df64uf Ougicyy9ffy9yd9"
   }
 ]

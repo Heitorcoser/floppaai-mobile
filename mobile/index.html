@@ -230,14 +230,32 @@ const SB_KEY="sb_publishable_nLx32tzEkLUyXe3J4YfHKg_apSpDoI0";
 
 // ══ SUPABASE API ══════════════════════════════════════════
 async function sb(method, table, body, filter=""){
-  if(!SB_URL||!SB_KEY) return null;
   try{
-    const opts={method,headers:{"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY,"Prefer":"return=minimal"}};
-    if(body) opts.body=JSON.stringify(body);
-    const r=await fetch(`${SB_URL}/rest/v1/${table}${filter}`,opts);
-    if(method==="GET") return r.ok?r.json():null;
-    return r.ok;
-  }catch{return null;}
+    const isGet = method==="GET";
+    const headers = {
+      "Content-Type": "application/json",
+      "apikey": SB_KEY,
+      "Authorization": "Bearer "+SB_KEY
+    };
+    // Prefer: return=representation apenas para PATCH/POST (não para GET)
+    if(!isGet) headers["Prefer"] = "return=representation";
+
+    const opts = {method, headers};
+    if(body) opts.body = JSON.stringify(body);
+
+    const r = await fetch(`${SB_URL}/rest/v1/${table}${filter}`, opts);
+    if(!r.ok){
+      console.error("Supabase erro", method, table, r.status, await r.text());
+      return null;
+    }
+    if(isGet) return r.json();
+    // PATCH/DELETE retorna 200 com dados ou 204 sem
+    if(r.status===204) return true;
+    return r.json().catch(()=>true);
+  }catch(e){
+    console.error("Supabase exception", e);
+    return null;
+  }
 }
 
 // ══ SETUP (credenciais hardcoded, sem tela de config) ════
@@ -348,7 +366,7 @@ async function loadAnn(){
   const box=document.getElementById("ann-list");
   box.innerHTML=`<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Carregando...</div>`;
   if(!SB_URL||!SB_KEY){box.innerHTML=`<div class="empty"><div class="eico">📡</div>Configure o Supabase para ver anúncios.</div>`;return;}
-  const raw=await sb("GET","announcements",null,"?select=*&order=created_at.desc");
+  const raw=await sb("GET","announcements",null,"?select=*&order=id.desc");
   const anns=Array.isArray(raw)?raw:[];
   badge("ann","");
   if(!anns.length){box.innerHTML=`<div class="empty"><div class="eico">📢</div>Nenhum anúncio.</div>`;return;}

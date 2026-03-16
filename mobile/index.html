@@ -2,210 +2,178 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#08090d">
-<script>
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js');
-}
-</script>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0d0d0d">
-<link rel="manifest" href="manifest.json">
 <title>FloppaAI</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#0d0d0d;--bg2:#111;--bg3:#1a1a1a;
   --red:#ff2200;--red2:#cc1100;--red3:#2a0000;
-  --blue:#0088ff;--blue2:#003a7a;--blue3:#001a33;
+  --blue:#0088ff;--blue2:#003a7a;
   --green:#00cc66;--green2:#003300;
   --orange:#ff8844;--yellow:#ffcc44;
   --text:#e0e0e0;--muted:#888;--faint:#444;
-  --radius:16px;--safe-top:env(safe-area-inset-top,0px);--safe-bot:env(safe-area-inset-bottom,0px)
+  --radius:16px;
+  --st:env(safe-area-inset-top,0px);
+  --sb:env(safe-area-inset-bottom,0px)
 }
 html,body{height:100%;overflow:hidden}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-     background:var(--bg);color:var(--text);display:flex;flex-direction:column}
-
-/* ── HEADER ────────────────────────────────────────────────────── */
-#header{
-  background:linear-gradient(135deg,#1a0000,#2a0000);
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg);color:var(--text);display:flex;flex-direction:column}
+</style>
+<style>
+/* SETUP (só aparece se não tiver URL configurada) */
+#setup{position:fixed;inset:0;background:#050505;z-index:999;
+  display:none;align-items:center;justify-content:center;padding:20px;flex-direction:column}
+.sbox{background:#111;border-radius:20px;padding:22px;width:100%;max-width:360px}
+.sbox h2{font-size:1.05rem;font-weight:700;color:var(--orange);text-align:center;margin-bottom:6px}
+.sbox p{font-size:.76rem;color:var(--muted);text-align:center;line-height:1.5;margin-bottom:14px}
+.sstep{background:#1a1a1a;border-radius:10px;padding:10px 12px;margin-bottom:8px;
+  font-size:.74rem;color:var(--muted);line-height:1.7}
+.sstep b{color:var(--text)}
+#setup-err{font-size:.74rem;color:#ff6666;text-align:center;margin-top:5px;display:none}
+/* HEADER */
+#header{background:linear-gradient(135deg,#1a0000,#2a0000);
   border-bottom:1px solid #ff220022;
-  padding:calc(var(--safe-top) + 10px) 14px 10px;
-  display:flex;align-items:center;gap:10px;flex-shrink:0;
-  position:relative;z-index:10
-}
-.avatar{width:38px;height:38px;background:linear-gradient(135deg,var(--red),var(--red2));
+  padding:calc(var(--st) + 10px) 14px 10px;
+  display:flex;align-items:center;gap:10px;flex-shrink:0}
+.avatar{width:36px;height:36px;background:linear-gradient(135deg,var(--red),var(--red2));
   border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:19px;flex-shrink:0;box-shadow:0 0 12px #ff220044}
-.hinfo{flex:1}.hinfo h1{font-size:.92rem;font-weight:700}.hinfo p{font-size:.65rem;color:var(--orange)}
+  font-size:18px;flex-shrink:0;box-shadow:0 0 10px #ff220044}
+.hinfo{flex:1}.hinfo h1{font-size:.9rem;font-weight:700}
+.hinfo p{font-size:.63rem;color:var(--orange)}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--green);
   box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-#cfg-btn{background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:4px}
-
-/* ── BANNERS ────────────────────────────────────────────────────── */
-.banner{display:none;padding:6px 14px;font-size:.75rem;text-align:center;flex-shrink:0;cursor:pointer}
-#update-banner{background:#3a2a00;border-bottom:1px solid #ff880066;color:#ffcc66}
-#announce-banner{background:#001a33;border-bottom:1px solid #0088ff44;color:#66aaff}
-
-/* ── TAB BAR ────────────────────────────────────────────────────── */
-#tabbar{
-  display:flex;background:var(--bg2);border-bottom:1px solid #1e1e1e;
-  flex-shrink:0;overflow-x:auto;scrollbar-width:none
-}
-#tabbar::-webkit-scrollbar{display:none}
-.tab-btn{
-  flex:1;min-width:70px;padding:10px 6px 8px;
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  font-size:.6rem;color:var(--faint);cursor:pointer;
+#cfg-btn{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:4px}
+/* BANNERS */
+.banner{display:none;padding:6px 14px;font-size:.74rem;text-align:center;flex-shrink:0;cursor:pointer}
+#ann-banner{background:#001a33;border-bottom:1px solid #0088ff44;color:#66aaff}
+/* TABBAR */
+#tabbar{display:flex;background:var(--bg2);border-bottom:1px solid #1e1e1e;flex-shrink:0}
+.tab{flex:1;padding:9px 4px 7px;display:flex;flex-direction:column;align-items:center;
+  gap:2px;font-size:.58rem;color:var(--faint);cursor:pointer;
   border-bottom:2px solid transparent;transition:.15s;user-select:none;
-  position:relative;white-space:nowrap
-}
-.tab-btn .tab-ico{font-size:1.15rem}
-.tab-btn.active{color:var(--orange);border-bottom-color:var(--red)}
-.tab-badge{
-  position:absolute;top:6px;right:12px;
-  background:var(--red);color:#fff;font-size:.55rem;
-  border-radius:8px;padding:1px 5px;display:none
-}
-
-/* ── PAGES ──────────────────────────────────────────────────────── */
+  position:relative;white-space:nowrap}
+.tab span.ico{font-size:1.1rem}
+.tab.active{color:var(--orange);border-bottom-color:var(--red)}
+.tbadge{position:absolute;top:5px;right:10px;background:var(--red);
+  color:#fff;font-size:.52rem;border-radius:8px;padding:1px 5px;display:none}
+/* PAGES */
 .page{display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0}
 .page.active{display:flex}
-
-/* ── CHAT ───────────────────────────────────────────────────────── */
-.qa-bar{display:flex;gap:6px;overflow-x:auto;padding:6px 10px;
+.pscroll{flex:1;overflow-y:auto;padding:14px 14px calc(var(--sb)+14px)}
+/* CHAT */
+.qabar{display:flex;gap:6px;overflow-x:auto;padding:6px 10px;
   flex-shrink:0;background:#0a0a0a;border-bottom:1px solid #1a1a1a;scrollbar-width:none}
-.qa-bar::-webkit-scrollbar{display:none}
-.qa-btn{background:var(--red3);border:1px solid #ff220033;border-radius:16px;
-  color:#ffaa88;font-size:.7rem;padding:5px 11px;white-space:nowrap;cursor:pointer;flex-shrink:0}
-.qa-btn:active{background:#3a0a00;transform:scale(.97)}
-#chat{flex:1;overflow-y:auto;padding:10px 10px 6px;display:flex;flex-direction:column;gap:5px;scroll-behavior:smooth}
-#chat::-webkit-scrollbar{width:3px}
-#chat::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
-.msg-row{display:flex;width:100%}
-.msg-row.user{justify-content:flex-end}
-.msg-row.ai,.msg-row.system{justify-content:flex-start}
-.msg-row.system{justify-content:center}
-.bubble{max-width:82%;padding:8px 12px;border-radius:var(--radius);
-  font-size:.85rem;line-height:1.55;animation:fadeIn .17s ease;word-break:break-word}
-.bubble.user{background:#1a3a0a;border-bottom-right-radius:4px}
-.bubble.ai{background:var(--red3);border-bottom-left-radius:4px}
-.bubble.system{background:#1c1c1c;border-radius:10px;max-width:90%;
-  text-align:center;color:var(--muted);font-size:.76rem}
-@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-.lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
-.bubble.user .lbl{color:#88ff44}.bubble.ai .lbl{color:var(--red)}
-.typing-dots span{display:inline-block;width:7px;height:7px;background:var(--red);
-  border-radius:50%;margin-right:3px;animation:bounce .9s infinite}
-.typing-dots span:nth-child(2){animation-delay:.15s}.typing-dots span:nth-child(3){animation-delay:.3s}
-@keyframes bounce{0%,80%,100%{transform:scale(.7)}40%{transform:scale(1.15)}}
-#chat-footer{background:var(--bg2);border-top:1px solid #1e1e1e;
-  padding:8px 10px calc(var(--safe-bot) + 8px);display:flex;gap:6px;flex-shrink:0}
-#chat-input{flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:22px;
-  padding:10px 16px;color:var(--text);font-size:.86rem;outline:none}
-#chat-input:focus{border-color:var(--red)}
-#chat-send{background:var(--red);border:none;border-radius:50%;width:44px;height:44px;
-  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;display:flex;
-  align-items:center;justify-content:center;transition:.1s}
-#chat-send:active{transform:scale(.9);background:var(--red2)}
+.qabar::-webkit-scrollbar{display:none}
+.qabtn{background:var(--red3);border:1px solid #ff220033;border-radius:16px;
+  color:#ffaa88;font-size:.68rem;padding:5px 10px;white-space:nowrap;cursor:pointer;flex-shrink:0}
+.qabtn:active{background:#3a0a00;transform:scale(.97)}
+#chat{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:5px}
+.mrow{display:flex;width:100%}
+.mrow.user{justify-content:flex-end}
+.mrow.ai,.mrow.sys{justify-content:flex-start}
+.mrow.sys{justify-content:center}
+.bub{max-width:82%;padding:8px 12px;border-radius:var(--radius);
+  font-size:.84rem;line-height:1.55;animation:fi .17s ease;word-break:break-word}
+.bub.user{background:#1a3a0a;border-bottom-right-radius:4px}
+.bub.ai{background:var(--red3);border-bottom-left-radius:4px}
+.bub.sys{background:#1c1c1c;border-radius:10px;max-width:90%;
+  text-align:center;color:var(--muted);font-size:.74rem}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.lbl{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.bub.user .lbl{color:#88ff44}.bub.ai .lbl{color:var(--red)}
+.dots span{display:inline-block;width:7px;height:7px;background:var(--red);
+  border-radius:50%;margin-right:3px;animation:bo .9s infinite}
+.dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
+@keyframes bo{0%,80%,100%{transform:scale(.7)}40%{transform:scale(1.15)}}
+#chat-ft{background:var(--bg2);border-top:1px solid #1e1e1e;
+  padding:8px 10px calc(var(--sb)+8px);display:flex;gap:6px;flex-shrink:0}
+#cinput{flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:22px;
+  padding:10px 16px;color:var(--text);font-size:.84rem;outline:none}
+#cinput:focus{border-color:var(--red)}
+#csend{background:var(--red);border:none;border-radius:50%;width:44px;height:44px;
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0}
+#csend:active{transform:scale(.9)}
 </style>
 <style>
-/* ── SUPORTE / TICKETS ──────────────────────────────────────────── */
-.page-scroll{flex:1;overflow-y:auto;padding:14px 14px calc(var(--safe-bot)+14px)}
-.page-scroll::-webkit-scrollbar{width:3px}
-.page-scroll::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
-.section-title{font-size:.78rem;font-weight:700;color:var(--muted);
-  text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px}
+/* FORMS */
 .card{background:var(--bg2);border-radius:14px;padding:14px;margin-bottom:12px}
-.card-title{font-size:.88rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-label.field-lbl{font-size:.72rem;color:var(--muted);display:block;margin-bottom:4px;margin-top:10px}
-.field-input{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;
-  padding:10px 14px;color:var(--text);font-size:.86rem;outline:none;font-family:inherit}
-.field-input:focus{border-color:var(--blue)}
-textarea.field-input{resize:none;min-height:90px;line-height:1.5}
-.btn{width:100%;padding:13px;border:none;border-radius:12px;font-size:.88rem;
-  font-weight:700;cursor:pointer;margin-top:12px;font-family:inherit;transition:.12s}
-.btn:active{transform:scale(.98);filter:brightness(.9)}
+.ctitle{font-size:.86rem;font-weight:700;margin-bottom:8px}
+.flbl{font-size:.7rem;color:var(--muted);display:block;margin-bottom:4px;margin-top:10px}
+.finp{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;
+  padding:10px 14px;color:var(--text);font-size:.84rem;outline:none;font-family:inherit}
+.finp:focus{border-color:var(--blue)}
+textarea.finp{resize:none;min-height:88px;line-height:1.5}
+.btn{width:100%;padding:13px;border:none;border-radius:12px;font-size:.86rem;
+  font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit;transition:.12s}
+.btn:active{transform:scale(.98)}
 .btn-blue{background:var(--blue2);color:#fff}
-.btn-red{background:#550000;color:#ffaaaa}
-.btn-green{background:var(--green2);color:#88ff88}
-.status-msg{font-size:.78rem;text-align:center;padding:8px;border-radius:8px;margin-top:8px;display:none}
-.status-ok{background:#003300;color:var(--green)}
-.status-err{background:#330000;color:#ff6666}
-.status-warn{background:#332200;color:var(--yellow)}
-/* Ticket cards */
-.ticket-card{background:var(--bg3);border-radius:12px;padding:12px;margin-bottom:10px;
-  border-left:3px solid var(--faint)}
-.ticket-card.pending{border-left-color:var(--orange)}
-.ticket-card.answered{border-left-color:var(--green)}
-.ticket-card .tc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.ticket-card .tc-id{font-size:.65rem;color:var(--faint);font-family:monospace}
-.ticket-card .tc-date{font-size:.65rem;color:var(--faint)}
-.ticket-card .tc-status{font-size:.7rem;font-weight:700}
-.ticket-card .tc-msg{font-size:.8rem;color:var(--muted);margin-bottom:6px;
-  border-radius:8px;background:#1a1a1a;padding:8px;word-break:break-word}
-.ticket-card .tc-reply{font-size:.82rem;color:#88ff88;background:#0a1a0a;
-  border-radius:8px;padding:8px;word-break:break-word;margin-top:6px}
-/* Anúncios */
-.ann-card{border-radius:12px;padding:14px;margin-bottom:10px}
-.ann-info{background:#001a33}.ann-aviso{background:#2a1a00}.ann-update{background:#002200}
-.ann-card .ann-title{font-size:.9rem;font-weight:700;margin-bottom:4px}
-.ann-card .ann-msg{font-size:.8rem;color:var(--muted);line-height:1.5}
-.ann-card .ann-date{font-size:.65rem;color:var(--faint);margin-top:6px}
-/* Setup screen */
-#setup-screen{
-  position:fixed;inset:0;background:#050505;z-index:999;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px
-}
-.setup-box{background:#111;border-radius:20px;padding:24px;width:100%;max-width:380px}
-.setup-box h2{font-size:1.1rem;font-weight:700;color:var(--orange);margin-bottom:6px;text-align:center}
-.setup-box p{font-size:.78rem;color:var(--muted);text-align:center;line-height:1.5;margin-bottom:16px}
-.setup-box .step{background:#1a1a1a;border-radius:10px;padding:10px 12px;margin-bottom:8px;
-  font-size:.75rem;color:var(--muted);line-height:1.6}
-.setup-box .step b{color:var(--text)}
-#setup-err{font-size:.75rem;color:#ff6666;text-align:center;margin-top:6px;display:none}
-/* Empty state */
-.empty{text-align:center;padding:40px 20px;color:var(--faint);font-size:.85rem}
-.empty .empty-ico{font-size:2.5rem;margin-bottom:10px}
-/* Refresh button */
-.refresh-btn{background:none;border:1px solid #2a2a2a;border-radius:10px;
-  padding:6px 14px;color:var(--muted);font-size:.75rem;cursor:pointer;margin-bottom:12px}
-.refresh-btn:active{background:#1a1a1a}
-
+.btn-ghost{background:transparent;color:var(--faint);font-size:.76rem;margin-top:4px}
+.smsg{font-size:.76rem;text-align:center;padding:8px;border-radius:8px;margin-top:8px;display:none}
+.sok{background:#003300;color:var(--green)}
+.serr{background:#330000;color:#ff6666}
+.swarn{background:#332200;color:var(--yellow)}
+/* TICKETS */
+.tcard{background:var(--bg3);border-radius:12px;padding:12px;margin-bottom:10px;border-left:3px solid var(--faint)}
+.tcard.pend{border-left-color:var(--orange)}
+.tcard.done{border-left-color:var(--green)}
+.thead2{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.tid{font-size:.63rem;color:var(--faint);font-family:monospace}
+.tstat{font-size:.68rem;font-weight:700}
+.tmsg{font-size:.78rem;color:var(--muted);background:#1a1a1a;border-radius:8px;padding:8px;word-break:break-word;margin-bottom:5px}
+.treply{font-size:.8rem;color:#88ff88;background:#0a1a0a;border-radius:8px;padding:8px;word-break:break-word;margin-top:6px}
+/* ANÚNCIOS */
+.acard{border-radius:12px;padding:14px;margin-bottom:10px}
+.acard.info{background:#001a33}.acard.aviso{background:#2a1a00}.acard.update{background:#002200}
+.atitle{font-size:.88rem;font-weight:700;margin-bottom:4px}
+.amsg{font-size:.78rem;color:var(--muted);line-height:1.5}
+.adate{font-size:.63rem;color:var(--faint);margin-top:5px}
+/* MISC */
+.empty{text-align:center;padding:36px 20px;color:var(--faint);font-size:.82rem}
+.eico{font-size:2.4rem;margin-bottom:10px}
+.rbtn{background:none;border:1px solid #2a2a2a;border-radius:10px;
+  padding:6px 14px;color:var(--muted);font-size:.72rem;cursor:pointer;margin-bottom:12px}
+.stitle{font-size:.76rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px}
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+  padding:10px 20px;border-radius:20px;font-size:.78rem;z-index:9999;
+  pointer-events:none;animation:fi .3s ease;white-space:nowrap}
+.toast-ok{background:#003300;color:var(--green)}
+.toast-info{background:#001a33;color:#66aaff}
 </style>
 </head>
 <body>
 
-<!-- ══ SETUP SCREEN (aparece na primeira vez) ══════════════════════════════ -->
-<div id="setup-screen">
-  <div class="setup-box">
-    <div style="font-size:2.5rem;text-align:center;margin-bottom:12px">🔥</div>
+<!-- SETUP (tela manual — aparece quando não tem URL) -->
+<div id="setup">
+  <div class="sbox">
+    <div style="font-size:2.4rem;text-align:center;margin-bottom:10px">🔥</div>
     <h2>Configurar FloppaAI</h2>
-    <p>Para enviar tickets e ver respostas em tempo real, configure o Firebase do app.</p>
-    <div class="step">
-      <b>1.</b> Acesse <b>console.firebase.google.com</b><br>
-      <b>2.</b> Crie um projeto gratuito<br>
-      <b>3.</b> Vá em <b>Realtime Database → Criar</b><br>
-      <b>4.</b> Copie a URL (ex: <b>https://SEU-APP.firebaseio.com</b>)
+    <p>Cole a URL do servidor ngrok para enviar tickets em tempo real.</p>
+    <div class="sstep">
+      <b>1.</b> No PC, rode <b>INICIAR_SERVIDOR.bat</b><br>
+      <b>2.</b> Copie a URL da janela ngrok:<br>
+      <b style="color:#44aaff">https://xxxx.ngrok-free.app</b><br>
+      <b>3.</b> Cole abaixo — ou acesse essa URL direto pelo celular!
     </div>
-    <label class="field-lbl" style="margin-top:14px">URL do Firebase Realtime Database:</label>
-    <input id="setup-url" class="field-input" type="url"
-           placeholder="https://SEU-PROJETO.firebaseio.com" autocomplete="off">
-    <div id="setup-err">URL inválida. Use https://...</div>
-    <button class="btn btn-blue" onclick="saveSetup()" style="margin-top:14px">✅ Salvar e Continuar</button>
-    <button class="btn" style="background:transparent;color:var(--faint);margin-top:6px;font-size:.78rem"
-            onclick="skipSetup()">Usar só o chat (sem tickets)</button>
+    <label class="flbl" style="margin-top:12px">URL do ngrok:</label>
+    <input id="setup-url" class="finp" type="url"
+           placeholder="https://xxxx.ngrok-free.app" autocomplete="off">
+    <div id="setup-err">❌ URL inválida. Use https://...</div>
+    <button class="btn btn-blue" onclick="saveSetup()" style="margin-top:12px">✅ Salvar e Entrar</button>
+    <button class="btn btn-ghost" onclick="skipSetup()">Usar só o chat por enquanto</button>
   </div>
 </div>
 
-<!-- ══ HEADER ═══════════════════════════════════════════════════════════════ -->
-<div id="update-banner" class="banner" onclick="openUpdate()">🆕 Atualização disponível!</div>
-<div id="announce-banner" class="banner" onclick="showTab('anuncios')">📢 Novo anúncio da equipe! Toque para ver.</div>
+<!-- BANNER -->
+<div id="ann-banner" class="banner" onclick="showTab('ann')">📢 Novo anúncio! Toque para ver.</div>
+
+<!-- HEADER -->
 <div id="header">
   <div class="avatar">🐱</div>
   <div class="hinfo"><h1>FloppaAI</h1><p>Floppa's Schoolhouse 2</p></div>
@@ -213,491 +181,388 @@ textarea.field-input{resize:none;min-height:90px;line-height:1.5}
   <button id="cfg-btn" onclick="openConfig()" title="Configurações">⚙️</button>
 </div>
 
-<!-- ══ TABBAR ════════════════════════════════════════════════════════════════ -->
+<!-- TABBAR -->
 <div id="tabbar">
-  <div class="tab-btn active" id="tab-chat" onclick="showTab('chat')">
-    <span class="tab-ico">🐱</span><span>Chat</span>
+  <div class="tab active" id="tab-chat" onclick="showTab('chat')">
+    <span class="ico">🐱</span><span>Chat</span>
   </div>
-  <div class="tab-btn" id="tab-suporte" onclick="showTab('suporte')">
-    <span class="tab-ico">🎧</span><span>Suporte</span>
-    <span class="tab-badge" id="badge-suporte"></span>
+  <div class="tab" id="tab-sup" onclick="showTab('sup')">
+    <span class="ico">🎧</span><span>Suporte</span>
   </div>
-  <div class="tab-btn" id="tab-tickets" onclick="showTab('tickets')">
-    <span class="tab-ico">📋</span><span>Meus Tickets</span>
-    <span class="tab-badge" id="badge-tickets"></span>
+  <div class="tab" id="tab-tkt" onclick="showTab('tkt')">
+    <span class="ico">📋</span><span>Meus Tickets</span>
+    <span class="tbadge" id="b-tkt"></span>
   </div>
-  <div class="tab-btn" id="tab-anuncios" onclick="showTab('anuncios')">
-    <span class="tab-ico">📢</span><span>Novidades</span>
-    <span class="tab-badge" id="badge-anuncios"></span>
+  <div class="tab" id="tab-ann" onclick="showTab('ann')">
+    <span class="ico">📢</span><span>Novidades</span>
+    <span class="tbadge" id="b-ann"></span>
   </div>
 </div>
 
-<!-- ══ PÁGINA: CHAT ══════════════════════════════════════════════════════════ -->
+<!-- CHAT -->
 <div class="page active" id="page-chat">
-  <div class="qa-bar">
-    <div class="qa-btn" onclick="qa('Qual é o objetivo do jogo?')">🎯 Objetivo</div>
-    <div class="qa-btn" onclick="qa('Me fale sobre todos os personagens.')">👾 Personagens</div>
-    <div class="qa-btn" onclick="qa('Como funciona o tutorial?')">📖 Tutorial</div>
-    <div class="qa-btn" onclick="qa('Quais são as salas do mapa?')">🗺️ Salas</div>
-    <div class="qa-btn" onclick="qa('Como funcionam os livros e questões?')">📚 Livros</div>
-    <div class="qa-btn" onclick="qa('Como funciona o Carro?')">🚗 Carro</div>
-    <div class="qa-btn" onclick="qa('Como funciona a fita cassete?')">📼 Fita</div>
-    <div class="qa-btn" onclick="qa('Me dê dicas para sobreviver.')">💡 Dicas</div>
-    <div class="qa-btn" onclick="qa('Quero reportar um bug.')">🐛 Bug</div>
+  <div class="qabar">
+    <div class="qabtn" onclick="qa('Qual é o objetivo do jogo?')">🎯 Objetivo</div>
+    <div class="qabtn" onclick="qa('Me fale sobre os personagens.')">👾 Personagens</div>
+    <div class="qabtn" onclick="qa('Como funciona o tutorial?')">📖 Tutorial</div>
+    <div class="qabtn" onclick="qa('Quais são as salas do mapa?')">🗺️ Salas</div>
+    <div class="qabtn" onclick="qa('Como funcionam os livros?')">📚 Livros</div>
+    <div class="qabtn" onclick="qa('Como funciona o Carro?')">🚗 Carro</div>
+    <div class="qabtn" onclick="qa('Como funciona a fita cassete?')">📼 Fita</div>
+    <div class="qabtn" onclick="qa('Me dê dicas para sobreviver.')">💡 Dicas</div>
+    <div class="qabtn" onclick="qa('Quero reportar um bug.')">🐛 Bug</div>
   </div>
   <div id="chat"></div>
-  <div id="chat-footer">
-    <input id="chat-input" type="text" placeholder="Digite sua mensagem..." autocomplete="off">
-    <button id="chat-send" onclick="sendChat()">➤</button>
+  <div id="chat-ft">
+    <input id="cinput" type="text" placeholder="Digite sua mensagem..." autocomplete="off">
+    <button id="csend" onclick="sendChat()">➤</button>
   </div>
 </div>
 
-<!-- ══ PÁGINA: SUPORTE ═══════════════════════════════════════════════════════ -->
-<div class="page" id="page-suporte">
-  <div class="page-scroll">
+<!-- SUPORTE -->
+<div class="page" id="page-sup">
+  <div class="pscroll">
     <div class="card">
-      <div class="card-title">🎧 Abrir Ticket de Suporte</div>
-      <p style="font-size:.78rem;color:var(--muted);line-height:1.5">
-        Teve um problema? Envie um ticket e a equipe vai responder em breve.
-        Você poderá ver a resposta na aba <b>Meus Tickets</b>.
+      <div class="ctitle">🎧 Abrir Ticket de Suporte</div>
+      <p style="font-size:.76rem;color:var(--muted);line-height:1.5">
+        Envie um ticket e a equipe responderá em breve. Veja a resposta em <b>Meus Tickets</b>.
       </p>
-      <label class="field-lbl">Seu nome de usuário:</label>
-      <input id="sup-name" class="field-input" type="text"
-             placeholder="Ex: NomeRoblox123" autocomplete="off" maxlength="40">
-      <label class="field-lbl">Assunto:</label>
-      <select id="sup-subject" class="field-input">
-        <option value="">— Selecione o assunto —</option>
+      <label class="flbl">Seu nome (Roblox):</label>
+      <input id="sup-name" class="finp" type="text" placeholder="Ex: NomeRoblox123" maxlength="40">
+      <label class="flbl">Assunto:</label>
+      <select id="sup-sub" class="finp">
+        <option value="">— Selecione —</option>
         <option value="bug">🐛 Bug no jogo</option>
-        <option value="duvida">❓ Dúvida sobre o jogo</option>
+        <option value="duvida">❓ Dúvida</option>
         <option value="sugestao">💡 Sugestão</option>
         <option value="outro">🔧 Outro</option>
       </select>
-      <label class="field-lbl">Descreva seu problema detalhadamente:</label>
-      <textarea id="sup-msg" class="field-input"
-                placeholder="Explique o que aconteceu, quando ocorreu e como reproduzir..." maxlength="1000"></textarea>
-      <div style="text-align:right;font-size:.68rem;color:var(--faint);margin-top:3px">
-        <span id="sup-counter">0</span>/1000
+      <label class="flbl">Descreva o problema:</label>
+      <textarea id="sup-msg" class="finp" maxlength="1000"
+        placeholder="Explique o que aconteceu, quando e como reproduzir..."></textarea>
+      <div style="text-align:right;font-size:.66rem;color:var(--faint);margin-top:3px">
+        <span id="sup-cnt">0</span>/1000
       </div>
-      <div id="sup-status" class="status-msg"></div>
-      <button class="btn btn-blue" onclick="sendTicket()">📨 Enviar Ticket</button>
+      <div id="sup-st" class="smsg"></div>
+      <button class="btn btn-blue" id="sup-btn" onclick="sendTicket()">📨 Enviar Ticket</button>
     </div>
-
-    <div class="card" style="background:#001a0a;border:1px solid #00441a33">
-      <div class="card-title" style="color:#44ff88">⚡ Respostas Rápidas</div>
-      <p style="font-size:.78rem;color:var(--muted);margin-bottom:10px">
-        Antes de abrir um ticket, veja se sua dúvida já tem resposta:
-      </p>
-      <div class="qa-btn" style="display:inline-block;margin:3px;font-size:.75rem;cursor:pointer"
-           onclick="showTab('chat');qa('Como coletar livros?')">Como coletar livros?</div>
-      <div class="qa-btn" style="display:inline-block;margin:3px;font-size:.75rem;cursor:pointer"
-           onclick="showTab('chat');qa('O Floppa me persegue, o que fazer?')">Floppa me persegue?</div>
-      <div class="qa-btn" style="display:inline-block;margin:3px;font-size:.75rem;cursor:pointer"
-           onclick="showTab('chat');qa('Como usar a fita cassete?')">Fita cassete?</div>
-      <div class="qa-btn" style="display:inline-block;margin:3px;font-size:.75rem;cursor:pointer"
-           onclick="showTab('chat');qa('Qual é a saída correta?')">Saída correta?</div>
+    <div class="card" style="background:#001a0a">
+      <div class="ctitle" style="color:#44ff88">⚡ Dúvidas Rápidas</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">
+        <span class="qabtn" onclick="showTab('chat');qa('Como coletar livros?')">Coletar livros?</span>
+        <span class="qabtn" onclick="showTab('chat');qa('Como fugir do Floppa?')">Fugir do Floppa?</span>
+        <span class="qabtn" onclick="showTab('chat');qa('Como usar a fita cassete?')">Fita cassete?</span>
+        <span class="qabtn" onclick="showTab('chat');qa('Qual é a saída correta?')">Saída correta?</span>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ══ PÁGINA: MEUS TICKETS ══════════════════════════════════════════════════ -->
-<div class="page" id="page-tickets">
-  <div class="page-scroll">
-    <button class="refresh-btn" onclick="loadMyTickets()">🔄 Atualizar</button>
-    <div class="section-title">Seus Tickets Enviados</div>
-    <div id="tickets-list">
-      <div class="empty"><div class="empty-ico">📭</div>Nenhum ticket enviado ainda.</div>
-    </div>
+<!-- MEUS TICKETS -->
+<div class="page" id="page-tkt">
+  <div class="pscroll">
+    <button class="rbtn" onclick="loadTickets()">🔄 Atualizar respostas</button>
+    <div class="stitle">Seus Tickets Enviados</div>
+    <div id="tkt-list"><div class="empty"><div class="eico">📭</div>Nenhum ticket ainda.</div></div>
   </div>
 </div>
 
-<!-- ══ PÁGINA: ANÚNCIOS ══════════════════════════════════════════════════════ -->
-<div class="page" id="page-anuncios">
-  <div class="page-scroll">
-    <button class="refresh-btn" onclick="loadAnnouncements()">🔄 Atualizar</button>
-    <div class="section-title">Novidades & Anúncios</div>
-    <div id="anuncios-list">
-      <div class="empty"><div class="empty-ico">📢</div>Nenhum anúncio no momento.</div>
-    </div>
+<!-- NOVIDADES -->
+<div class="page" id="page-ann">
+  <div class="pscroll">
+    <button class="rbtn" onclick="loadAnn()">🔄 Atualizar</button>
+    <div class="stitle">Novidades & Anúncios</div>
+    <div id="ann-list"><div class="empty"><div class="eico">📢</div>Nenhum anúncio no momento.</div></div>
   </div>
 </div>
 
 <script>
-// ── GROQ ──────────────────────────────────────────────────────────────────
 const GROQ_KEY = "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";
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-const MODEL    = "llama-3.1-8b-instant";
-const APP_VER  = "1.0.0";
+let SRV = "";
 
-// ── FIREBASE ──────────────────────────────────────────────────────────────
-let FIREBASE_BASE = localStorage.getItem("floppaai_firebase") || "";
+// ══ AUTO-CONFIG INTELIGENTE ════════════════════════════════
+// Se o app foi aberto PELA URL do ngrok, usa window.location.origin
+// automaticamente — sempre atualizado, nunca desatualizado!
+function detectSRV() {
+  const loc = window.location;
+  const isServedByServer = loc.protocol.startsWith("http") &&
+    loc.hostname !== "" &&
+    loc.hostname !== "localhost" &&
+    !loc.protocol.startsWith("file");
 
-function fbUrl(path){ return `${FIREBASE_BASE}/${path}.json`; }
-
-async function fbGet(path){
-  if(!FIREBASE_BASE) return null;
-  try{
-    const r = await fetch(fbUrl(path),{method:"GET"});
-    if(!r.ok) return null;
-    return await r.json();
-  }catch{ return null; }
+  if (isServedByServer) {
+    // App aberto pelo ngrok/servidor — usa a URL atual automaticamente
+    SRV = loc.origin;
+    localStorage.setItem("fai_srv", SRV);
+    localStorage.setItem("fai_auto", "1");
+    return true;
+  }
+  // App aberto como arquivo local — tenta URL salva manualmente
+  const manual = localStorage.getItem("fai_srv");
+  if (manual && localStorage.getItem("fai_auto") !== "1") {
+    SRV = manual; return true;
+  }
+  return false;
 }
 
-async function fbPut(path, data){
-  if(!FIREBASE_BASE) return false;
-  try{
-    const r = await fetch(fbUrl(path),{
-      method:"PUT", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify(data)
-    });
-    return r.ok;
-  }catch{ return false; }
+// ══ API ══════════════════════════════════════════════════
+async function api(method, path, body) {
+  if (!SRV) return null;
+  try {
+    const opts = { method, headers: {
+      "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "1"
+    }};
+    if (body) opts.body = JSON.stringify(body);
+    const r = await fetch(`${SRV}/api/${path}`, opts);
+    return r.ok ? r.json() : null;
+  } catch { return null; }
 }
 
-async function fbPatch(path, data){
-  if(!FIREBASE_BASE) return false;
-  try{
-    const r = await fetch(fbUrl(path),{
-      method:"PATCH", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify(data)
-    });
-    return r.ok;
-  }catch{ return false; }
-}
-
-// ── SETUP SCREEN ──────────────────────────────────────────────────────────
-function checkSetup(){
-  if(!FIREBASE_BASE){
-    document.getElementById("setup-screen").style.display = "flex";
-  } else {
-    document.getElementById("setup-screen").style.display = "none";
+// ══ SETUP ════════════════════════════════════════════════
+function checkSetup() {
+  const found = detectSRV();
+  if (found) {
+    document.getElementById("setup").style.display = "none";
+    const auto = localStorage.getItem("fai_auto") === "1";
+    if (auto) toast("✅ Conectado automaticamente!", "toast-ok");
     onReady();
+  } else {
+    document.getElementById("setup").style.display = "flex";
   }
 }
 
-function saveSetup(){
+function saveSetup() {
   const url = document.getElementById("setup-url").value.trim().replace(/\/$/,"");
-  const err = document.getElementById("setup-err");
-  if(!url.startsWith("https://")){
-    err.style.display="block"; return;
+  if (!url.startsWith("http")) {
+    document.getElementById("setup-err").style.display="block"; return;
   }
-  err.style.display="none";
-  FIREBASE_BASE = url;
-  localStorage.setItem("floppaai_firebase", url);
-  document.getElementById("setup-screen").style.display = "none";
+  SRV = url;
+  localStorage.setItem("fai_srv", SRV);
+  localStorage.removeItem("fai_auto");
+  document.getElementById("setup").style.display = "none";
   onReady();
 }
+function skipSetup() {
+  document.getElementById("setup").style.display = "none"; onReady();
+}
+function openConfig() {
+  const auto = localStorage.getItem("fai_auto") === "1";
+  const tipo = auto ? "🤖 Automático" : "🔧 Manual";
+  const opcao = prompt(
+    `Configuração atual: ${tipo}\nURL: ${SRV||"(nenhuma)"}\n\n` +
+    `• Digite uma nova URL para trocar\n` +
+    `• Digite "auto" para voltar ao modo automático\n` +
+    `• Deixe vazio para modo offline\n` +
+    `• Cancele para não mudar nada`,
+    SRV
+  );
+  if (opcao === null) return;
+  const val = opcao.trim();
 
-function skipSetup(){
-  document.getElementById("setup-screen").style.display = "none";
-  onReady();
+  if (val.toLowerCase() === "auto") {
+    localStorage.removeItem("fai_srv");
+    localStorage.removeItem("fai_auto");
+    SRV = "";
+    toast("🔄 Abra a URL do ngrok no navegador para reconectar!", "toast-info");
+    return;
+  }
+  if (val === "") {
+    localStorage.removeItem("fai_srv");
+    localStorage.removeItem("fai_auto");
+    SRV = "";
+    toast("⚠️ Modo offline ativado.", "toast-info");
+    return;
+  }
+  const nova = val.replace(/\/$/,"");
+  if (!nova.startsWith("http")) { toast("❌ URL inválida. Use https://...", "toast-info"); return; }
+  if (nova === SRV) return;
+  SRV = nova;
+  localStorage.setItem("fai_srv", SRV);
+  localStorage.removeItem("fai_auto");
+  toast("✅ URL atualizada!", "toast-ok");
 }
 
-function openConfig(){
-  const cur = FIREBASE_BASE || "";
-  const novo = prompt("URL do Firebase (deixe vazio para modo offline):", cur);
-  if(novo === null) return;
-  FIREBASE_BASE = novo.trim().replace(/\/$/,"");
-  localStorage.setItem("floppaai_firebase", FIREBASE_BASE);
-  alert(FIREBASE_BASE ? "✅ Firebase salvo! URL: "+FIREBASE_BASE : "⚠️ Modo offline ativado.");
+// ══ UTILS ════════════════════════════════════════════════
+function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function nowStr(){const d=new Date(),p=n=>String(n).padStart(2,"0");return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;}
+function esc(t){return(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");}
+function md(t){return esc(t).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");}
+function badge(id,v){const b=document.getElementById("b-"+id);b.style.display=v?"block":"none";b.textContent=v;}
+function toast(msg,cls){
+  const t=document.createElement("div");
+  t.className="toast "+(cls||"toast-ok");t.textContent=msg;
+  document.body.appendChild(t);setTimeout(()=>t.remove(),3000);
 }
 
-// ── UUID simples ───────────────────────────────────────────────────────────
-function genId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
-function nowStr(){
-  const d=new Date();
-  return `${d.getDate().toString().padStart(2,"0")}/${(d.getMonth()+1).toString().padStart(2,"0")}/${d.getFullYear()} ${d.getHours().toString().padStart(2,"0")}:${d.getMinutes().toString().padStart(2,"0")}`;
-}
-
-// ── TABS ──────────────────────────────────────────────────────────────────
+// ══ TABS ═════════════════════════════════════════════════
 function showTab(name){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
   document.getElementById("page-"+name).classList.add("active");
   document.getElementById("tab-"+name).classList.add("active");
-  if(name==="tickets") loadMyTickets();
-  if(name==="anuncios") loadAnnouncements();
+  if(name==="tkt") loadTickets();
+  if(name==="ann") loadAnn();
 }
 
-// ── ANTI-SPAM CLIENT-SIDE ─────────────────────────────────────────────────
-const SPAM_KEY = "floppaai_spam";
-function checkClientSpam(name){
-  const raw = localStorage.getItem(SPAM_KEY);
-  const log = raw ? JSON.parse(raw) : [];
-  const now = Date.now();
-  const window_ms = 10 * 60 * 1000; // 10 minutos
-  const recent = log.filter(e => e.name===name.toLowerCase() && (now - e.ts) < window_ms);
-  if(recent.length >= 3) return false; // bloqueado
-  log.push({name:name.toLowerCase(), ts:now});
-  // Limpa entradas velhas
-  const clean = log.filter(e => (now - e.ts) < window_ms * 2);
-  localStorage.setItem(SPAM_KEY, JSON.stringify(clean));
-  return true;
+// ══ ANTI-SPAM ════════════════════════════════════════════
+const BAD=["porra","caralho","merda","viado","fdp","vsf","fuck","shit","bitch","idiota"];
+function checkSpam(name){
+  const log=JSON.parse(localStorage.getItem("fai_sp")||"[]"),now=Date.now(),win=10*60*1000;
+  if(log.filter(e=>e.n===name.toLowerCase()&&now-e.t<win).length>=3)return false;
+  log.push({n:name.toLowerCase(),t:now});
+  localStorage.setItem("fai_sp",JSON.stringify(log.filter(e=>now-e.t<win*2)));return true;
 }
 
-// ── TICKET ────────────────────────────────────────────────────────────────
+// ══ TICKET ═══════════════════════════════════════════════
 async function sendTicket(){
-  const name    = document.getElementById("sup-name").value.trim();
-  const subject = document.getElementById("sup-subject").value;
-  const msg     = document.getElementById("sup-msg").value.trim();
-  const status  = document.getElementById("sup-status");
-
-  const show = (txt, cls) => {
-    status.textContent = txt;
-    status.className = "status-msg " + cls;
-    status.style.display = "block";
-  };
-
-  if(!name){ show("⚠️ Informe seu nome de usuário.","status-warn"); return; }
-  if(!subject){ show("⚠️ Selecione o assunto.","status-warn"); return; }
-  if(msg.length < 10){ show("⚠️ Mensagem muito curta (mín. 10 caracteres).","status-warn"); return; }
-
-  // Anti-spam client-side
-  if(!checkClientSpam(name)){
-    show("🚫 Muitos tickets enviados. Aguarde 10 minutos antes de enviar outro.","status-err"); return;
-  }
-
-  // Palavras proibidas
-  const blocked_words = ["porra","caralho","merda","viado","fdp","vsf","fuck","shit","bitch"];
-  const msg_lower = msg.toLowerCase();
-  if(blocked_words.some(w=>msg_lower.includes(w))){
-    show("❌ Mensagem bloqueada: conteúdo impróprio detectado.","status-err"); return;
-  }
-
-  const btn = document.querySelector("#page-suporte .btn-blue");
-  btn.disabled = true; btn.textContent = "⏳ Enviando...";
-  show("Enviando ticket...","status-warn");
-
-  const ticket = {
-    id: genId(), date: nowStr(),
-    name: name, subject: subject, message: msg,
-    response: "", platform: "mobile"
-  };
-
-  // Salva localmente
-  const local = JSON.parse(localStorage.getItem("my_tickets")||"[]");
-  local.push(ticket);
-  localStorage.setItem("my_tickets", JSON.stringify(local));
-
-  // Envia para Firebase
-  let ok = false;
-  if(FIREBASE_BASE){
-    ok = await fbPut(`tickets/${ticket.id}`, ticket);
-  }
-
-  btn.disabled = false; btn.textContent = "📨 Enviar Ticket";
-
-  if(ok || !FIREBASE_BASE){
-    show("✅ Ticket enviado com sucesso! Resposta aparecerá em Meus Tickets.","status-ok");
+  const name=document.getElementById("sup-name").value.trim();
+  const sub=document.getElementById("sup-sub").value;
+  const msg=document.getElementById("sup-msg").value.trim();
+  const st=document.getElementById("sup-st"),btn=document.getElementById("sup-btn");
+  const show=(t,c)=>{st.textContent=t;st.className="smsg "+c;st.style.display="block";};
+  if(!name){show("⚠️ Informe seu nome.","swarn");return;}
+  if(!sub){show("⚠️ Selecione o assunto.","swarn");return;}
+  if(msg.length<10){show("⚠️ Mensagem muito curta (mín. 10).","swarn");return;}
+  if(!checkSpam(name)){show("🚫 Aguarde 10 minutos para enviar outro.","serr");return;}
+  if(BAD.some(w=>msg.toLowerCase().includes(w))){show("❌ Conteúdo impróprio bloqueado.","serr");return;}
+  btn.disabled=true;btn.textContent="⏳ Enviando...";show("Enviando...","swarn");
+  const ticket={id:genId(),date:nowStr(),name,subject:sub,message:msg,response:"",platform:"mobile"};
+  const local=JSON.parse(localStorage.getItem("my_tkt")||"[]");
+  local.push(ticket);localStorage.setItem("my_tkt",JSON.stringify(local));
+  const ok=await api("POST","tickets",ticket);
+  btn.disabled=false;btn.textContent="📨 Enviar Ticket";
+  if(ok||!SRV){
+    show("✅ Ticket enviado! Veja a resposta em Meus Tickets.","sok");
     document.getElementById("sup-name").value="";
-    document.getElementById("sup-subject").value="";
+    document.getElementById("sup-sub").value="";
     document.getElementById("sup-msg").value="";
-    document.getElementById("sup-counter").textContent="0";
-    // Atualiza badge
-    updateTicketsBadge();
-  } else {
-    show("❌ Erro ao enviar. Verifique sua conexão com a internet.","status-err");
-  }
+    document.getElementById("sup-cnt").textContent="0";
+  }else{show("❌ Erro ao enviar. Verifique a conexão.","serr");}
 }
-
-// Contador de caracteres
-document.getElementById("sup-msg").addEventListener("input", function(){
-  document.getElementById("sup-counter").textContent = this.value.length;
+document.getElementById("sup-msg").addEventListener("input",function(){
+  document.getElementById("sup-cnt").textContent=this.value.length;
 });
 
-// ── MEUS TICKETS ─────────────────────────────────────────────────────────
-async function loadMyTickets(){
-  const container = document.getElementById("tickets-list");
-  container.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted);font-size:.82rem">⏳ Carregando...</div>`;
-
-  const local = JSON.parse(localStorage.getItem("my_tickets")||"[]");
-  if(!local.length){
-    container.innerHTML=`<div class="empty"><div class="empty-ico">📭</div>Nenhum ticket enviado ainda.</div>`;
-    return;
-  }
-
-  // Tenta buscar respostas da nuvem
-  let cloudTickets = {};
-  if(FIREBASE_BASE){
-    const raw = await fbGet("tickets");
-    if(raw && typeof raw==="object") cloudTickets = raw;
-  }
-
-  // Atualiza cache local com respostas da nuvem
-  const updated = local.map(t => {
-    if(cloudTickets[t.id]) return {...t, ...cloudTickets[t.id]};
-    return t;
-  });
-  localStorage.setItem("my_tickets", JSON.stringify(updated));
-
-  // Conta tickets com resposta (novos)
-  const answeredNow = updated.filter(t=>t.response).length;
-  updateTicketsBadge(answeredNow);
-
-  container.innerHTML = "";
-  for(const t of [...updated].reverse()){
-    const hasResp = t.response && t.response.trim();
-    const card = document.createElement("div");
-    card.className = "ticket-card " + (hasResp ? "answered" : "pending");
-    const subjectLabel = {bug:"🐛 Bug",duvida:"❓ Dúvida",sugestao:"💡 Sugestão",outro:"🔧 Outro"}[t.subject]||t.subject||"Suporte";
-    card.innerHTML = `
-      <div class="tc-head">
-        <span class="tc-id">#${t.id}</span>
-        <span class="tc-status" style="color:${hasResp?"#44ff88":"#ffaa44"}">${hasResp?"✅ Respondido":"⏳ Aguardando"}</span>
-      </div>
-      <div style="font-size:.72rem;color:var(--muted);margin-bottom:6px">${subjectLabel} • ${t.date}</div>
-      <div class="tc-msg">${escHtml(t.message)}</div>
-      ${hasResp ? `<div style="font-size:.72rem;color:#44ff88;margin-top:6px;margin-bottom:4px">💬 Resposta da equipe:</div><div class="tc-reply">${escHtml(t.response)}</div>` : `<div style="font-size:.72rem;color:var(--faint);margin-top:6px">A equipe ainda não respondeu. Verifique mais tarde.</div>`}
-    `;
-    container.appendChild(card);
+// ══ MEUS TICKETS ═════════════════════════════════════════
+async function loadTickets(){
+  const box=document.getElementById("tkt-list");
+  box.innerHTML=`<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Buscando...</div>`;
+  const local=JSON.parse(localStorage.getItem("my_tkt")||"[]");
+  if(!local.length){box.innerHTML=`<div class="empty"><div class="eico">📭</div>Nenhum ticket enviado ainda.</div>`;return;}
+  let cloud={};
+  const raw=await api("GET","tickets");
+  if(Array.isArray(raw))raw.forEach(t=>{cloud[t.id]=t;});
+  const upd=local.map(t=>cloud[t.id]?{...t,...cloud[t.id]}:t);
+  localStorage.setItem("my_tkt",JSON.stringify(upd));
+  badge("tkt",upd.filter(t=>t.response&&t.response.trim()).length||"");
+  box.innerHTML="";
+  const slbl={bug:"🐛 Bug",duvida:"❓ Dúvida",sugestao:"💡 Sugestão",outro:"🔧 Outro"};
+  for(const t of [...upd].reverse()){
+    const hasR=!!(t.response&&t.response.trim());
+    const c=document.createElement("div");c.className="tcard "+(hasR?"done":"pend");
+    c.innerHTML=`<div class="thead2">
+      <span class="tid">#${t.id}</span>
+      <span class="tstat" style="color:${hasR?"#44ff88":"#ffaa44"}">${hasR?"✅ Respondido":"⏳ Aguardando"}</span>
+    </div>
+    <div style="font-size:.7rem;color:var(--muted);margin-bottom:5px">${slbl[t.subject]||"Suporte"} • ${t.date}</div>
+    <div class="tmsg">${esc(t.message)}</div>
+    ${hasR?`<div style="font-size:.7rem;color:#44ff88;margin:5px 0 3px">💬 Resposta da equipe:</div>
+    <div class="treply">${esc(t.response)}</div>`
+    :`<div style="font-size:.7rem;color:var(--faint);margin-top:5px">Ainda sem resposta.</div>`}`;
+    box.appendChild(c);
   }
 }
 
-function updateTicketsBadge(count){
-  const badge = document.getElementById("badge-tickets");
-  if(count > 0){ badge.style.display="block"; badge.textContent=count; }
-  else badge.style.display="none";
-}
-
-// ── ANÚNCIOS ──────────────────────────────────────────────────────────────
-async function loadAnnouncements(){
-  const container = document.getElementById("anuncios-list");
-  container.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted);font-size:.82rem">⏳ Carregando...</div>`;
-
-  if(!FIREBASE_BASE){
-    container.innerHTML=`<div class="empty"><div class="empty-ico">📡</div>Configure o Firebase para ver os anúncios.</div>`;
-    return;
-  }
-
-  const raw = await fbGet("announcements");
-  let anns = raw && typeof raw==="object" ? Object.values(raw) : [];
-  anns.sort((a,b)=>b.date>a.date?1:-1);
-
-  document.getElementById("badge-anuncios").style.display="none";
-
-  if(!anns.length){
-    container.innerHTML=`<div class="empty"><div class="empty-ico">📢</div>Nenhum anúncio no momento.</div>`;
-    return;
-  }
-
-  container.innerHTML = "";
-  const typeClass = {info:"ann-info",aviso:"ann-aviso",update:"ann-update"};
-  const typeIcon  = {info:"ℹ️",aviso:"⚠️",update:"🆕"};
+// ══ ANÚNCIOS ═════════════════════════════════════════════
+async function loadAnn(){
+  const box=document.getElementById("ann-list");
+  box.innerHTML=`<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Carregando...</div>`;
+  if(!SRV){box.innerHTML=`<div class="empty"><div class="eico">📡</div>Configure o servidor para ver anúncios.</div>`;return;}
+  const raw=await api("GET","announcements");
+  const anns=Array.isArray(raw)?raw.sort((a,b)=>b.date>a.date?1:-1):[];
+  badge("ann","");
+  if(!anns.length){box.innerHTML=`<div class="empty"><div class="eico">📢</div>Nenhum anúncio.</div>`;return;}
+  box.innerHTML="";
+  const ico={info:"ℹ️",aviso:"⚠️",update:"🆕"};
   for(const a of anns){
-    const div = document.createElement("div");
-    div.className = "ann-card " + (typeClass[a.type]||"ann-info");
-    div.innerHTML = `
-      <div class="ann-title">${typeIcon[a.type]||"📢"} ${escHtml(a.title||"")}</div>
-      <div class="ann-msg">${escHtml(a.message||"")}</div>
-      <div class="ann-date">${a.date||""}</div>
-    `;
-    container.appendChild(div);
+    const d=document.createElement("div");d.className="acard "+(a.type||"info");
+    d.innerHTML=`<div class="atitle">${ico[a.type]||"📢"} ${esc(a.title||"")}</div>
+      <div class="amsg">${esc(a.message||"")}</div><div class="adate">${a.date||""}</div>`;
+    box.appendChild(d);
+  }
+}
+async function checkAnn(){
+  if(!SRV)return;
+  const raw=await api("GET","announcements");
+  if(Array.isArray(raw)&&raw.length){
+    document.getElementById("ann-banner").style.display="block";
+    badge("ann",raw.length);
   }
 }
 
-function escHtml(t){
-  return (t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");
-}
-
-// ── CHAT ──────────────────────────────────────────────────────────────────
-const SYS = `Você é um assistente profissional especializado exclusivamente no jogo "Floppa's Schoolhouse 2" da plataforma Roblox.
-NUNCA invente informações. Se não souber: "Não tenho essa informação sobre Floppa's Schoolhouse 2."
-Responda sempre em português do Brasil.
-OBJETIVO: Coletar 7 livros espalhados pelo mapa e encontrar a saída correta.
-TUTORIAL: O jogo começa com Baldi na entrada. Cada livro tem 3 questões. Errar UMA questão = só ela marcada errada. Errar TODAS = livro errado. Ao errar, cutscene do Baldi morrendo, Floppa aparece no fundo perto da diretoria e começa a perseguir.
-MECÂNICAS: Cada erro = Floppa mais rápido. 7 livros coletados = Floppa mais rápido. Stamina recupera ao pegar livro ou usar bebedouro. Saída errada vira parede.
-PERSONAGENS: Floppa (perseguidor principal, audição inteligente), Baldi (início, morre na cutscene, avisa sobre Swimming Doors), Carro vermelho (ativa após 2 livros, a cada 20s percorre o mapa, espera 10-12s), X9 (revela posição ao Floppa por 60s).
-ITENS: Fita Cassete (máquina cassete, Floppa persegue som por 60s).
-SALAS: Aula (livros, porta cinza), Carro (porta amarela "Supplies"), Cafeteria (possível saída), Corredores (bebedouros), Detenção, Funcionários ("School Faculty Only").
+// ══ CHAT ═════════════════════════════════════════════════
+const SYS=`Você é assistente especializado em "Floppa's Schoolhouse 2" (Roblox). NUNCA invente. Responda em português do Brasil.
+OBJETIVO: Coletar 7 livros e encontrar a saída correta. Saída errada vira parede.
+TUTORIAL: Jogo começa com Baldi na entrada. Cada livro tem 3 questões. Errar UMA = só ela marcada. Errar TODAS = livro errado. Ao errar = cutscene Baldi morre, Floppa persegue.
+MECÂNICAS: Cada erro = Floppa mais rápido. 7 livros = Floppa mais rápido. Stamina recupera ao pegar livro ou bebedouro.
+PERSONAGENS: Floppa(perseguidor,audição), Baldi(início,morre), Carro vermelho(após 2 livros,a cada 20s,espere 10-12s), X9(personagem que ao chegar ~10 metros do jogador revela a POSIÇÃO DO JOGADOR pro Floppa por 60s).
+ITENS: Fita Cassete — Floppa persegue o som por 60s.
+SALAS: Aula(livros,porta cinza), Supplies(carro,porta amarela), Cafeteria(saída), Corredores(bebedouros), Detenção, Funcionários.
 CURIOSIDADES: sons secretos não utilizados.
-BUG REPORT: quando tiver informação suficiente, inicie com 🐛BUG_REPORT: [resumo] e continue normalmente.`;
+BUG REPORT: após investigar, inicie com 🐛BUG_REPORT: [resumo] e continue.`;
 
-let chatHistory = [];
-const chatEl = document.getElementById("chat");
-const chatInput = document.getElementById("chat-input");
+let hist=[];
+const chatEl=document.getElementById("chat"),ci=document.getElementById("cinput");
 
-function addMsg(role, text){
-  const row = document.createElement("div");
-  row.className = `msg-row ${role}`;
-  const bubble = document.createElement("div");
-  bubble.className = `bubble ${role}`;
-  if(role==="user")      bubble.innerHTML = `<div class="lbl">Você</div>${renderMd(text)}`;
-  else if(role==="ai")   bubble.innerHTML = `<div class="lbl">FloppaAI 🐱</div>${renderMd(text)}`;
-  else                   bubble.innerHTML = escHtml(text);
-  row.appendChild(bubble); chatEl.appendChild(row);
-  chatEl.scrollTop = chatEl.scrollHeight;
-  return row;
+function addMsg(role,text){
+  const row=document.createElement("div");row.className="mrow "+role;
+  const b=document.createElement("div");b.className="bub "+role;
+  if(role==="user")b.innerHTML=`<div class="lbl">Você</div>${md(text)}`;
+  else if(role==="ai")b.innerHTML=`<div class="lbl">FloppaAI 🐱</div>${md(text)}`;
+  else b.innerHTML=esc(text);
+  row.appendChild(b);chatEl.appendChild(row);chatEl.scrollTop=chatEl.scrollHeight;
 }
 function addTyping(){
-  const row=document.createElement("div"); row.className="msg-row ai"; row.id="typing-row";
-  const b=document.createElement("div"); b.className="bubble ai";
-  b.innerHTML='<div class="lbl">FloppaAI 🐱</div><div class="typing-dots"><span></span><span></span><span></span></div>';
-  row.appendChild(b); chatEl.appendChild(row); chatEl.scrollTop=chatEl.scrollHeight;
+  const row=document.createElement("div");row.className="mrow ai";row.id="typ";
+  const b=document.createElement("div");b.className="bub ai";
+  b.innerHTML='<div class="lbl">FloppaAI 🐱</div><div class="dots"><span></span><span></span><span></span></div>';
+  row.appendChild(b);chatEl.appendChild(row);chatEl.scrollTop=chatEl.scrollHeight;
 }
-function rmTyping(){const t=document.getElementById("typing-row");if(t)t.remove();}
-
-function renderMd(t){
-  return escHtml(t).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");
-}
+function rmTyping(){const t=document.getElementById("typ");if(t)t.remove();}
 
 async function sendChat(){
-  const text = chatInput.value.trim(); if(!text) return;
-  chatInput.value = ""; document.getElementById("chat-send").disabled=true;
-  addMsg("user", text); chatHistory.push({role:"user",content:text});
-  addTyping();
+  const text=ci.value.trim();if(!text)return;
+  ci.value="";document.getElementById("csend").disabled=true;
+  addMsg("user",text);hist.push({role:"user",content:text});addTyping();
   try{
-    const msgs=[{role:"system",content:SYS},...chatHistory.slice(-14)];
     const r=await fetch(GROQ_URL,{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+GROQ_KEY},
-      body:JSON.stringify({model:MODEL,messages:msgs,max_tokens:900,temperature:.3})});
+      body:JSON.stringify({model:"llama-3.1-8b-instant",
+        messages:[{role:"system",content:SYS},...hist.slice(-14)],
+        max_tokens:900,temperature:.3})});
     const d=await r.json();
-    if(!r.ok) throw new Error(d.error?.message||"Erro API");
+    if(!r.ok)throw new Error(d.error?.message||"Erro API");
     let reply=d.choices[0].message.content;
-    // Detecta bug report
     if(reply.startsWith("🐛BUG_REPORT:")){
-      const lines=reply.split("\n"); const summary=lines[0].replace("🐛BUG_REPORT:","").trim();
-      reply=lines.slice(1).join("\n").trim();
-      if(FIREBASE_BASE) fbPut(`bugs/${genId()}`,{
-        id:genId(),date:nowStr(),summary,response:"",status:"pendente",platform:"mobile"});
+      const[l,...rest]=reply.split("\n");
+      const summary=l.replace("🐛BUG_REPORT:","").trim();
+      reply=rest.join("\n").trim();
+      if(SRV)api("POST","bugs",{id:genId(),date:nowStr(),summary,response:"",status:"pendente",platform:"mobile"});
     }
-    chatHistory.push({role:"assistant",content:reply});
-    rmTyping(); addMsg("ai",reply);
+    hist.push({role:"assistant",content:reply});rmTyping();addMsg("ai",reply);
   }catch(e){rmTyping();addMsg("ai","⚠️ Erro: "+e.message);}
-  document.getElementById("chat-send").disabled=false;
+  document.getElementById("csend").disabled=false;
 }
+function qa(p){ci.value=p;sendChat();}
+ci.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey)sendChat();});
 
-function qa(p){ chatInput.value=p; sendChat(); }
-chatInput.addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey) sendChat(); });
-
-// ── CHECK ANÚNCIOS NA INICIALIZAÇÃO ───────────────────────────────────────
-async function checkAnnouncements(){
-  if(!FIREBASE_BASE) return;
-  const raw = await fbGet("announcements");
-  if(!raw || typeof raw!=="object") return;
-  const anns = Object.values(raw);
-  if(anns.length > 0){
-    document.getElementById("announce-banner").style.display="block";
-    document.getElementById("badge-anuncios").style.display="block";
-    document.getElementById("badge-anuncios").textContent=anns.length;
-  }
-}
-
-// ── INIT ──────────────────────────────────────────────────────────────────
+// ══ INIT ═════════════════════════════════════════════════
 function onReady(){
-  addMsg("system","👋 Olá! Sou o FloppaAI.\nPergunta sobre Floppa's Schoolhouse 2 ou use a aba Suporte para abrir um ticket!");
-  checkAnnouncements();
-  // Verifica respostas pendentes
-  const local = JSON.parse(localStorage.getItem("my_tickets")||"[]");
-  if(local.length) updateTicketsBadge();
+  addMsg("sys","👋 Olá! Sou o FloppaAI — assistente de Floppa's Schoolhouse 2.\nUse o Chat para perguntas ou a aba 🎧 Suporte para abrir um ticket!");
+  checkAnn();
 }
-
-// ── PWA INSTALL ───────────────────────────────────────────────────────────
-let deferredInstall=null;
-window.addEventListener("beforeinstallprompt",e=>{
-  e.preventDefault(); deferredInstall=e;
-  // Mostra botão de instalar discretamente
-});
-
-function openUpdate(){ alert("Nova versão disponível! Atualize o arquivo HTML."); }
 
 checkSetup();
 </script>

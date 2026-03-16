@@ -13,46 +13,33 @@
   --bg:#0d0d0d;--bg2:#111;--bg3:#1a1a1a;
   --red:#ff2200;--red2:#cc1100;--red3:#2a0000;
   --blue:#0088ff;--blue2:#003a7a;
-  --green:#00cc66;--green2:#003300;
+  --green:#00cc66;
   --orange:#ff8844;--yellow:#ffcc44;
   --text:#e0e0e0;--muted:#888;--faint:#444;
   --radius:16px;--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)
 }
 html,body{height:100%;overflow:hidden}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
-/* SETUP */
-#setup{position:fixed;inset:0;background:#050505;z-index:999;display:none;align-items:center;justify-content:center;padding:20px;flex-direction:column}
-.sbox{background:#111;border-radius:20px;padding:22px;width:100%;max-width:370px}
-.sbox h2{font-size:1.05rem;font-weight:700;color:var(--orange);text-align:center;margin-bottom:6px}
-.sbox p{font-size:.76rem;color:var(--muted);text-align:center;line-height:1.5;margin-bottom:14px}
-.sstep{background:#1a1a1a;border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:.74rem;color:var(--muted);line-height:1.7}
-.sstep b{color:var(--text)}
-#setup-err{font-size:.74rem;color:#ff6666;text-align:center;margin-top:5px;display:none}
-/* HEADER */
-#header{background:linear-gradient(135deg,#1a0000,#2a0000);border-bottom:1px solid #ff220022;padding:calc(var(--st) + 10px) 14px 10px;display:flex;align-items:center;gap:10px;flex-shrink:0}
-.avatar{width:36px;height:36px;background:linear-gradient(135deg,var(--red),var(--red2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 0 10px #ff220044}
+#header{background:linear-gradient(135deg,#1a0000,#2a0000);border-bottom:1px solid #ff220022;padding:calc(var(--st)+10px) 14px 10px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.avatar{width:36px;height:36px;background:linear-gradient(135deg,var(--red),var(--red2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .hinfo{flex:1}.hinfo h1{font-size:.9rem;font-weight:700}.hinfo p{font-size:.63rem;color:var(--orange)}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 #cfg-btn{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:4px}
-/* BANNERS */
 .banner{display:none;padding:6px 14px;font-size:.74rem;text-align:center;flex-shrink:0;cursor:pointer}
 #ann-banner{background:#001a33;border-bottom:1px solid #0088ff44;color:#66aaff}
-/* TABBAR */
 #tabbar{display:flex;background:var(--bg2);border-bottom:1px solid #1e1e1e;flex-shrink:0}
-.tab{flex:1;padding:9px 4px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.58rem;color:var(--faint);cursor:pointer;border-bottom:2px solid transparent;transition:.15s;user-select:none;position:relative;white-space:nowrap}
-.tab span.ico{font-size:1.1rem}
+.tab{flex:1;padding:9px 4px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.58rem;color:var(--faint);cursor:pointer;border-bottom:2px solid transparent;transition:.15s;user-select:none;position:relative}
+.tab .ico{font-size:1.1rem}
 .tab.active{color:var(--orange);border-bottom-color:var(--red)}
 .tbadge{position:absolute;top:5px;right:10px;background:var(--red);color:#fff;font-size:.52rem;border-radius:8px;padding:1px 5px;display:none}
-/* PAGES */
 .page{display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0}
 .page.active{display:flex}
 .pscroll{flex:1;overflow-y:auto;padding:14px 14px calc(var(--sb)+14px)}
-/* CHAT */
 .qabar{display:flex;gap:6px;overflow-x:auto;padding:6px 10px;flex-shrink:0;background:#0a0a0a;border-bottom:1px solid #1a1a1a;scrollbar-width:none}
 .qabar::-webkit-scrollbar{display:none}
 .qabtn{background:var(--red3);border:1px solid #ff220033;border-radius:16px;color:#ffaa88;font-size:.68rem;padding:5px 10px;white-space:nowrap;cursor:pointer;flex-shrink:0}
-.qabtn:active{background:#3a0a00;transform:scale(.97)}
+.qabtn:active{transform:scale(.97)}
 #chat{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:5px}
 .mrow{display:flex;width:100%}
 .mrow.user{justify-content:flex-end}
@@ -69,11 +56,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
 @keyframes bo{0%,80%,100%{transform:scale(.7)}40%{transform:scale(1.15)}}
 #chat-ft{background:var(--bg2);border-top:1px solid #1e1e1e;padding:8px 10px calc(var(--sb)+8px);display:flex;gap:6px;flex-shrink:0}
-#cinput{flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:22px;padding:10px 16px;color:var(--text);font-size:.84rem;outline:none}
+#cinput{flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:22px;padding:10px 16px;color:var(--text);font-size:.84rem;outline:none;font-family:inherit}
 #cinput:focus{border-color:var(--red)}
 #csend{background:var(--red);border:none;border-radius:50%;width:44px;height:44px;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0}
 #csend:active{transform:scale(.9)}
-/* FORMS */
 .card{background:var(--bg2);border-radius:14px;padding:14px;margin-bottom:12px}
 .ctitle{font-size:.86rem;font-weight:700;margin-bottom:8px}
 .flbl{font-size:.7rem;color:var(--muted);display:block;margin-bottom:4px;margin-top:10px}
@@ -83,10 +69,8 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
 .btn{width:100%;padding:13px;border:none;border-radius:12px;font-size:.86rem;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit;transition:.12s}
 .btn:active{transform:scale(.98)}
 .btn-blue{background:var(--blue2);color:#fff}
-.btn-ghost{background:transparent;color:var(--faint);font-size:.76rem;margin-top:4px;border:1px solid #2a2a2a}
 .smsg{font-size:.76rem;text-align:center;padding:8px;border-radius:8px;margin-top:8px;display:none}
 .sok{background:#003300;color:var(--green)}.serr{background:#330000;color:#ff6666}.swarn{background:#332200;color:var(--yellow)}
-/* TICKETS */
 .tcard{background:var(--bg3);border-radius:12px;padding:12px;margin-bottom:10px;border-left:3px solid var(--faint)}
 .tcard.pend{border-left-color:var(--orange)}.tcard.done{border-left-color:var(--green)}
 .thead2{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
@@ -94,42 +78,44 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
 .tstat{font-size:.68rem;font-weight:700}
 .tmsg{font-size:.78rem;color:var(--muted);background:#1a1a1a;border-radius:8px;padding:8px;word-break:break-word;margin-bottom:5px}
 .treply{font-size:.8rem;color:#88ff88;background:#0a1a0a;border-radius:8px;padding:8px;word-break:break-word;margin-top:6px}
-/* ANN */
 .acard{border-radius:12px;padding:14px;margin-bottom:10px}
 .acard.info{background:#001a33}.acard.aviso{background:#2a1a00}.acard.update{background:#002200}
 .atitle{font-size:.88rem;font-weight:700;margin-bottom:4px}
 .amsg{font-size:.78rem;color:var(--muted);line-height:1.5}
 .adate{font-size:.62rem;color:var(--faint);margin-top:5px}
-/* MISC */
 .empty{text-align:center;padding:36px 20px;color:var(--faint);font-size:.82rem}
 .eico{font-size:2.4rem;margin-bottom:10px}
 .rbtn{background:none;border:1px solid #2a2a2a;border-radius:10px;padding:6px 14px;color:var(--muted);font-size:.72rem;cursor:pointer;margin-bottom:12px;font-family:inherit}
 .stitle{font-size:.76rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px}
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:20px;font-size:.78rem;z-index:9999;pointer-events:none;animation:fi .3s ease;white-space:nowrap}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:20px;font-size:.78rem;z-index:9999;pointer-events:none;animation:fi .3s ease;white-space:nowrap;max-width:90vw}
 .toast-ok{background:#003300;color:var(--green)}.toast-info{background:#001a33;color:#66aaff}.toast-err{background:#330000;color:#ff6666}
+/* DEBUG CONSOLE */
+#dbg-btn{position:fixed;bottom:12px;right:12px;width:36px;height:36px;border-radius:50%;background:#1a1a1a;border:1px solid #333;color:var(--faint);font-size:.7rem;cursor:pointer;z-index:8000;display:flex;align-items:center;justify-content:center}
+#dbg-panel{position:fixed;inset:0;background:#050505ee;z-index:8500;display:none;flex-direction:column}
+#dbg-header{background:#111;border-bottom:1px solid #222;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+#dbg-header span{flex:1;font-size:.85rem;font-weight:700;color:#ff8844}
+#dbg-clear{background:#2a0000;border:none;color:#ff6666;font-size:.7rem;padding:4px 10px;border-radius:6px;cursor:pointer}
+#dbg-close{background:#1a1a1a;border:none;color:var(--muted);font-size:.9rem;padding:4px 10px;border-radius:6px;cursor:pointer}
+#dbg-log{flex:1;overflow-y:auto;padding:10px;font-family:monospace;font-size:.72rem;display:flex;flex-direction:column;gap:3px}
+.dlog-err{color:#ff6666;background:#1a0000;padding:4px 8px;border-radius:4px;border-left:3px solid #ff2200}
+.dlog-warn{color:#ffcc44;background:#1a1400;padding:4px 8px;border-radius:4px;border-left:3px solid #ffaa00}
+.dlog-info{color:#44aaff;background:#001a33;padding:4px 8px;border-radius:4px;border-left:3px solid #0088ff}
+.dlog-ok{color:#44ff88;background:#001a00;padding:4px 8px;border-radius:4px;border-left:3px solid #00cc66}
+.dlog-log{color:#888;padding:4px 8px;border-radius:4px}
+.dlog-time{color:#444;margin-right:6px;font-size:.65rem}
 </style>
 </head>
 <body>
-<!-- SETUP -->
-<div id="setup">
-  <div class="sbox">
-    <div style="font-size:2.4rem;text-align:center;margin-bottom:10px">🔥</div>
-    <h2>Configurar FloppaAI</h2>
-    <p>Configure o Supabase para tickets e anúncios funcionarem em qualquer lugar, sem servidor local.</p>
-    <div class="sstep">
-      <b>1.</b> Acesse <b style="color:#44aaff">supabase.com</b> e crie uma conta grátis<br>
-      <b>2.</b> Crie um projeto novo<br>
-      <b>3.</b> Vá em <b>Settings → API</b><br>
-      <b>4.</b> Copie a <b>Project URL</b> e a <b>anon key</b>
-    </div>
-    <label class="flbl" style="margin-top:12px">Project URL:</label>
-    <input id="setup-url" class="finp" type="url" placeholder="https://xxxx.supabase.co" autocomplete="off">
-    <label class="flbl">Anon Key:</label>
-    <input id="setup-key" class="finp" type="text" placeholder="eyJhbGciOiJ..." autocomplete="off">
-    <div id="setup-err">❌ Preencha a URL e a chave corretamente.</div>
-    <button class="btn btn-blue" onclick="saveSetup()" style="margin-top:12px">✅ Salvar e Entrar</button>
-    <button class="btn btn-ghost" onclick="skipSetup()">Usar só o chat por enquanto</button>
+
+<!-- DEBUG CONSOLE -->
+<button id="dbg-btn" onclick="toggleDbg()">🐛</button>
+<div id="dbg-panel">
+  <div id="dbg-header">
+    <span>🐛 Console Debug</span>
+    <button id="dbg-clear" onclick="clearDbg()">Limpar</button>
+    <button id="dbg-close" onclick="toggleDbg()">✕ Fechar</button>
   </div>
+  <div id="dbg-log"></div>
 </div>
 
 <!-- BANNER -->
@@ -147,7 +133,7 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
 <div id="tabbar">
   <div class="tab active" id="tab-chat" onclick="showTab('chat')"><span class="ico">🐱</span><span>Chat</span></div>
   <div class="tab" id="tab-sup" onclick="showTab('sup')"><span class="ico">🎧</span><span>Suporte</span></div>
-  <div class="tab" id="tab-tkt" onclick="showTab('tkt')"><span class="ico">📋</span><span>Meus Tickets</span><span class="tbadge" id="b-tkt"></span></div>
+  <div class="tab" id="tab-tkt" onclick="showTab('tkt')"><span class="ico">📋</span><span>Tickets</span><span class="tbadge" id="b-tkt"></span></div>
   <div class="tab" id="tab-ann" onclick="showTab('ann')"><span class="ico">📢</span><span>Novidades</span><span class="tbadge" id="b-ann"></span></div>
 </div>
 
@@ -175,8 +161,7 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
 <div class="page" id="page-sup">
   <div class="pscroll">
     <div class="card">
-      <div class="ctitle">🎧 Abrir Ticket de Suporte</div>
-      <p style="font-size:.76rem;color:var(--muted);line-height:1.5">Envie um ticket e a equipe responderá. Veja a resposta em <b>Meus Tickets</b>.</p>
+      <div class="ctitle">🎧 Abrir Ticket</div>
       <label class="flbl">Seu nome (Roblox):</label>
       <input id="sup-name" class="finp" type="text" placeholder="Ex: NomeRoblox123" maxlength="40">
       <label class="flbl">Assunto:</label>
@@ -193,15 +178,6 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
       <div id="sup-st" class="smsg"></div>
       <button class="btn btn-blue" id="sup-btn" onclick="sendTicket()">📨 Enviar Ticket</button>
     </div>
-    <div class="card" style="background:#001a0a">
-      <div class="ctitle" style="color:#44ff88">⚡ Dúvidas Rápidas</div>
-      <div style="display:flex;flex-wrap:wrap;gap:5px">
-        <span class="qabtn" onclick="showTab('chat');qa('Como coletar livros?')">Coletar livros?</span>
-        <span class="qabtn" onclick="showTab('chat');qa('Como fugir do Floppa?')">Fugir do Floppa?</span>
-        <span class="qabtn" onclick="showTab('chat');qa('Como usar a fita cassete?')">Fita cassete?</span>
-        <span class="qabtn" onclick="showTab('chat');qa('Qual é a saída correta?')">Saída correta?</span>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -209,7 +185,7 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
 <div class="page" id="page-tkt">
   <div class="pscroll">
     <button class="rbtn" onclick="loadTickets()">🔄 Atualizar respostas</button>
-    <div class="stitle">Seus Tickets Enviados</div>
+    <div class="stitle">Seus Tickets</div>
     <div id="tkt-list"><div class="empty"><div class="eico">📭</div>Nenhum ticket ainda.</div></div>
   </div>
 </div>
@@ -219,229 +195,296 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
   <div class="pscroll">
     <button class="rbtn" onclick="loadAnn()">🔄 Atualizar</button>
     <div class="stitle">Novidades & Anúncios</div>
-    <div id="ann-list"><div class="empty"><div class="eico">📢</div>Nenhum anúncio no momento.</div></div>
+    <div id="ann-list"><div class="empty"><div class="eico">📢</div>Nenhum anúncio.</div></div>
   </div>
 </div>
+
 <script>
-const GROQ_KEY="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";
-const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
-const SB_URL="https://gxjmolabyaiuuwvioyuw.supabase.co";
-const SB_KEY="sb_publishable_nLx32tzEkLUyXe3J4YfHKg_apSpDoI0";
+// ══ CONFIG ════════════════════════════════════════════════
+const GROQ_KEY = "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";
+const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+const SB_URL   = "https://gxjmolabyaiuuwvioyuw.supabase.co";
+const SB_KEY   = "sb_publishable_nLx32tzEkLUyXe3J4YfHKg_apSpDoI0";
 
-// ══ SUPABASE API ══════════════════════════════════════════
-async function sb(method, table, body, filter=""){
-  try{
-    const isGet = method==="GET";
-    const headers = {
-      "Content-Type": "application/json",
-      "apikey": SB_KEY,
-      "Authorization": "Bearer "+SB_KEY
+// ══ DEBUG CONSOLE ═════════════════════════════════════════
+var dbgOpen = false;
+function dbg(type, msg) {
+  var log = document.getElementById("dbg-log");
+  if (!log) return;
+  var d = document.createElement("div");
+  d.className = "dlog-" + type;
+  var t = new Date().toTimeString().slice(0,8);
+  d.innerHTML = '<span class="dlog-time">' + t + '</span>' + String(msg).replace(/</g,"&lt;");
+  log.appendChild(d);
+  log.scrollTop = log.scrollHeight;
+}
+function toggleDbg() {
+  dbgOpen = !dbgOpen;
+  document.getElementById("dbg-panel").style.display = dbgOpen ? "flex" : "none";
+}
+function clearDbg() {
+  document.getElementById("dbg-log").innerHTML = "";
+}
+// Intercepta console.error, console.warn, console.log
+var _ce = console.error, _cw = console.warn, _cl = console.log;
+console.error = function() { _ce.apply(console,arguments); dbg("err", Array.from(arguments).join(" ")); };
+console.warn  = function() { _cw.apply(console,arguments); dbg("warn",Array.from(arguments).join(" ")); };
+console.log   = function() { _cl.apply(console,arguments); dbg("log", Array.from(arguments).join(" ")); };
+window.onerror = function(msg, src, line) {
+  dbg("err", "JS ERROR: " + msg + " (linha " + line + ")");
+  return false;
+};
+window.onunhandledrejection = function(e) {
+  dbg("err", "Promise rejected: " + (e.reason || e));
+};
+
+// ══ SUPABASE ══════════════════════════════════════════════
+async function sb(method, table, body, filter) {
+  filter = filter || "";
+  try {
+    var headers = {
+      "Content-Type":  "application/json",
+      "apikey":        SB_KEY,
+      "Authorization": "Bearer " + SB_KEY
     };
-    // Prefer: return=representation apenas para PATCH/POST (não para GET)
-    if(!isGet) headers["Prefer"] = "return=representation";
-
-    const opts = {method, headers};
-    if(body) opts.body = JSON.stringify(body);
-
-    const r = await fetch(`${SB_URL}/rest/v1/${table}${filter}`, opts);
-    if(!r.ok){
-      console.error("Supabase erro", method, table, r.status, await r.text());
+    if (method !== "GET") headers["Prefer"] = "return=representation";
+    var opts = { method: method, headers: headers };
+    if (body) opts.body = JSON.stringify(body);
+    var url = SB_URL + "/rest/v1/" + table + filter;
+    dbg("info", "SB " + method + " " + table + filter);
+    var r = await fetch(url, opts);
+    if (!r.ok) {
+      var txt = await r.text();
+      dbg("err", "SB " + r.status + " " + table + ": " + txt);
       return null;
     }
-    if(isGet) return r.json();
-    // PATCH/DELETE retorna 200 com dados ou 204 sem
-    if(r.status===204) return true;
-    return r.json().catch(()=>true);
-  }catch(e){
-    console.error("Supabase exception", e);
+    if (method === "GET") { var data = await r.json(); dbg("ok","SB GET " + table + " ok, " + (Array.isArray(data)?data.length+" items":"ok")); return data; }
+    if (r.status === 204) { dbg("ok","SB " + method + " " + table + " 204 ok"); return true; }
+    return r.json().catch(function() { return true; });
+  } catch(e) {
+    dbg("err", "SB exception " + table + ": " + e.message);
     return null;
   }
 }
 
-// ══ SETUP (credenciais hardcoded, sem tela de config) ════
-function checkSetup(){
-  document.getElementById("setup").style.display="none";
-  onReady();
+// ══ UTILS ═════════════════════════════════════════════════
+function genId() {
+  var d = new Date();
+  var dt = d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDate());
+  var rnd = Math.random().toString(36).slice(2,6).toUpperCase();
+  return "TKT-" + dt + "-" + rnd;
 }
-function openConfig(){
-  toast("✅ Supabase configurado automaticamente!","toast-ok");
+function pad(n) { return String(n).padStart(2,"0"); }
+function nowStr() {
+  var d = new Date();
+  return pad(d.getDate())+"/"+pad(d.getMonth()+1)+"/"+d.getFullYear()+" "+pad(d.getHours())+":"+pad(d.getMinutes());
 }
-
-// ══ UTILS ════════════════════════════════════════════════
-// Código único legível: TKT-YYYYMMDD-XXXX (ex: TKT-20260316-A3F9)
-function genId(){
-  const d=new Date();
-  const dt=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
-  const rnd=Math.random().toString(36).slice(2,6).toUpperCase();
-  return `TKT-${dt}-${rnd}`;
+function esc(t) {
+  return (t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");
 }
-function nowStr(){const d=new Date(),p=n=>String(n).padStart(2,"0");return`${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;}
-function esc(t){return(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");}
-function md(t){return esc(t).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");}
-function badge(id,v){const b=document.getElementById("b-"+id);b.style.display=v?"block":"none";b.textContent=v;}
-function toast(msg,cls){const t=document.createElement("div");t.className="toast "+(cls||"toast-ok");t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3000);}
-function showTab(name){
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+function md(t) {
+  return esc(t).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");
+}
+function badge(id, v) {
+  var b = document.getElementById("b-"+id);
+  b.style.display = v ? "block" : "none";
+  b.textContent = v;
+}
+function toast(msg, cls) {
+  var t = document.createElement("div");
+  t.className = "toast " + (cls||"toast-ok");
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function(){ t.remove(); }, 3000);
+}
+function showTab(name) {
+  document.querySelectorAll(".page").forEach(function(p){ p.classList.remove("active"); });
+  document.querySelectorAll(".tab").forEach(function(b){ b.classList.remove("active"); });
   document.getElementById("page-"+name).classList.add("active");
   document.getElementById("tab-"+name).classList.add("active");
-  if(name==="tkt")loadTickets();if(name==="ann")loadAnn();
+  if (name === "tkt") loadTickets();
+  if (name === "ann") loadAnn();
 }
-const BAD=["porra","caralho","merda","viado","fdp","vsf","fuck","shit","bitch","idiota"];
-function checkSpam(name){
-  const log=JSON.parse(localStorage.getItem("fai_sp")||"[]"),now=Date.now(),win=600000;
-  if(log.filter(e=>e.n===name.toLowerCase()&&now-e.t<win).length>=3)return false;
-  log.push({n:name.toLowerCase(),t:now});localStorage.setItem("fai_sp",JSON.stringify(log.filter(e=>now-e.t<win*2)));return true;
+function openConfig() {
+  toast("✅ Supabase configurado automaticamente!", "toast-ok");
 }
 
-// ══ TICKET ═══════════════════════════════════════════════
-async function sendTicket(){
-  const name=document.getElementById("sup-name").value.trim();
-  const sub=document.getElementById("sup-sub").value;
-  const msg=document.getElementById("sup-msg").value.trim();
-  const st=document.getElementById("sup-st"),btn=document.getElementById("sup-btn");
-  const show=(t,c)=>{st.textContent=t;st.className="smsg "+c;st.style.display="block";};
-  if(!name){show("⚠️ Informe seu nome.","swarn");return;}
-  if(!sub){show("⚠️ Selecione o assunto.","swarn");return;}
-  if(msg.length<10){show("⚠️ Mensagem muito curta.","swarn");return;}
-  if(!checkSpam(name)){show("🚫 Aguarde 10 minutos.","serr");return;}
-  if(BAD.some(w=>msg.toLowerCase().includes(w))){show("❌ Conteúdo impróprio.","serr");return;}
-  btn.disabled=true;btn.textContent="⏳ Enviando...";show("Enviando...","swarn");
-  const tkt={id:genId(),date:nowStr(),name,subject:sub,message:msg,response:"",platform:"mobile"};
-  const local=JSON.parse(localStorage.getItem("my_tkt")||"[]");
-  local.push(tkt);localStorage.setItem("my_tkt",JSON.stringify(local));
-  const ok=await sb("POST","tickets",tkt);
-  btn.disabled=false;btn.textContent="📨 Enviar Ticket";
-  if(ok!==false){
-    show("✅ Ticket enviado! Veja a resposta em Meus Tickets.","sok");
-    document.getElementById("sup-name").value="";document.getElementById("sup-sub").value="";
-    document.getElementById("sup-msg").value="";document.getElementById("sup-cnt").textContent="0";
-  }else show("❌ Erro ao enviar. Verifique a conexão.","serr");
+// ══ SPAM ══════════════════════════════════════════════════
+var BAD = ["porra","caralho","merda","viado","fdp","vsf","fuck","shit","bitch"];
+function checkSpam(name) {
+  var log = JSON.parse(localStorage.getItem("fai_sp")||"[]"), now = Date.now(), win = 600000;
+  if (log.filter(function(e){ return e.n===name.toLowerCase() && now-e.t<win; }).length >= 3) return false;
+  log.push({n:name.toLowerCase(),t:now});
+  localStorage.setItem("fai_sp", JSON.stringify(log.filter(function(e){ return now-e.t<win*2; })));
+  return true;
 }
-document.getElementById("sup-msg").addEventListener("input",function(){document.getElementById("sup-cnt").textContent=this.value.length;});
 
-async function loadTickets(){
-  const box=document.getElementById("tkt-list");
-  box.innerHTML=`<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Buscando respostas...</div>`;
-  const local=JSON.parse(localStorage.getItem("my_tkt")||"[]");
-  if(!local.length){box.innerHTML=`<div class="empty"><div class="eico">📭</div>Nenhum ticket enviado ainda.</div>`;return;}
+// ══ TICKET ════════════════════════════════════════════════
+document.getElementById("sup-msg").addEventListener("input", function(){
+  document.getElementById("sup-cnt").textContent = this.value.length;
+});
 
-  // Busca respostas atualizadas do Supabase para cada ticket local
-  const ids=local.map(t=>t.id).join(","); // sem aspas — PostgREST aceita assim
-  const raw=await sb("GET","tickets",null,`?id=in.(${ids})&select=id,response`);
-  let cloud={};
-  if(Array.isArray(raw)) raw.forEach(t=>{cloud[t.id]=t;});
-
-  // Atualiza local com resposta da nuvem
-  const upd=local.map(t=>cloud[t.id]?{...t,response:cloud[t.id].response||""}:t);
-  localStorage.setItem("my_tkt",JSON.stringify(upd));
-
-  const respondidos=upd.filter(t=>t.response&&t.response.trim()).length;
-  badge("tkt",respondidos||"");
-  box.innerHTML="";
-  const slbl={bug:"🐛 Bug",duvida:"❓ Dúvida",sugestao:"💡 Sugestão",outro:"🔧 Outro"};
-  for(const t of [...upd].reverse()){
-    const hasR=!!(t.response&&t.response.trim());
-    const c=document.createElement("div");c.className="tcard "+(hasR?"done":"pend");
-    c.innerHTML=`<div class="thead2">
-      <span class="tid">🎫 ${t.id}</span>
-      <span class="tstat" style="color:${hasR?"#44ff88":"#ffaa44"}">${hasR?"✅ Respondido":"⏳ Aguardando"}</span>
-    </div>
-    <div style="font-size:.7rem;color:var(--muted);margin-bottom:5px">${slbl[t.subject]||"Suporte"} • ${t.date}</div>
-    <div class="tmsg">${esc(t.message)}</div>
-    ${hasR
-      ?`<div style="font-size:.7rem;color:#44ff88;margin:5px 0 3px">💬 Resposta da equipe:</div><div class="treply">${esc(t.response)}</div>`
-      :`<div style="font-size:.7rem;color:var(--faint);margin-top:5px">Ainda sem resposta. Toque em 🔄 para verificar.</div>`}`;
-    box.appendChild(c);
-  }
-}
-    ${hasR?`<div style="font-size:.7rem;color:#44ff88;margin:5px 0 3px">💬 Resposta:</div><div class="treply">${esc(t.response)}</div>`
-    :`<div style="font-size:.7rem;color:var(--faint);margin-top:5px">Ainda sem resposta.</div>`}`;
-    box.appendChild(c);
+async function sendTicket() {
+  var name = document.getElementById("sup-name").value.trim();
+  var sub  = document.getElementById("sup-sub").value;
+  var msg  = document.getElementById("sup-msg").value.trim();
+  var st   = document.getElementById("sup-st");
+  var btn  = document.getElementById("sup-btn");
+  function show(t,c){ st.textContent=t; st.className="smsg "+c; st.style.display="block"; }
+  if (!name)        { show("⚠️ Informe seu nome.","swarn"); return; }
+  if (!sub)         { show("⚠️ Selecione o assunto.","swarn"); return; }
+  if (msg.length<10){ show("⚠️ Mensagem muito curta.","swarn"); return; }
+  if (!checkSpam(name))  { show("🚫 Aguarde 10 minutos.","serr"); return; }
+  if (BAD.some(function(w){ return msg.toLowerCase().includes(w); })) { show("❌ Conteúdo impróprio.","serr"); return; }
+  btn.disabled = true; btn.textContent = "⏳ Enviando..."; show("Enviando...","swarn");
+  var tkt = { id:genId(), date:nowStr(), name:name, subject:sub, message:msg, response:"", platform:"mobile" };
+  var local = JSON.parse(localStorage.getItem("my_tkt")||"[]");
+  local.push(tkt);
+  localStorage.setItem("my_tkt", JSON.stringify(local));
+  var ok = await sb("POST", "tickets", tkt);
+  btn.disabled = false; btn.textContent = "📨 Enviar Ticket";
+  if (ok !== null) {
+    show("✅ Ticket " + tkt.id + " enviado!", "sok");
+    document.getElementById("sup-name").value = "";
+    document.getElementById("sup-sub").value  = "";
+    document.getElementById("sup-msg").value  = "";
+    document.getElementById("sup-cnt").textContent = "0";
+    dbg("ok","Ticket enviado: " + tkt.id);
+  } else {
+    show("❌ Erro ao enviar. Veja o console 🐛","serr");
   }
 }
 
-// ══ ANÚNCIOS ═════════════════════════════════════════════
-async function loadAnn(){
-  const box=document.getElementById("ann-list");
-  box.innerHTML=`<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Carregando...</div>`;
-  if(!SB_URL||!SB_KEY){box.innerHTML=`<div class="empty"><div class="eico">📡</div>Configure o Supabase para ver anúncios.</div>`;return;}
-  const raw=await sb("GET","announcements",null,"?select=*&order=id.desc");
-  const anns=Array.isArray(raw)?raw:[];
-  badge("ann","");
-  if(!anns.length){box.innerHTML=`<div class="empty"><div class="eico">📢</div>Nenhum anúncio.</div>`;return;}
-  box.innerHTML="";
-  const ico={info:"ℹ️",aviso:"⚠️",update:"🆕"};
-  for(const a of anns){
-    const d=document.createElement("div");d.className="acard "+(a.type||"info");
-    d.innerHTML=`<div class="atitle">${ico[a.type]||"📢"} ${esc(a.title||"")}</div><div class="amsg">${esc(a.message||"")}</div><div class="adate">${a.date||""}</div>`;
+// ══ LOAD TICKETS ══════════════════════════════════════════
+async function loadTickets() {
+  var box = document.getElementById("tkt-list");
+  box.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Buscando...</div>';
+  var local = JSON.parse(localStorage.getItem("my_tkt")||"[]");
+  if (!local.length) {
+    box.innerHTML = '<div class="empty"><div class="eico">📭</div>Nenhum ticket enviado ainda.</div>';
+    return;
+  }
+  var ids = local.map(function(t){ return t.id; }).join(",");
+  var raw = await sb("GET", "tickets", null, "?id=in.(" + ids + ")&select=id,response");
+  var cloud = {};
+  if (Array.isArray(raw)) raw.forEach(function(t){ cloud[t.id] = t; });
+  var upd = local.map(function(t){
+    return cloud[t.id] ? Object.assign({}, t, {response: cloud[t.id].response||""}) : t;
+  });
+  localStorage.setItem("my_tkt", JSON.stringify(upd));
+  var resp = upd.filter(function(t){ return t.response && t.response.trim(); }).length;
+  badge("tkt", resp || "");
+  box.innerHTML = "";
+  var slbl = {bug:"🐛 Bug", duvida:"❓ Dúvida", sugestao:"💡 Sugestão", outro:"🔧 Outro"};
+  upd.slice().reverse().forEach(function(t) {
+    var hasR = !!(t.response && t.response.trim());
+    var c = document.createElement("div");
+    c.className = "tcard " + (hasR ? "done" : "pend");
+    c.innerHTML =
+      '<div class="thead2"><span class="tid">🎫 '+t.id+'</span><span class="tstat" style="color:'+(hasR?"#44ff88":"#ffaa44")+'">'+(hasR?"✅ Respondido":"⏳ Aguardando")+'</span></div>'+
+      '<div style="font-size:.7rem;color:var(--muted);margin-bottom:5px">'+(slbl[t.subject]||"Suporte")+' • '+t.date+'</div>'+
+      '<div class="tmsg">'+esc(t.message)+'</div>'+
+      (hasR
+        ? '<div style="font-size:.7rem;color:#44ff88;margin:5px 0 3px">💬 Resposta da equipe:</div><div class="treply">'+esc(t.response)+'</div>'
+        : '<div style="font-size:.7rem;color:var(--faint);margin-top:5px">Ainda sem resposta. Toque em 🔄 para verificar.</div>');
+    box.appendChild(c);
+  });
+}
+
+// ══ ANÚNCIOS ══════════════════════════════════════════════
+async function loadAnn() {
+  var box = document.getElementById("ann-list");
+  box.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Carregando...</div>';
+  var raw = await sb("GET","announcements",null,"?select=*&order=id.desc");
+  if (!Array.isArray(raw) || !raw.length) {
+    box.innerHTML = '<div class="empty"><div class="eico">📢</div>Nenhum anúncio.</div>';
+    return;
+  }
+  box.innerHTML = "";
+  var ico = {info:"ℹ️", aviso:"⚠️", update:"🆕"};
+  raw.forEach(function(a) {
+    var d = document.createElement("div");
+    d.className = "acard " + (a.type||"info");
+    d.innerHTML = '<div class="atitle">'+(ico[a.type]||"📢")+" "+esc(a.title||"")+'</div><div class="amsg">'+esc(a.message||"")+'</div><div class="adate">'+esc(a.date||"")+'</div>';
     box.appendChild(d);
+  });
+}
+async function checkAnn() {
+  var raw = await sb("GET","announcements",null,"?select=id&limit=1");
+  if (Array.isArray(raw) && raw.length) {
+    document.getElementById("ann-banner").style.display = "block";
+    badge("ann", raw.length);
   }
 }
-async function checkAnn(){
-  if(!SB_URL||!SB_KEY)return;
-  const raw=await sb("GET","announcements",null,"?select=id&limit=1");
-  if(Array.isArray(raw)&&raw.length){document.getElementById("ann-banner").style.display="block";badge("ann",raw.length);}
+
+// ══ CHAT ══════════════════════════════════════════════════
+var SYS = "Você é assistente especializado em \"Floppa's Schoolhouse 2\" (Roblox). NUNCA invente. Responda em português do Brasil.\n" +
+  "OBJETIVO: Coletar 7 livros e encontrar a saída correta. Saída errada vira parede.\n" +
+  "TUTORIAL: Jogo começa com Baldi na entrada. Cada livro tem 3 questões. Errar UMA = só ela marcada. Errar TODAS = livro errado. Ao errar = cutscene Baldi morre, Floppa persegue.\n" +
+  "MECÂNICAS: Cada erro = Floppa mais rápido. 7 livros = Floppa mais rápido. Stamina recupera ao pegar livro ou bebedouro.\n" +
+  "PERSONAGENS: Floppa(perseguidor,audição), Baldi(início,morre), Carro vermelho(após 2 livros,a cada 20s,espere 10-12s), X9(chega ~10m revela posição ao Floppa por 60s).\n" +
+  "ITENS: Fita Cassete — Floppa persegue o som por 60s.\n" +
+  "SALAS: Aula(livros,porta cinza), Supplies(carro,porta amarela), Cafeteria(saída), Corredores(bebedouros), Detenção, Funcionários.\n" +
+  "BUG REPORT: após investigar, inicie com BUG_REPORT: [resumo] e continue.";
+
+var hist = [];
+var chatEl = document.getElementById("chat");
+var ci     = document.getElementById("cinput");
+
+function addMsg(role, text) {
+  var row = document.createElement("div"); row.className = "mrow " + role;
+  var b   = document.createElement("div"); b.className   = "bub "  + role;
+  if      (role === "user") b.innerHTML = '<div class="lbl">Você</div>'         + md(text);
+  else if (role === "ai")   b.innerHTML = '<div class="lbl">FloppaAI 🐱</div>'  + md(text);
+  else                      b.innerHTML = esc(text);
+  row.appendChild(b); chatEl.appendChild(row); chatEl.scrollTop = chatEl.scrollHeight;
 }
-
-// ══ CHAT ═════════════════════════════════════════════════
-const SYS=`Você é assistente especializado em "Floppa's Schoolhouse 2" (Roblox). NUNCA invente. Responda em português do Brasil.
-OBJETIVO: Coletar 7 livros e encontrar a saída correta. Saída errada vira parede.
-TUTORIAL: Jogo começa com Baldi na entrada. Cada livro tem 3 questões. Errar UMA = só ela marcada. Errar TODAS = livro errado. Ao errar = cutscene Baldi morre, Floppa persegue.
-MECÂNICAS: Cada erro = Floppa mais rápido. 7 livros = Floppa mais rápido. Stamina recupera ao pegar livro ou bebedouro.
-PERSONAGENS: Floppa(perseguidor,audição), Baldi(início,morre), Carro vermelho(após 2 livros,a cada 20s,espere 10-12s), X9(chega ~10m → revela posição ao Floppa por 60s).
-ITENS: Fita Cassete — Floppa persegue o som por 60s.
-SALAS: Aula(livros,porta cinza), Supplies(carro,porta amarela), Cafeteria(saída), Corredores(bebedouros), Detenção, Funcionários.
-BUG REPORT: após investigar, inicie com 🐛BUG_REPORT: [resumo] e continue.`;
-
-let hist=[];
-const chatEl=document.getElementById("chat"),ci=document.getElementById("cinput");
-
-function addMsg(role,text){
-  const row=document.createElement("div");row.className="mrow "+role;
-  const b=document.createElement("div");b.className="bub "+role;
-  if(role==="user")b.innerHTML=`<div class="lbl">Você</div>${md(text)}`;
-  else if(role==="ai")b.innerHTML=`<div class="lbl">FloppaAI 🐱</div>${md(text)}`;
-  else b.innerHTML=esc(text);
-  row.appendChild(b);chatEl.appendChild(row);chatEl.scrollTop=chatEl.scrollHeight;
+function addTyping() {
+  var row = document.createElement("div"); row.className = "mrow ai"; row.id = "typ";
+  var b   = document.createElement("div"); b.className   = "bub ai";
+  b.innerHTML = '<div class="lbl">FloppaAI 🐱</div><div class="dots"><span></span><span></span><span></span></div>';
+  row.appendChild(b); chatEl.appendChild(row); chatEl.scrollTop = chatEl.scrollHeight;
 }
-function addTyping(){
-  const row=document.createElement("div");row.className="mrow ai";row.id="typ";
-  const b=document.createElement("div");b.className="bub ai";
-  b.innerHTML='<div class="lbl">FloppaAI 🐱</div><div class="dots"><span></span><span></span><span></span></div>';
-  row.appendChild(b);chatEl.appendChild(row);chatEl.scrollTop=chatEl.scrollHeight;
-}
-function rmTyping(){const t=document.getElementById("typ");if(t)t.remove();}
+function rmTyping() { var t = document.getElementById("typ"); if (t) t.remove(); }
 
-async function sendChat(){
-  const text=ci.value.trim();if(!text)return;
-  ci.value="";document.getElementById("csend").disabled=true;
-  addMsg("user",text);hist.push({role:"user",content:text});addTyping();
-  try{
-    const r=await fetch(GROQ_URL,{method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+GROQ_KEY},
-      body:JSON.stringify({model:"llama-3.1-8b-instant",messages:[{role:"system",content:SYS},...hist.slice(-14)],max_tokens:900,temperature:.3})});
-    const d=await r.json();if(!r.ok)throw new Error(d.error?.message||"Erro API");
-    let reply=d.choices[0].message.content;
-    if(reply.startsWith("🐛BUG_REPORT:")){
-      const[l,...rest]=reply.split("\n");
-      const summary=l.replace("🐛BUG_REPORT:","").trim();
-      reply=rest.join("\n").trim();
-      if(SB_URL&&SB_KEY)sb("POST","bugs",{id:genId(),date:nowStr(),summary,response:"",status:"pendente",platform:"mobile"});
+async function sendChat() {
+  var text = ci.value.trim(); if (!text) return;
+  ci.value = ""; document.getElementById("csend").disabled = true;
+  addMsg("user", text); hist.push({role:"user", content:text}); addTyping();
+  try {
+    var r = await fetch(GROQ_URL, {
+      method: "POST",
+      headers: {"Content-Type":"application/json","Authorization":"Bearer "+GROQ_KEY},
+      body: JSON.stringify({model:"llama-3.1-8b-instant", messages:[{role:"system",content:SYS}].concat(hist.slice(-14)), max_tokens:900, temperature:.3})
+    });
+    var d = await r.json();
+    if (!r.ok) throw new Error(d.error && d.error.message ? d.error.message : "Erro API");
+    var reply = d.choices[0].message.content;
+    if (reply.startsWith("BUG_REPORT:")) {
+      var lines   = reply.split("\n");
+      var summary = lines[0].replace("BUG_REPORT:","").trim();
+      reply = lines.slice(1).join("\n").trim();
+      sb("POST","bugs",{id:genId(),date:nowStr(),summary:summary,response:"",status:"pendente",platform:"mobile"});
+      dbg("info","Bug reportado: "+summary);
     }
-    hist.push({role:"assistant",content:reply});rmTyping();addMsg("ai",reply);
-  }catch(e){rmTyping();addMsg("ai","⚠️ Erro: "+e.message);}
-  document.getElementById("csend").disabled=false;
+    hist.push({role:"assistant", content:reply});
+    rmTyping(); addMsg("ai", reply);
+  } catch(e) {
+    rmTyping(); addMsg("ai","⚠️ Erro: "+e.message);
+    dbg("err","Chat error: "+e.message);
+  }
+  document.getElementById("csend").disabled = false;
 }
-function qa(p){ci.value=p;sendChat();}
-ci.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey)sendChat();});
+function qa(p) { ci.value = p; sendChat(); }
+ci.addEventListener("keydown", function(e){ if (e.key==="Enter" && !e.shiftKey) sendChat(); });
 
-// ══ INIT ═════════════════════════════════════════════════
-function onReady(){
-  addMsg("sys","👋 Olá! Sou o FloppaAI.\nUse o Chat para perguntas ou 🎧 Suporte para abrir um ticket!");
+// ══ INIT ══════════════════════════════════════════════════
+function onReady() {
+  dbg("ok","App iniciado! Supabase: " + SB_URL);
+  addMsg("sys","👋 Olá! Sou o FloppaAI.\nUse o Chat para perguntas ou 🎧 Suporte para abrir um ticket!\n\nToque em 🐛 no canto inferior direito para ver logs de debug.");
   checkAnn();
 }
-checkSetup();
+onReady();
 </script>
 </body>
 </html>

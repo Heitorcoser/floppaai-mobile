@@ -135,6 +135,31 @@ select.finp{cursor:pointer}
   </div>
 </div>
 
+<!-- DEBUG CONSOLE -->
+<style>
+#dbg-btn{position:fixed;bottom:16px;right:16px;width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:1px solid #333;color:var(--faint);font-size:.75rem;cursor:pointer;z-index:8000;display:flex;align-items:center;justify-content:center}
+#dbg-panel{position:fixed;bottom:60px;right:16px;width:500px;max-width:90vw;height:340px;background:#0a0a0a;border:1px solid #222;border-radius:12px;z-index:8500;display:none;flex-direction:column;box-shadow:0 4px 20px #000}
+#dbg-hdr{background:#111;border-bottom:1px solid #222;padding:8px 12px;display:flex;align-items:center;gap:8px;border-radius:12px 12px 0 0;flex-shrink:0}
+#dbg-hdr span{flex:1;font-size:.82rem;font-weight:700;color:#ff8844}
+.dbg-action{background:#1a1a1a;border:none;color:var(--muted);font-size:.7rem;padding:3px 9px;border-radius:5px;cursor:pointer}
+#dbg-log{flex:1;overflow-y:auto;padding:8px;font-family:monospace;font-size:.7rem;display:flex;flex-direction:column;gap:2px}
+.dlog-err{color:#ff6666;background:#1a0000;padding:3px 7px;border-radius:3px;border-left:3px solid #ff2200}
+.dlog-warn{color:#ffcc44;background:#1a1400;padding:3px 7px;border-radius:3px;border-left:3px solid #ffaa00}
+.dlog-info{color:#44aaff;background:#001a33;padding:3px 7px;border-radius:3px;border-left:3px solid #0088ff}
+.dlog-ok{color:#44ff88;background:#001a00;padding:3px 7px;border-radius:3px;border-left:3px solid #00cc66}
+.dlog-log{color:#888;padding:3px 7px;border-radius:3px}
+.dlog-time{color:#444;margin-right:6px;font-size:.62rem}
+</style>
+<button id="dbg-btn" onclick="toggleDbg()" title="Debug Console">🐛</button>
+<div id="dbg-panel">
+  <div id="dbg-hdr">
+    <span>🐛 Console Debug</span>
+    <button class="dbg-action" onclick="clearDbg()">Limpar</button>
+    <button class="dbg-action" onclick="toggleDbg()">✕</button>
+  </div>
+  <div id="dbg-log"></div>
+</div>
+
 <!-- SIDEBAR -->
 <div id="sidebar">
   <div class="sb-logo"><h1>🐱 FloppaAI</h1><p>v1.0.0 — PC</p></div>
@@ -276,6 +301,24 @@ const SB_URL="https://gxjmolabyaiuuwvioyuw.supabase.co";
 const SB_KEY="sb_publishable_nLx32tzEkLUyXe3J4YfHKg_apSpDoI0";
 let _bugId=null,_tktId=null;
 
+// ══ DEBUG CONSOLE ═════════════════════════════════════════
+let dbgOpen=false;
+function dbg(type,msg){
+  const log=document.getElementById("dbg-log");if(!log)return;
+  const d=document.createElement("div");d.className="dlog-"+type;
+  const t=new Date().toTimeString().slice(0,8);
+  d.innerHTML='<span class="dlog-time">'+t+'</span>'+String(msg).replace(/</g,"&lt;");
+  log.appendChild(d);log.scrollTop=log.scrollHeight;
+}
+function toggleDbg(){dbgOpen=!dbgOpen;document.getElementById("dbg-panel").style.display=dbgOpen?"flex":"none";}
+function clearDbg(){document.getElementById("dbg-log").innerHTML="";}
+const _ce=console.error,_cw=console.warn,_cl=console.log;
+console.error=function(){_ce.apply(console,arguments);dbg("err",Array.from(arguments).join(" "));};
+console.warn =function(){_cw.apply(console,arguments);dbg("warn",Array.from(arguments).join(" "));};
+console.log  =function(){_cl.apply(console,arguments);dbg("log",Array.from(arguments).join(" "));};
+window.onerror=function(msg,src,line){dbg("err","JS ERROR: "+msg+" (linha "+line+")");return false;};
+window.onunhandledrejection=function(e){dbg("err","Promise rejected: "+(e.reason||e));};
+
 // ══ SUPABASE API ══════════════════════════════════════════
 async function sb(method, table, body, filter=""){
   try{
@@ -288,10 +331,11 @@ async function sb(method, table, body, filter=""){
     if(!isGet) headers["Prefer"] = "return=representation";
     const opts = {method, headers};
     if(body) opts.body = JSON.stringify(body);
+    dbg("info","SB "+method+" "+table+filter);
     const r = await fetch(`${SB_URL}/rest/v1/${table}${filter}`, opts);
-    if(!r.ok){ console.error("SB erro", method, table, r.status); return null; }
-    if(isGet) return r.json();
-    if(r.status===204) return true;
+    if(!r.ok){ const txt=await r.text(); dbg("err","SB "+r.status+" "+table+": "+txt); return null; }
+    if(isGet){ const data=await r.json(); dbg("ok","SB GET "+table+" ok, "+(Array.isArray(data)?data.length+" items":"ok")); return data; }
+    if(r.status===204){ dbg("ok","SB "+method+" "+table+" 204 ok"); return true; }
     return r.json().catch(()=>true);
   }catch(e){ console.error("SB exception", e); return null; }
 }
@@ -512,7 +556,10 @@ function qa(p){ci.value=p;sendChat();}
 ci.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey)sendChat();});
 
 // ══ INIT ═════════════════════════════════════════════════
-function onReady(){addMsg("sys","👋 Bem-vindo ao FloppaAI PC!\nUse as ações na barra lateral ou digite sua pergunta.");}
+function onReady(){
+  dbg("ok","App iniciado! Supabase: "+SB_URL);
+  addMsg("sys","👋 Bem-vindo ao FloppaAI PC!\nUse as ações na barra lateral ou digite sua pergunta.\n\nClique em 🐛 no canto inferior direito para ver logs de debug.");
+}
 async function checkVer(){try{const d=await(await fetch(VER_URL)).json();if(d.version>"1.0.0")document.getElementById("upd-sb").style.display="block";}catch{}}
 checkSetup();checkVer();
 </script></body></html>

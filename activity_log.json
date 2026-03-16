@@ -58,5 +58,10 @@
     "time": "16/03/2026 00:04:11",
     "action": "LOGIN",
     "detail": "Desenvolvedor autenticado"
+  },
+  {
+    "time": "16/03/2026 00:17:28",
+    "action": "LOGIN",
+    "detail": "Desenvolvedor autenticado"
   }
 ]

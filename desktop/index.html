@@ -12,11 +12,10 @@
   --blue:#0088ff;--blue2:#003a7a;
   --green:#00cc66;--green2:#003300;
   --orange:#ff8844;--yellow:#ffcc44;
-  --text:#e0e0e0;--muted:#888;--faint:#444;
-  --radius:14px
+  --text:#e0e0e0;--muted:#888;--faint:#444;--radius:14px
 }
 html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text)}
-#app{display:flex;height:100vh;overflow:hidden}
+#app{display:flex;height:100vh}
 /* SIDEBAR */
 #sidebar{width:215px;min-width:215px;background:var(--bg4);border-right:1px solid #1a1a1a;display:flex;flex-direction:column;overflow-y:auto}
 #sidebar::-webkit-scrollbar{width:3px}
@@ -40,24 +39,20 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 .phdr{display:flex;align-items:center;gap:10px;padding:10px 16px;background:linear-gradient(135deg,#1a0000,#2a0000);border-bottom:1px solid #ff220020;flex-shrink:0;min-height:50px}
 .phdr.blue{background:linear-gradient(135deg,#001a33,#002244);border-bottom-color:#0088ff20}
 .avatar{width:34px;height:34px;background:linear-gradient(135deg,var(--red),var(--red2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;box-shadow:0 0 8px #ff220033}
-.hinfo h2{font-size:.9rem;font-weight:700}
-.hinfo p{font-size:.6rem;color:var(--orange)}
+.hinfo h2{font-size:.9rem;font-weight:700}.hinfo p{font-size:.6rem;color:var(--orange)}
 .phdr.blue .hinfo p{color:#44aaff}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 #srv-lbl{font-size:.65rem;color:var(--faint);margin-left:auto}
 .back-btn{margin-left:auto;background:#2a0000;border:none;color:#ff8866;font-size:.73rem;padding:5px 11px;border-radius:8px;cursor:pointer;font-family:inherit}
 .back-btn:hover{background:#440000}
-.back-btn.blue{background:#001a33;color:#44aaff}
-.back-btn.blue:hover{background:#003366}
+.back-btn.blue{background:#001a33;color:#44aaff}.back-btn.blue:hover{background:#003366}
 /* CHAT */
 #chat-box{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:5px;background:var(--bg)}
 #chat-box::-webkit-scrollbar{width:4px}
 #chat-box::-webkit-scrollbar-thumb{background:#2a0000;border-radius:2px}
 .mrow{display:flex;width:100%}
-.mrow.user{justify-content:flex-end}
-.mrow.ai{justify-content:flex-start}
-.mrow.sys{justify-content:center}
+.mrow.user{justify-content:flex-end}.mrow.ai{justify-content:flex-start}.mrow.sys{justify-content:center}
 .bub{max-width:62%;padding:9px 13px;border-radius:var(--radius);font-size:.86rem;line-height:1.6;animation:fi .17s ease;word-break:break-word}
 .bub.user{background:#1a3a0a;border-bottom-right-radius:4px}
 .bub.ai{background:var(--red3);border-bottom-left-radius:4px}
@@ -72,13 +67,11 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 #cinput{flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:22px;padding:10px 18px;color:var(--text);font-size:.86rem;outline:none;font-family:inherit}
 #cinput:focus{border-color:var(--red)}
 #csend{background:var(--red);border:none;border-radius:50%;width:42px;height:42px;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;transition:.1s;display:flex;align-items:center;justify-content:center}
-#csend:hover{background:var(--red2)}
-#csend:active{transform:scale(.9)}
-/* SCROLL PANELS */
+#csend:hover{background:var(--red2)}#csend:active{transform:scale(.9)}
+/* PANELS */
 .pscroll{flex:1;overflow-y:auto;padding:16px}
 .pscroll::-webkit-scrollbar{width:4px}
 .pscroll::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px}
-/* FORMS */
 .card{background:var(--bg2);border-radius:12px;padding:14px;margin-bottom:12px}
 .ctitle{font-size:.87rem;font-weight:700;margin-bottom:8px}
 .flbl{font-size:.7rem;color:var(--muted);display:block;margin-bottom:4px;margin-top:10px}
@@ -88,48 +81,60 @@ textarea.finp{resize:vertical;min-height:80px;line-height:1.5}
 select.finp{cursor:pointer}
 .btn{width:100%;padding:11px;border:none;border-radius:10px;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit;transition:.1s}
 .btn:active{transform:scale(.98)}
-.btn-blue{background:var(--blue2);color:#fff}
-.btn-blue:hover{background:#0055bb}
-.btn-green{background:#003300;color:#88ff44}
-.btn-green:hover{background:#004400}
+.btn-blue{background:var(--blue2);color:#fff}.btn-blue:hover{background:#0055bb}
+.btn-green{background:#003300;color:#88ff44}.btn-green:hover{background:#004400}
 .smsg{font-size:.75rem;padding:8px 10px;border-radius:8px;margin-top:8px;display:none}
-.sok{background:#003300;color:var(--green)}
-.serr{background:#330000;color:#ff6666}
-.swarn{background:#332200;color:var(--yellow)}
-/* TICKETS/BUGS */
+.sok{background:#003300;color:var(--green)}.serr{background:#330000;color:#ff6666}.swarn{background:#332200;color:var(--yellow)}
 .tcard{background:var(--bg3);border-radius:9px;padding:10px;margin-bottom:7px;border-left:3px solid var(--faint);cursor:pointer;transition:.1s}
 .tcard:hover{background:#222}
-.tcard.pend{border-left-color:var(--orange)}
-.tcard.done{border-left-color:var(--green)}
+.tcard.pend{border-left-color:var(--orange)}.tcard.done{border-left-color:var(--green)}
 .tc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
-.tc-id{font-size:.6rem;color:var(--faint);font-family:monospace}
-.tc-stat{font-size:.66rem;font-weight:700}
+.tc-id{font-size:.6rem;color:var(--faint);font-family:monospace}.tc-stat{font-size:.66rem;font-weight:700}
 .tc-prev{font-size:.77rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-/* ANÚNCIOS */
 .acard{border-radius:10px;padding:13px;margin-bottom:10px}
 .acard.info{background:#001a33}.acard.aviso{background:#2a1a00}.acard.update{background:#002200}
-.atitle{font-size:.87rem;font-weight:700;margin-bottom:4px}
-.amsg{font-size:.79rem;color:var(--muted);line-height:1.5}
-.adate{font-size:.61rem;color:var(--faint);margin-top:5px}
-/* MISC */
-.empty{text-align:center;padding:36px 20px;color:var(--faint);font-size:.83rem}
-.eico{font-size:2.5rem;margin-bottom:10px}
+.atitle{font-size:.87rem;font-weight:700;margin-bottom:4px}.amsg{font-size:.79rem;color:var(--muted);line-height:1.5}.adate{font-size:.61rem;color:var(--faint);margin-top:5px}
+.empty{text-align:center;padding:36px 20px;color:var(--faint);font-size:.83rem}.eico{font-size:2.5rem;margin-bottom:10px}
 .stitle{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px}
 .rbtn{background:none;border:1px solid #2a2a2a;border-radius:9px;padding:5px 13px;color:var(--muted);font-size:.71rem;cursor:pointer;margin-bottom:12px;font-family:inherit}
 .rbtn:hover{background:#1a1a1a}
 .irow{display:flex;gap:8px;margin-top:8px;align-items:center}
-.irow .finp{flex:1;margin:0}
-.irow .btn{width:auto;padding:9px 14px;margin:0}
+.irow .finp{flex:1;margin:0}.irow .btn{width:auto;padding:9px 14px;margin:0}
 .detail-box{background:#0d0d0d;border-radius:10px;padding:12px;min-height:80px;font-size:.84rem;line-height:1.6;color:var(--muted);margin-bottom:12px;white-space:pre-wrap;word-break:break-word}
-/* TOAST */
 .toast{position:fixed;bottom:22px;right:22px;padding:10px 18px;border-radius:16px;font-size:.77rem;z-index:9999;pointer-events:none;animation:fi .3s ease;white-space:nowrap}
 .toast-ok{background:#003300;color:var(--green);border:1px solid #004400}
 .toast-info{background:#001a33;color:#66aaff;border:1px solid #002244}
 .toast-err{background:#330000;color:#ff6666;border:1px solid #440000}
+/* SETUP overlay */
+#setup-overlay{position:fixed;inset:0;background:#050505ee;z-index:999;display:none;align-items:center;justify-content:center;padding:20px}
+.sbox{background:#111;border-radius:20px;padding:24px;width:100%;max-width:420px}
+.sbox h2{font-size:1.05rem;font-weight:700;color:var(--orange);margin-bottom:6px}
+.sbox p{font-size:.76rem;color:var(--muted);line-height:1.5;margin-bottom:14px}
+.sstep{background:#1a1a1a;border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:.74rem;color:var(--muted);line-height:1.7}
+.sstep b{color:var(--text)}
+#setup-err{font-size:.74rem;color:#ff6666;margin-top:5px;display:none}
 </style>
 </head>
 <body>
 <div id="app">
+<!-- SETUP OVERLAY -->
+<div id="setup-overlay">
+  <div class="sbox">
+    <h2>🔥 Configurar FloppaAI PC</h2>
+    <p>Configure o Supabase para tickets e anúncios funcionarem de qualquer lugar, sem servidor local.</p>
+    <div class="sstep"><b>1.</b> Acesse <b style="color:#44aaff">supabase.com</b> e crie uma conta grátis<br><b>2.</b> Crie um projeto → <b>Settings → API</b><br><b>3.</b> Copie a <b>Project URL</b> e a <b>anon key</b></div>
+    <label class="flbl">Project URL:</label>
+    <input id="setup-url" class="finp" type="url" placeholder="https://xxxx.supabase.co">
+    <label class="flbl">Anon Key:</label>
+    <input id="setup-key" class="finp" type="text" placeholder="eyJhbGciOiJ...">
+    <div id="setup-err">❌ Preencha a URL e a chave corretamente.</div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="btn btn-blue" onclick="saveSetup()">✅ Salvar e Entrar</button>
+      <button class="btn" style="background:#1a1a1a;color:var(--muted)" onclick="skipSetup()">Só chat</button>
+    </div>
+  </div>
+</div>
+
 <!-- SIDEBAR -->
 <div id="sidebar">
   <div class="sb-logo"><h1>🐱 FloppaAI</h1><p>v1.0.0 — PC</p></div>
@@ -148,29 +153,27 @@ select.finp{cursor:pointer}
   <div class="sb-sep"></div>
   <button class="sb-btn active" id="btn-chat" onclick="showPanel('chat')">🗨️ Chat</button>
   <button class="sb-btn" id="btn-bugs" onclick="showPanel('bugs')">🐛 Respostas de Bug</button>
-  <button class="sb-btn" id="btn-sup"  onclick="showPanel('sup')">🎧 Suporte</button>
-  <button class="sb-btn" id="btn-ann"  onclick="showPanel('ann')">📢 Novidades</button>
+  <button class="sb-btn" id="btn-sup" onclick="showPanel('sup')">🎧 Suporte</button>
+  <button class="sb-btn" id="btn-ann" onclick="showPanel('ann')">📢 Novidades</button>
   <div class="sb-bottom">
     <div class="sb-sep"></div>
     <button class="sb-btn" onclick="clearChat()">🗑️ Limpar chat</button>
-    <button class="sb-btn" onclick="openConfig()">⚙️ Configurar servidor</button>
-    <div id="upd-sb" style="display:none">
-      <div class="sb-sep"></div>
-      <button class="sb-btn" onclick="showUpdate()" style="color:var(--yellow)">🆕 Atualização disponível!</button>
+    <button class="sb-btn" onclick="openConfig()">⚙️ Configurar Supabase</button>
+    <div id="upd-sb" style="display:none"><div class="sb-sep"></div>
+      <button class="sb-btn" onclick="alert('Nova versão disponível! Acesse o GitHub.')" style="color:var(--yellow)">🆕 Atualização!</button>
     </div>
   </div>
 </div>
 
 <!-- MAIN -->
 <div id="main">
-
   <!-- CHAT -->
   <div class="panel active" id="panel-chat">
     <div class="phdr">
       <div class="avatar">🐱</div>
       <div class="hinfo"><h2>FloppaAI</h2><p>Assistente de Floppa's Schoolhouse 2</p></div>
       <div class="dot"></div>
-      <span id="srv-lbl">🔌 verificando...</span>
+      <span id="srv-lbl">⚪ offline</span>
     </div>
     <div id="chat-box"></div>
     <div id="chat-ft">
@@ -181,8 +184,7 @@ select.finp{cursor:pointer}
 
   <!-- BUGS -->
   <div class="panel" id="panel-bugs">
-    <div class="phdr">
-      <span style="font-size:1.3rem">🐛</span>
+    <div class="phdr"><span style="font-size:1.3rem">🐛</span>
       <div class="hinfo"><h2>Respostas de Bug</h2><p>Bugs detectados pelo chat</p></div>
       <button class="back-btn" onclick="showPanel('chat')">← Chat</button>
     </div>
@@ -190,11 +192,11 @@ select.finp{cursor:pointer}
       <div class="stitle">Bugs reportados</div>
       <div id="bugs-list"></div>
       <div style="height:1px;background:#1e1e1e;margin:14px 0"></div>
-      <div class="stitle">Detalhes do bug selecionado</div>
-      <div id="bug-detail" class="detail-box">Selecione um bug acima para ver detalhes.</div>
-      <div class="flbl">Colar resposta do Discord:</div>
+      <div class="stitle">Bug selecionado</div>
+      <div id="bug-detail" class="detail-box">Selecione um bug acima.</div>
+      <div class="flbl">Colar resposta (cola aqui e salva no Supabase):</div>
       <div class="irow">
-        <input id="bug-resp" class="finp" type="text" placeholder="Cole a resposta da equipe aqui...">
+        <input id="bug-resp" class="finp" type="text" placeholder="Cole a resposta aqui...">
         <button class="btn btn-green" onclick="saveBugResp()" style="white-space:nowrap">✔ Salvar</button>
       </div>
     </div>
@@ -202,9 +204,8 @@ select.finp{cursor:pointer}
 
   <!-- SUPORTE -->
   <div class="panel" id="panel-sup">
-    <div class="phdr blue">
-      <span style="font-size:1.3rem">🎧</span>
-      <div class="hinfo"><h2>Suporte</h2><p>Envie um ticket para a equipe</p></div>
+    <div class="phdr blue"><span style="font-size:1.3rem">🎧</span>
+      <div class="hinfo"><h2>Suporte</h2><p>Envie um ticket</p></div>
       <button class="back-btn blue" onclick="showPanel('chat')">← Chat</button>
     </div>
     <div class="pscroll">
@@ -221,7 +222,7 @@ select.finp{cursor:pointer}
           <option value="outro">🔧 Outro</option>
         </select>
         <label class="flbl">Mensagem:</label>
-        <textarea id="sup-msg" class="finp" maxlength="1000" placeholder="Descreva o problema detalhadamente..."></textarea>
+        <textarea id="sup-msg" class="finp" maxlength="1000" placeholder="Descreva o problema..."></textarea>
         <div style="text-align:right;font-size:.65rem;color:var(--faint);margin-top:3px"><span id="sup-cnt">0</span>/1000</div>
         <div id="sup-st" class="smsg"></div>
         <button class="btn btn-blue" id="sup-btn" onclick="sendTicket()">📨 Enviar Ticket</button>
@@ -231,11 +232,11 @@ select.finp{cursor:pointer}
       <button class="rbtn" onclick="loadTickets()">🔄 Atualizar respostas</button>
       <div id="sup-list"></div>
       <div style="height:1px;background:#1e1e1e;margin:14px 0"></div>
-      <div class="stitle">Resposta da equipe</div>
-      <div id="sup-detail" class="detail-box">Selecione um ticket acima para ver a resposta.</div>
-      <div class="flbl">Colar resposta do Discord:</div>
+      <div class="stitle">Ticket selecionado</div>
+      <div id="sup-detail" class="detail-box">Selecione um ticket acima.</div>
+      <div class="flbl">Colar resposta (salva no Supabase — usuário verá automaticamente):</div>
       <div class="irow">
-        <input id="sup-resp" class="finp" type="text" placeholder="Cole a resposta da equipe aqui...">
+        <input id="sup-resp" class="finp" type="text" placeholder="Cole a resposta aqui...">
         <button class="btn btn-green" onclick="saveSupResp()" style="white-space:nowrap">✔ Salvar</button>
       </div>
     </div>
@@ -243,71 +244,81 @@ select.finp{cursor:pointer}
 
   <!-- NOVIDADES -->
   <div class="panel" id="panel-ann">
-    <div class="phdr blue">
-      <span style="font-size:1.3rem">📢</span>
-      <div class="hinfo"><h2>Novidades & Anúncios</h2><p>Últimas atualizações do jogo</p></div>
+    <div class="phdr blue"><span style="font-size:1.3rem">📢</span>
+      <div class="hinfo"><h2>Novidades & Anúncios</h2><p>Últimas atualizações</p></div>
       <button class="back-btn blue" onclick="showPanel('chat')">← Chat</button>
     </div>
     <div class="pscroll">
+      <div class="card" style="background:#002200">
+        <div class="ctitle" style="color:#44ff88">➕ Publicar novo anúncio</div>
+        <label class="flbl">Título:</label>
+        <input id="ann-title" class="finp" type="text" placeholder="Título do anúncio" maxlength="80">
+        <label class="flbl">Mensagem:</label>
+        <textarea id="ann-msg" class="finp" maxlength="500" style="min-height:60px" placeholder="Mensagem..."></textarea>
+        <label class="flbl">Tipo:</label>
+        <select id="ann-type" class="finp">
+          <option value="info">ℹ️ Info</option><option value="update">🆕 Update</option><option value="aviso">⚠️ Aviso</option>
+        </select>
+        <button class="btn btn-green" onclick="postAnn()">📢 Publicar Anúncio</button>
+        <div id="ann-st" class="smsg"></div>
+      </div>
       <button class="rbtn" onclick="loadAnn()">🔄 Atualizar</button>
-      <div id="ann-list"><div class="empty"><div class="eico">📢</div>Nenhum anúncio no momento.</div></div>
+      <div id="ann-list"><div class="empty"><div class="eico">📢</div>Nenhum anúncio.</div></div>
     </div>
   </div>
-
-</div><!-- /main -->
-</div><!-- /app -->
+</div>
+</div>
 <script>
 const GROQ_KEY="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";
 const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
 const VER_URL ="https://raw.githubusercontent.com/Heitorcoser/floppaai-mobile/main/version.json";
-let SRV="";
-let _bugId=null, _tktId=null;
+let SB_URL="",SB_KEY="";
+let _bugId=null,_tktId=null;
 
-// ══ DETECTA SERVIDOR (ngrok ou localhost apenas) ═══════════════════
-function detectSRV(){
-  const h=window.location.hostname;
-  const isNgrok=h.includes("ngrok")||h==="localhost"||h==="127.0.0.1";
-  if(isNgrok){
-    SRV=window.location.origin;
-    localStorage.setItem("pc_srv",SRV);
-    localStorage.setItem("pc_auto","1");
-    return true;
-  }
-  const saved=localStorage.getItem("pc_srv");
-  if(saved&&!saved.includes("github.io")){SRV=saved;return true;}
-  return false;
-}
-
-function openConfig(){
-  const auto=localStorage.getItem("pc_auto")==="1";
-  const cur=prompt(
-    `URL do servidor ngrok:\n(atual: ${SRV||"nenhuma"})\n\nDigite a URL do ngrok, "auto" para automático, ou deixe vazio para modo offline.`,
-    SRV
-  );
-  if(cur===null)return;
-  const val=cur.trim().replace(/\/$/,"");
-  if(val.toLowerCase()==="auto"){
-    localStorage.removeItem("pc_srv");localStorage.removeItem("pc_auto");
-    SRV="";toast("🔄 Modo automático. Abra pelo ngrok para conectar.","toast-info");return;
-  }
-  if(val===""){
-    localStorage.removeItem("pc_srv");localStorage.removeItem("pc_auto");
-    SRV="";toast("⚠️ Modo offline ativado.","toast-info");updateSrvLabel();return;
-  }
-  if(!val.startsWith("http")){toast("❌ URL inválida.","toast-err");return;}
-  SRV=val;localStorage.setItem("pc_srv",SRV);localStorage.removeItem("pc_auto");
-  toast("✅ Servidor atualizado!","toast-ok");updateSrvLabel();
-}
-
-// ══ API ══════════════════════════════════════════════════
-async function api(method,path,body){
-  if(!SRV)return null;
+// ══ SUPABASE ══════════════════════════════════════════════
+async function sb(method,table,body,filter=""){
+  if(!SB_URL||!SB_KEY)return null;
   try{
-    const opts={method,headers:{"Content-Type":"application/json","ngrok-skip-browser-warning":"1"}};
+    const opts={method,headers:{"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY,"Prefer":"return=minimal"}};
     if(body)opts.body=JSON.stringify(body);
-    const r=await fetch(`${SRV}/api/${path}`,opts);
-    return r.ok?r.json():null;
+    const r=await fetch(`${SB_URL}/rest/v1/${table}${filter}`,opts);
+    if(method==="GET"||method==="PATCH")return r.ok?r.json():null;
+    return r.ok;
   }catch{return null;}
+}
+
+// ══ SETUP ════════════════════════════════════════════════
+function loadCreds(){
+  SB_URL=(localStorage.getItem("pc_sb_url")||"").replace(/\/$/,"");
+  SB_KEY=localStorage.getItem("pc_sb_key")||"";
+}
+function checkSetup(){
+  loadCreds();
+  if(SB_URL&&SB_KEY){updateSrvLabel();onReady();}
+  else document.getElementById("setup-overlay").style.display="flex";
+}
+function saveSetup(){
+  const url=document.getElementById("setup-url").value.trim().replace(/\/$/,"");
+  const key=document.getElementById("setup-key").value.trim();
+  if(!url.startsWith("https://")||!key){document.getElementById("setup-err").style.display="block";return;}
+  SB_URL=url;SB_KEY=key;
+  localStorage.setItem("pc_sb_url",SB_URL);localStorage.setItem("pc_sb_key",SB_KEY);
+  document.getElementById("setup-overlay").style.display="none";
+  updateSrvLabel();onReady();
+}
+function skipSetup(){document.getElementById("setup-overlay").style.display="none";onReady();}
+function openConfig(){
+  const url=prompt("Project URL do Supabase:",SB_URL);if(url===null)return;
+  if(!url.trim()){SB_URL="";SB_KEY="";localStorage.removeItem("pc_sb_url");localStorage.removeItem("pc_sb_key");updateSrvLabel();toast("⚠️ Modo offline.","toast-info");return;}
+  const key=prompt("Anon Key:",SB_KEY);if(!key)return;
+  SB_URL=url.trim().replace(/\/$/,"");SB_KEY=key.trim();
+  localStorage.setItem("pc_sb_url",SB_URL);localStorage.setItem("pc_sb_key",SB_KEY);
+  updateSrvLabel();toast("✅ Supabase atualizado!","toast-ok");
+}
+function updateSrvLabel(){
+  const el=document.getElementById("srv-lbl");if(!el)return;
+  if(SB_URL&&SB_KEY){el.textContent="🟢 Supabase conectado";el.style.color="#44ff88";}
+  else{el.textContent="⚪ offline";el.style.color="var(--faint)";}
 }
 
 // ══ UTILS ════════════════════════════════════════════════
@@ -315,75 +326,53 @@ function genId(){return Date.now().toString(36)+Math.random().toString(36).slice
 function nowStr(){const d=new Date(),p=n=>String(n).padStart(2,"0");return`${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;}
 function esc(t){return(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");}
 function md(t){return esc(t).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");}
-function toast(msg,cls){
-  const t=document.createElement("div");t.className="toast "+(cls||"toast-ok");t.textContent=msg;
-  document.body.appendChild(t);setTimeout(()=>t.remove(),3500);
-}
-function updateSrvLabel(){
-  const el=document.getElementById("srv-lbl");
-  if(!el)return;
-  if(!SRV){el.textContent="🔴 offline";el.style.color="#ff6666";}
-  else if(SRV.includes("localhost")){el.textContent="🟢 local";el.style.color="#44ff88";}
-  else{el.textContent="🟢 ngrok";el.style.color="#44aaff";}
-}
-
-// ══ PANELS ═══════════════════════════════════════════════
+function toast(msg,cls){const t=document.createElement("div");t.className="toast "+(cls||"toast-ok");t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3500);}
 function showPanel(name){
   document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
   document.querySelectorAll(".sb-btn").forEach(b=>b.classList.remove("active"));
   document.getElementById("panel-"+name).classList.add("active");
-  const btn=document.getElementById("btn-"+name);
-  if(btn)btn.classList.add("active");
-  if(name==="bugs")loadBugs();
-  if(name==="sup")loadTickets();
-  if(name==="ann")loadAnn();
+  const btn=document.getElementById("btn-"+name);if(btn)btn.classList.add("active");
+  if(name==="bugs")loadBugs();if(name==="sup")loadTickets();if(name==="ann")loadAnn();
 }
-function clearChat(){
-  hist=[];
-  document.getElementById("chat-box").innerHTML="";
-  addMsg("sys","Chat limpo! Como posso ajudar?");
-}
-
-// ══ SPAM / MODERAÇÃO ═════════════════════════════════════
+function clearChat(){hist=[];document.getElementById("chat-box").innerHTML="";addMsg("sys","Chat limpo!");}
 const BAD=["porra","caralho","merda","viado","fdp","vsf","fuck","shit","bitch"];
 function checkSpam(name){
   const log=JSON.parse(localStorage.getItem("pc_sp")||"[]"),now=Date.now(),win=600000;
   if(log.filter(e=>e.n===name.toLowerCase()&&now-e.t<win).length>=3)return false;
-  log.push({n:name.toLowerCase(),t:now});
-  localStorage.setItem("pc_sp",JSON.stringify(log.filter(e=>now-e.t<win*2)));return true;
+  log.push({n:name.toLowerCase(),t:now});localStorage.setItem("pc_sp",JSON.stringify(log.filter(e=>now-e.t<win*2)));return true;
 }
 
 // ══ BUGS ═════════════════════════════════════════════════
-function loadBugs(){
-  const bugs=JSON.parse(localStorage.getItem("pc_bugs")||"[]");
+async function loadBugs(){
   const box=document.getElementById("bugs-list");
-  box.innerHTML="";
+  const bugs=JSON.parse(localStorage.getItem("pc_bugs")||"[]");
   if(!bugs.length){box.innerHTML=`<div class="empty"><div class="eico">🐛</div>Nenhum bug reportado ainda.</div>`;return;}
+  box.innerHTML="";
   for(const b of [...bugs].reverse()){
     const hasR=!!b.response;
-    const c=document.createElement("div");
-    c.className="tcard "+(hasR?"done":"pend");
+    const c=document.createElement("div");c.className="tcard "+(hasR?"done":"pend");
     c.innerHTML=`<div class="tc-head"><span class="tc-id">#${b.id}</span><span class="tc-stat" style="color:${hasR?"#44ff88":"#ffaa44"}">${hasR?"✅ Respondido":"⏳ Aguardando"}</span></div><div class="tc-prev">${b.summary}</div>`;
-    c.onclick=()=>{_bugId=b.id;document.getElementById("bug-detail").innerHTML=`🐛 <b>${b.summary}</b>\n\n`+(b.response?`💬 Resposta:\n${b.response}`:"⏳ Aguardando resposta da equipe...");};
+    c.onclick=()=>{_bugId=b.id;document.getElementById("bug-detail").innerHTML=`🐛 <b>${esc(b.summary)}</b>\n\n`+(b.response?`💬 Resposta:\n${esc(b.response)}`:"⏳ Aguardando...");};
     box.appendChild(c);
   }
 }
-function saveBugResp(){
+async function saveBugResp(){
   const resp=document.getElementById("bug-resp").value.trim();
   if(!resp||!_bugId){toast("⚠️ Selecione um bug e cole a resposta.","toast-err");return;}
   const bugs=JSON.parse(localStorage.getItem("pc_bugs")||"[]");
   bugs.forEach(b=>{if(b.id===_bugId)b.response=resp;});
   localStorage.setItem("pc_bugs",JSON.stringify(bugs));
-  document.getElementById("bug-resp").value="";
-  loadBugs();toast("✅ Resposta salva!","toast-ok");
+  // Atualiza no Supabase também
+  await sb("PATCH","bugs",{response:resp},`?id=eq.${_bugId}`);
+  document.getElementById("bug-resp").value="";loadBugs();toast("✅ Resposta salva!","toast-ok");
   const sel=bugs.find(b=>b.id===_bugId);
-  if(sel)document.getElementById("bug-detail").innerHTML=`🐛 <b>${sel.summary}</b>\n\n💬 Resposta:\n${sel.response}`;
+  if(sel)document.getElementById("bug-detail").innerHTML=`🐛 <b>${esc(sel.summary)}</b>\n\n💬 Resposta:\n${esc(sel.response)}`;
 }
 function registerBug(summary){
-  const bug={id:genId(),date:nowStr(),summary,response:""};
+  const bug={id:genId(),date:nowStr(),summary,response:"",status:"pendente",platform:"pc"};
   const bugs=JSON.parse(localStorage.getItem("pc_bugs")||"[]");
   bugs.push(bug);localStorage.setItem("pc_bugs",JSON.stringify(bugs));
-  if(SRV)api("POST","bugs",{...bug,platform:"pc"});
+  if(SB_URL&&SB_KEY)sb("POST","bugs",bug);
   document.getElementById("btn-bugs").textContent=`🐛 Respostas de Bug (${bugs.length})`;
 }
 </script>
@@ -399,33 +388,31 @@ async function sendTicket(){
   if(!sub){show("⚠️ Selecione o assunto.","swarn");return;}
   if(msg.length<10){show("⚠️ Mensagem muito curta.","swarn");return;}
   if(!checkSpam(name)){show("🚫 Aguarde 10 minutos.","serr");return;}
-  if(BAD.some(w=>msg.toLowerCase().includes(w))){show("❌ Conteúdo impróprio bloqueado.","serr");return;}
+  if(BAD.some(w=>msg.toLowerCase().includes(w))){show("❌ Conteúdo impróprio.","serr");return;}
   btn.disabled=true;btn.textContent="⏳ Enviando...";show("Enviando...","swarn");
   const tkt={id:genId(),date:nowStr(),name,subject:sub,message:msg,response:"",platform:"pc"};
   const local=JSON.parse(localStorage.getItem("pc_tkt")||"[]");
   local.push(tkt);localStorage.setItem("pc_tkt",JSON.stringify(local));
-  const ok=await api("POST","tickets",tkt);
+  const ok=await sb("POST","tickets",tkt);
   btn.disabled=false;btn.textContent="📨 Enviar Ticket";
-  if(ok||!SRV){
-    show("✅ Ticket enviado! Veja a resposta em Suporte.","sok");
-    document.getElementById("sup-name").value="";
-    document.getElementById("sup-sub").value="";
-    document.getElementById("sup-msg").value="";
-    document.getElementById("sup-cnt").textContent="0";
-    loadTickets();
-  }else show("❌ Erro ao enviar. Verifique a conexão.","serr");
+  if(ok!==false){
+    show("✅ Ticket enviado!","sok");
+    ["sup-name","sup-sub","sup-msg"].forEach(id=>document.getElementById(id).value="");
+    document.getElementById("sup-cnt").textContent="0";loadTickets();
+  }else show("❌ Erro ao enviar.","serr");
 }
-document.getElementById("sup-msg").addEventListener("input",function(){
-  document.getElementById("sup-cnt").textContent=this.value.length;
-});
+document.getElementById("sup-msg").addEventListener("input",function(){document.getElementById("sup-cnt").textContent=this.value.length;});
 
 async function loadTickets(){
   const box=document.getElementById("sup-list");
   const local=JSON.parse(localStorage.getItem("pc_tkt")||"[]");
   if(!local.length){box.innerHTML=`<div class="empty"><div class="eico">📭</div>Nenhum ticket ainda.</div>`;return;}
   let cloud={};
-  const raw=await api("GET","tickets");
-  if(Array.isArray(raw))raw.forEach(t=>{cloud[t.id]=t;});
+  if(SB_URL&&SB_KEY){
+    const ids=local.map(t=>`'${t.id}'`).join(",");
+    const raw=await sb("GET","tickets",null,`?id=in.(${ids})&select=id,response`);
+    if(Array.isArray(raw))raw.forEach(t=>{cloud[t.id]=t;});
+  }
   const upd=local.map(t=>cloud[t.id]?{...t,...cloud[t.id]}:t);
   localStorage.setItem("pc_tkt",JSON.stringify(upd));
   box.innerHTML="";
@@ -433,32 +420,32 @@ async function loadTickets(){
   for(const t of [...upd].reverse()){
     const hasR=!!(t.response&&t.response.trim());
     const c=document.createElement("div");c.className="tcard "+(hasR?"done":"pend");
-    c.innerHTML=`<div class="tc-head"><span class="tc-id">#${t.id}</span><span class="tc-stat" style="color:${hasR?"#44ff88":"#ffaa44"}">${hasR?"✅ Respondido":"⏳ Aguardando"}</span></div><div class="tc-prev">${slbl[t.subject]||"Suporte"} • ${t.date} — ${t.message.slice(0,50)}...</div>`;
+    c.innerHTML=`<div class="tc-head"><span class="tc-id">#${t.id}</span><span class="tc-stat" style="color:${hasR?"#44ff88":"#ffaa44"}">${hasR?"✅ Respondido":"⏳ Aguardando"}</span></div><div class="tc-prev">${slbl[t.subject]||"Suporte"} • ${t.date} — ${t.message.slice(0,45)}...</div>`;
     c.onclick=()=>{
       _tktId=t.id;
-      document.getElementById("sup-detail").innerHTML=`👤 <b>${t.name}</b> • ${t.date}\n📋 ${slbl[t.subject]||"Suporte"}\n\n${t.message}\n\n`+(t.response?`💬 Resposta da equipe:\n${t.response}`:"⏳ Aguardando resposta da equipe...");
+      document.getElementById("sup-detail").innerHTML=`👤 <b>${esc(t.name)}</b> • ${t.date}\n${slbl[t.subject]||""}\n\n${esc(t.message)}\n\n`+(t.response?`💬 Resposta:\n${esc(t.response)}`:"⏳ Aguardando resposta...");
     };
     box.appendChild(c);
   }
 }
-function saveSupResp(){
+async function saveSupResp(){
   const resp=document.getElementById("sup-resp").value.trim();
-  if(!resp||!_tktId){toast("⚠️ Selecione um ticket e cole a resposta.","toast-err");return;}
+  if(!resp||!_tktId){toast("⚠️ Selecione um ticket.","toast-err");return;}
   const tkts=JSON.parse(localStorage.getItem("pc_tkt")||"[]");
   tkts.forEach(t=>{if(t.id===_tktId)t.response=resp;});
   localStorage.setItem("pc_tkt",JSON.stringify(tkts));
-  document.getElementById("sup-resp").value="";
-  loadTickets();toast("✅ Resposta salva!","toast-ok");
+  await sb("PATCH","tickets",{response:resp},`?id=eq.${_tktId}`);
+  document.getElementById("sup-resp").value="";loadTickets();toast("✅ Resposta salva! Usuário verá automaticamente.","toast-ok");
   const sel=tkts.find(t=>t.id===_tktId);
-  if(sel)document.getElementById("sup-detail").innerHTML=`👤 <b>${sel.name}</b>\n\n${sel.message}\n\n💬 Resposta:\n${sel.response}`;
+  if(sel)document.getElementById("sup-detail").innerHTML=`👤 <b>${esc(sel.name)}</b>\n\n${esc(sel.message)}\n\n💬 Resposta:\n${esc(sel.response)}`;
 }
 
 // ══ ANÚNCIOS ═════════════════════════════════════════════
 async function loadAnn(){
   const box=document.getElementById("ann-list");
-  if(!SRV){box.innerHTML=`<div class="empty"><div class="eico">📡</div>Configure o servidor para ver anúncios.</div>`;return;}
-  const raw=await api("GET","announcements");
-  const anns=Array.isArray(raw)?raw.sort((a,b)=>b.date>a.date?1:-1):[];
+  if(!SB_URL||!SB_KEY){box.innerHTML=`<div class="empty"><div class="eico">📡</div>Configure o Supabase.</div>`;return;}
+  const raw=await sb("GET","announcements",null,"?select=*&order=created_at.desc");
+  const anns=Array.isArray(raw)?raw:[];
   if(!anns.length){box.innerHTML=`<div class="empty"><div class="eico">📢</div>Nenhum anúncio.</div>`;return;}
   const ico={info:"ℹ️",aviso:"⚠️",update:"🆕"};
   box.innerHTML="";
@@ -468,57 +455,60 @@ async function loadAnn(){
     box.appendChild(d);
   }
 }
+async function postAnn(){
+  const title=document.getElementById("ann-title").value.trim();
+  const msg=document.getElementById("ann-msg").value.trim();
+  const type=document.getElementById("ann-type").value;
+  const st=document.getElementById("ann-st");
+  const show=(t,c)=>{st.textContent=t;st.className="smsg "+c;st.style.display="block";};
+  if(!title||!msg){show("⚠️ Preencha o título e a mensagem.","swarn");return;}
+  if(!SB_URL||!SB_KEY){show("❌ Configure o Supabase primeiro.","serr");return;}
+  const ok=await sb("POST","announcements",{title,message:msg,type,date:nowStr()});
+  if(ok!==false){
+    show("✅ Anúncio publicado!","sok");
+    document.getElementById("ann-title").value="";document.getElementById("ann-msg").value="";
+    loadAnn();
+  }else show("❌ Erro ao publicar.","serr");
+}
 
 // ══ CHAT ═════════════════════════════════════════════════
 const SYS=`Você é assistente especializado em "Floppa's Schoolhouse 2" (Roblox). NUNCA invente. Responda em português do Brasil.
 OBJETIVO: Coletar 7 livros e encontrar a saída correta. Saída errada vira parede.
 TUTORIAL: Jogo começa com Baldi na entrada. Cada livro tem 3 questões. Errar UMA = só ela marcada. Errar TODAS = livro errado. Ao errar = cutscene Baldi morre, Floppa persegue.
 MECÂNICAS: Cada erro = Floppa mais rápido. 7 livros = Floppa mais rápido. Stamina recupera ao pegar livro ou bebedouro.
-PERSONAGENS: Floppa(perseguidor,audição), Baldi(início,morre), Carro vermelho(após 2 livros,a cada 20s,espere 10-12s), X9(chega ~10m do jogador → revela posição ao Floppa por 60s).
+PERSONAGENS: Floppa(perseguidor,audição), Baldi(início,morre), Carro vermelho(após 2 livros,a cada 20s,espere 10-12s), X9(chega ~10m → revela posição ao Floppa por 60s).
 ITENS: Fita Cassete — Floppa persegue o som por 60s.
 SALAS: Aula(livros,porta cinza), Supplies(carro,porta amarela), Cafeteria(saída), Corredores(bebedouros), Detenção, Funcionários.
 BUG REPORT: após investigar, inicie com 🐛BUG_REPORT: [resumo] e continue.`;
 
 let hist=[];
-const chatBox=document.getElementById("chat-box");
-const ci=document.getElementById("cinput");
-
+const chatBox=document.getElementById("chat-box"),ci=document.getElementById("cinput");
 function addMsg(role,text){
   const row=document.createElement("div");row.className="mrow "+role;
   const b=document.createElement("div");b.className="bub "+role;
   if(role==="user")b.innerHTML=`<div class="blbl">Você</div>${md(text)}`;
   else if(role==="ai")b.innerHTML=`<div class="blbl">FloppaAI 🐱</div>${md(text)}`;
   else b.innerHTML=esc(text);
-  row.appendChild(b);chatBox.appendChild(row);chatBox.scrollTop=chatBox.scrollHeight;
-  return row;
+  row.appendChild(b);chatBox.appendChild(row);chatBox.scrollTop=chatBox.scrollHeight;return row;
 }
 function addTyping(){
-  const row=addMsg("ai","");
-  row.querySelector(".bub").innerHTML='<div class="blbl">FloppaAI 🐱</div><div class="dots"><span></span><span></span><span></span></div>';
-  row.id="typ";return row;
+  const r=addMsg("ai","");r.id="typ";
+  r.querySelector(".bub").innerHTML='<div class="blbl">FloppaAI 🐱</div><div class="dots"><span></span><span></span><span></span></div>';return r;
 }
-
 async function sendChat(){
   const text=ci.value.trim();if(!text)return;
   ci.value="";document.getElementById("csend").disabled=true;
-  addMsg("user",text);hist.push({role:"user",content:text});
-  const tr=addTyping();
+  addMsg("user",text);hist.push({role:"user",content:text});const tr=addTyping();
   try{
     const r=await fetch(GROQ_URL,{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+GROQ_KEY},
-      body:JSON.stringify({model:"llama-3.1-8b-instant",
-        messages:[{role:"system",content:SYS},...hist.slice(-14)],
-        max_tokens:900,temperature:.3})});
-    const d=await r.json();
-    if(!r.ok)throw new Error(d.error?.message||"Erro API");
+      body:JSON.stringify({model:"llama-3.1-8b-instant",messages:[{role:"system",content:SYS},...hist.slice(-14)],max_tokens:900,temperature:.3})});
+    const d=await r.json();if(!r.ok)throw new Error(d.error?.message||"Erro API");
     let reply=d.choices[0].message.content;
     if(reply.startsWith("🐛BUG_REPORT:")){
-      const[l,...rest]=reply.split("\n");
-      registerBug(l.replace("🐛BUG_REPORT:","").trim());
-      reply=rest.join("\n").trim();
+      const[l,...rest]=reply.split("\n");registerBug(l.replace("🐛BUG_REPORT:","").trim());reply=rest.join("\n").trim();
     }
-    hist.push({role:"assistant",content:reply});
-    tr.remove();addMsg("ai",reply);
+    hist.push({role:"assistant",content:reply});tr.remove();addMsg("ai",reply);
   }catch(e){tr.remove();addMsg("ai","⚠️ Erro: "+e.message);}
   document.getElementById("csend").disabled=false;
 }
@@ -526,17 +516,7 @@ function qa(p){ci.value=p;sendChat();}
 ci.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey)sendChat();});
 
 // ══ INIT ═════════════════════════════════════════════════
-function showUpdate(){alert("Nova versão disponível! Acesse o GitHub para baixar.");}
-async function checkVer(){
-  try{const d=await(await fetch(VER_URL)).json();
-    if(d.version>"1.0.0")document.getElementById("upd-sb").style.display="block";}
-  catch{}
-}
-detectSRV();
-updateSrvLabel();
-addMsg("sys","👋 Bem-vindo ao FloppaAI PC!\nUse as ações rápidas na barra lateral ou digite sua pergunta.");
-checkVer();
-setInterval(updateSrvLabel,15000);
-</script>
-</body>
-</html>
+function onReady(){addMsg("sys","👋 Bem-vindo ao FloppaAI PC!\nUse as ações na barra lateral ou digite sua pergunta.");}
+async function checkVer(){try{const d=await(await fetch(VER_URL)).json();if(d.version>"1.0.0")document.getElementById("upd-sb").style.display="block";}catch{}}
+checkSetup();checkVer();
+</script></body></html>

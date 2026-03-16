@@ -16,37 +16,23 @@
   --green:#00cc66;--green2:#003300;
   --orange:#ff8844;--yellow:#ffcc44;
   --text:#e0e0e0;--muted:#888;--faint:#444;
-  --radius:16px;
-  --st:env(safe-area-inset-top,0px);
-  --sb:env(safe-area-inset-bottom,0px)
+  --radius:16px;--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)
 }
 html,body{height:100%;overflow:hidden}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  background:var(--bg);color:var(--text);display:flex;flex-direction:column}
-</style>
-<style>
-/* SETUP (só aparece se não tiver URL configurada) */
-#setup{position:fixed;inset:0;background:#050505;z-index:999;
-  display:none;align-items:center;justify-content:center;padding:20px;flex-direction:column}
-.sbox{background:#111;border-radius:20px;padding:22px;width:100%;max-width:360px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
+/* SETUP */
+#setup{position:fixed;inset:0;background:#050505;z-index:999;display:none;align-items:center;justify-content:center;padding:20px;flex-direction:column}
+.sbox{background:#111;border-radius:20px;padding:22px;width:100%;max-width:370px}
 .sbox h2{font-size:1.05rem;font-weight:700;color:var(--orange);text-align:center;margin-bottom:6px}
 .sbox p{font-size:.76rem;color:var(--muted);text-align:center;line-height:1.5;margin-bottom:14px}
-.sstep{background:#1a1a1a;border-radius:10px;padding:10px 12px;margin-bottom:8px;
-  font-size:.74rem;color:var(--muted);line-height:1.7}
+.sstep{background:#1a1a1a;border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:.74rem;color:var(--muted);line-height:1.7}
 .sstep b{color:var(--text)}
 #setup-err{font-size:.74rem;color:#ff6666;text-align:center;margin-top:5px;display:none}
 /* HEADER */
-#header{background:linear-gradient(135deg,#1a0000,#2a0000);
-  border-bottom:1px solid #ff220022;
-  padding:calc(var(--st) + 10px) 14px 10px;
-  display:flex;align-items:center;gap:10px;flex-shrink:0}
-.avatar{width:36px;height:36px;background:linear-gradient(135deg,var(--red),var(--red2));
-  border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:18px;flex-shrink:0;box-shadow:0 0 10px #ff220044}
-.hinfo{flex:1}.hinfo h1{font-size:.9rem;font-weight:700}
-.hinfo p{font-size:.63rem;color:var(--orange)}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--green);
-  box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
+#header{background:linear-gradient(135deg,#1a0000,#2a0000);border-bottom:1px solid #ff220022;padding:calc(var(--st) + 10px) 14px 10px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.avatar{width:36px;height:36px;background:linear-gradient(135deg,var(--red),var(--red2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 0 10px #ff220044}
+.hinfo{flex:1}.hinfo h1{font-size:.9rem;font-weight:700}.hinfo p{font-size:.63rem;color:var(--orange)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 #cfg-btn{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:4px}
 /* BANNERS */
@@ -54,117 +40,93 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 #ann-banner{background:#001a33;border-bottom:1px solid #0088ff44;color:#66aaff}
 /* TABBAR */
 #tabbar{display:flex;background:var(--bg2);border-bottom:1px solid #1e1e1e;flex-shrink:0}
-.tab{flex:1;padding:9px 4px 7px;display:flex;flex-direction:column;align-items:center;
-  gap:2px;font-size:.58rem;color:var(--faint);cursor:pointer;
-  border-bottom:2px solid transparent;transition:.15s;user-select:none;
-  position:relative;white-space:nowrap}
+.tab{flex:1;padding:9px 4px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.58rem;color:var(--faint);cursor:pointer;border-bottom:2px solid transparent;transition:.15s;user-select:none;position:relative;white-space:nowrap}
 .tab span.ico{font-size:1.1rem}
 .tab.active{color:var(--orange);border-bottom-color:var(--red)}
-.tbadge{position:absolute;top:5px;right:10px;background:var(--red);
-  color:#fff;font-size:.52rem;border-radius:8px;padding:1px 5px;display:none}
+.tbadge{position:absolute;top:5px;right:10px;background:var(--red);color:#fff;font-size:.52rem;border-radius:8px;padding:1px 5px;display:none}
 /* PAGES */
 .page{display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0}
 .page.active{display:flex}
 .pscroll{flex:1;overflow-y:auto;padding:14px 14px calc(var(--sb)+14px)}
 /* CHAT */
-.qabar{display:flex;gap:6px;overflow-x:auto;padding:6px 10px;
-  flex-shrink:0;background:#0a0a0a;border-bottom:1px solid #1a1a1a;scrollbar-width:none}
+.qabar{display:flex;gap:6px;overflow-x:auto;padding:6px 10px;flex-shrink:0;background:#0a0a0a;border-bottom:1px solid #1a1a1a;scrollbar-width:none}
 .qabar::-webkit-scrollbar{display:none}
-.qabtn{background:var(--red3);border:1px solid #ff220033;border-radius:16px;
-  color:#ffaa88;font-size:.68rem;padding:5px 10px;white-space:nowrap;cursor:pointer;flex-shrink:0}
+.qabtn{background:var(--red3);border:1px solid #ff220033;border-radius:16px;color:#ffaa88;font-size:.68rem;padding:5px 10px;white-space:nowrap;cursor:pointer;flex-shrink:0}
 .qabtn:active{background:#3a0a00;transform:scale(.97)}
 #chat{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:5px}
 .mrow{display:flex;width:100%}
 .mrow.user{justify-content:flex-end}
 .mrow.ai,.mrow.sys{justify-content:flex-start}
 .mrow.sys{justify-content:center}
-.bub{max-width:82%;padding:8px 12px;border-radius:var(--radius);
-  font-size:.84rem;line-height:1.55;animation:fi .17s ease;word-break:break-word}
+.bub{max-width:82%;padding:8px 12px;border-radius:var(--radius);font-size:.84rem;line-height:1.55;animation:fi .17s ease;word-break:break-word}
 .bub.user{background:#1a3a0a;border-bottom-right-radius:4px}
 .bub.ai{background:var(--red3);border-bottom-left-radius:4px}
-.bub.sys{background:#1c1c1c;border-radius:10px;max-width:90%;
-  text-align:center;color:var(--muted);font-size:.74rem}
+.bub.sys{background:#1c1c1c;border-radius:10px;max-width:90%;text-align:center;color:var(--muted);font-size:.74rem}
 @keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .lbl{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
 .bub.user .lbl{color:#88ff44}.bub.ai .lbl{color:var(--red)}
-.dots span{display:inline-block;width:7px;height:7px;background:var(--red);
-  border-radius:50%;margin-right:3px;animation:bo .9s infinite}
+.dots span{display:inline-block;width:7px;height:7px;background:var(--red);border-radius:50%;margin-right:3px;animation:bo .9s infinite}
 .dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
 @keyframes bo{0%,80%,100%{transform:scale(.7)}40%{transform:scale(1.15)}}
-#chat-ft{background:var(--bg2);border-top:1px solid #1e1e1e;
-  padding:8px 10px calc(var(--sb)+8px);display:flex;gap:6px;flex-shrink:0}
-#cinput{flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:22px;
-  padding:10px 16px;color:var(--text);font-size:.84rem;outline:none}
+#chat-ft{background:var(--bg2);border-top:1px solid #1e1e1e;padding:8px 10px calc(var(--sb)+8px);display:flex;gap:6px;flex-shrink:0}
+#cinput{flex:1;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:22px;padding:10px 16px;color:var(--text);font-size:.84rem;outline:none}
 #cinput:focus{border-color:var(--red)}
-#csend{background:var(--red);border:none;border-radius:50%;width:44px;height:44px;
-  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0}
+#csend{background:var(--red);border:none;border-radius:50%;width:44px;height:44px;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0}
 #csend:active{transform:scale(.9)}
-</style>
-<style>
 /* FORMS */
 .card{background:var(--bg2);border-radius:14px;padding:14px;margin-bottom:12px}
 .ctitle{font-size:.86rem;font-weight:700;margin-bottom:8px}
 .flbl{font-size:.7rem;color:var(--muted);display:block;margin-bottom:4px;margin-top:10px}
-.finp{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;
-  padding:10px 14px;color:var(--text);font-size:.84rem;outline:none;font-family:inherit}
+.finp{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:10px 14px;color:var(--text);font-size:.84rem;outline:none;font-family:inherit}
 .finp:focus{border-color:var(--blue)}
 textarea.finp{resize:none;min-height:88px;line-height:1.5}
-.btn{width:100%;padding:13px;border:none;border-radius:12px;font-size:.86rem;
-  font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit;transition:.12s}
+.btn{width:100%;padding:13px;border:none;border-radius:12px;font-size:.86rem;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit;transition:.12s}
 .btn:active{transform:scale(.98)}
 .btn-blue{background:var(--blue2);color:#fff}
-.btn-ghost{background:transparent;color:var(--faint);font-size:.76rem;margin-top:4px}
+.btn-ghost{background:transparent;color:var(--faint);font-size:.76rem;margin-top:4px;border:1px solid #2a2a2a}
 .smsg{font-size:.76rem;text-align:center;padding:8px;border-radius:8px;margin-top:8px;display:none}
-.sok{background:#003300;color:var(--green)}
-.serr{background:#330000;color:#ff6666}
-.swarn{background:#332200;color:var(--yellow)}
+.sok{background:#003300;color:var(--green)}.serr{background:#330000;color:#ff6666}.swarn{background:#332200;color:var(--yellow)}
 /* TICKETS */
 .tcard{background:var(--bg3);border-radius:12px;padding:12px;margin-bottom:10px;border-left:3px solid var(--faint)}
-.tcard.pend{border-left-color:var(--orange)}
-.tcard.done{border-left-color:var(--green)}
+.tcard.pend{border-left-color:var(--orange)}.tcard.done{border-left-color:var(--green)}
 .thead2{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
 .tid{font-size:.63rem;color:var(--faint);font-family:monospace}
 .tstat{font-size:.68rem;font-weight:700}
 .tmsg{font-size:.78rem;color:var(--muted);background:#1a1a1a;border-radius:8px;padding:8px;word-break:break-word;margin-bottom:5px}
 .treply{font-size:.8rem;color:#88ff88;background:#0a1a0a;border-radius:8px;padding:8px;word-break:break-word;margin-top:6px}
-/* ANÚNCIOS */
+/* ANN */
 .acard{border-radius:12px;padding:14px;margin-bottom:10px}
 .acard.info{background:#001a33}.acard.aviso{background:#2a1a00}.acard.update{background:#002200}
 .atitle{font-size:.88rem;font-weight:700;margin-bottom:4px}
 .amsg{font-size:.78rem;color:var(--muted);line-height:1.5}
-.adate{font-size:.63rem;color:var(--faint);margin-top:5px}
+.adate{font-size:.62rem;color:var(--faint);margin-top:5px}
 /* MISC */
 .empty{text-align:center;padding:36px 20px;color:var(--faint);font-size:.82rem}
 .eico{font-size:2.4rem;margin-bottom:10px}
-.rbtn{background:none;border:1px solid #2a2a2a;border-radius:10px;
-  padding:6px 14px;color:var(--muted);font-size:.72rem;cursor:pointer;margin-bottom:12px}
+.rbtn{background:none;border:1px solid #2a2a2a;border-radius:10px;padding:6px 14px;color:var(--muted);font-size:.72rem;cursor:pointer;margin-bottom:12px;font-family:inherit}
 .stitle{font-size:.76rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px}
-/* TOAST */
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
-  padding:10px 20px;border-radius:20px;font-size:.78rem;z-index:9999;
-  pointer-events:none;animation:fi .3s ease;white-space:nowrap}
-.toast-ok{background:#003300;color:var(--green)}
-.toast-info{background:#001a33;color:#66aaff}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:20px;font-size:.78rem;z-index:9999;pointer-events:none;animation:fi .3s ease;white-space:nowrap}
+.toast-ok{background:#003300;color:var(--green)}.toast-info{background:#001a33;color:#66aaff}.toast-err{background:#330000;color:#ff6666}
 </style>
 </head>
 <body>
-
-<!-- SETUP (tela manual — aparece quando não tem URL) -->
+<!-- SETUP -->
 <div id="setup">
   <div class="sbox">
     <div style="font-size:2.4rem;text-align:center;margin-bottom:10px">🔥</div>
     <h2>Configurar FloppaAI</h2>
-    <p>Cole a URL do servidor ngrok para enviar tickets em tempo real.</p>
+    <p>Configure o Supabase para tickets e anúncios funcionarem em qualquer lugar, sem servidor local.</p>
     <div class="sstep">
-      <b>1.</b> No PC, rode <b>INICIAR_SERVIDOR.bat</b><br>
-      <b>2.</b> Copie a URL da janela ngrok:<br>
-      <b style="color:#44aaff">https://xxxx.ngrok-free.app</b><br>
-      <b>3.</b> Cole abaixo — ou acesse essa URL direto pelo celular!
+      <b>1.</b> Acesse <b style="color:#44aaff">supabase.com</b> e crie uma conta grátis<br>
+      <b>2.</b> Crie um projeto novo<br>
+      <b>3.</b> Vá em <b>Settings → API</b><br>
+      <b>4.</b> Copie a <b>Project URL</b> e a <b>anon key</b>
     </div>
-    <label class="flbl" style="margin-top:12px">URL do ngrok:</label>
-    <input id="setup-url" class="finp" type="url"
-           placeholder="https://xxxx.ngrok-free.app" autocomplete="off">
-    <div id="setup-err">❌ URL inválida. Use https://...</div>
+    <label class="flbl" style="margin-top:12px">Project URL:</label>
+    <input id="setup-url" class="finp" type="url" placeholder="https://xxxx.supabase.co" autocomplete="off">
+    <label class="flbl">Anon Key:</label>
+    <input id="setup-key" class="finp" type="text" placeholder="eyJhbGciOiJ..." autocomplete="off">
+    <div id="setup-err">❌ Preencha a URL e a chave corretamente.</div>
     <button class="btn btn-blue" onclick="saveSetup()" style="margin-top:12px">✅ Salvar e Entrar</button>
     <button class="btn btn-ghost" onclick="skipSetup()">Usar só o chat por enquanto</button>
   </div>
@@ -178,25 +140,15 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
   <div class="avatar">🐱</div>
   <div class="hinfo"><h1>FloppaAI</h1><p>Floppa's Schoolhouse 2</p></div>
   <div class="dot"></div>
-  <button id="cfg-btn" onclick="openConfig()" title="Configurações">⚙️</button>
+  <button id="cfg-btn" onclick="openConfig()">⚙️</button>
 </div>
 
 <!-- TABBAR -->
 <div id="tabbar">
-  <div class="tab active" id="tab-chat" onclick="showTab('chat')">
-    <span class="ico">🐱</span><span>Chat</span>
-  </div>
-  <div class="tab" id="tab-sup" onclick="showTab('sup')">
-    <span class="ico">🎧</span><span>Suporte</span>
-  </div>
-  <div class="tab" id="tab-tkt" onclick="showTab('tkt')">
-    <span class="ico">📋</span><span>Meus Tickets</span>
-    <span class="tbadge" id="b-tkt"></span>
-  </div>
-  <div class="tab" id="tab-ann" onclick="showTab('ann')">
-    <span class="ico">📢</span><span>Novidades</span>
-    <span class="tbadge" id="b-ann"></span>
-  </div>
+  <div class="tab active" id="tab-chat" onclick="showTab('chat')"><span class="ico">🐱</span><span>Chat</span></div>
+  <div class="tab" id="tab-sup" onclick="showTab('sup')"><span class="ico">🎧</span><span>Suporte</span></div>
+  <div class="tab" id="tab-tkt" onclick="showTab('tkt')"><span class="ico">📋</span><span>Meus Tickets</span><span class="tbadge" id="b-tkt"></span></div>
+  <div class="tab" id="tab-ann" onclick="showTab('ann')"><span class="ico">📢</span><span>Novidades</span><span class="tbadge" id="b-ann"></span></div>
 </div>
 
 <!-- CHAT -->
@@ -224,9 +176,7 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
   <div class="pscroll">
     <div class="card">
       <div class="ctitle">🎧 Abrir Ticket de Suporte</div>
-      <p style="font-size:.76rem;color:var(--muted);line-height:1.5">
-        Envie um ticket e a equipe responderá em breve. Veja a resposta em <b>Meus Tickets</b>.
-      </p>
+      <p style="font-size:.76rem;color:var(--muted);line-height:1.5">Envie um ticket e a equipe responderá. Veja a resposta em <b>Meus Tickets</b>.</p>
       <label class="flbl">Seu nome (Roblox):</label>
       <input id="sup-name" class="finp" type="text" placeholder="Ex: NomeRoblox123" maxlength="40">
       <label class="flbl">Assunto:</label>
@@ -238,11 +188,8 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
         <option value="outro">🔧 Outro</option>
       </select>
       <label class="flbl">Descreva o problema:</label>
-      <textarea id="sup-msg" class="finp" maxlength="1000"
-        placeholder="Explique o que aconteceu, quando e como reproduzir..."></textarea>
-      <div style="text-align:right;font-size:.66rem;color:var(--faint);margin-top:3px">
-        <span id="sup-cnt">0</span>/1000
-      </div>
+      <textarea id="sup-msg" class="finp" maxlength="1000" placeholder="Explique o que aconteceu..."></textarea>
+      <div style="text-align:right;font-size:.66rem;color:var(--faint);margin-top:3px"><span id="sup-cnt">0</span>/1000</div>
       <div id="sup-st" class="smsg"></div>
       <button class="btn btn-blue" id="sup-btn" onclick="sendTicket()">📨 Enviar Ticket</button>
     </div>
@@ -275,149 +222,74 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
     <div id="ann-list"><div class="empty"><div class="eico">📢</div>Nenhum anúncio no momento.</div></div>
   </div>
 </div>
-
 <script>
-const GROQ_KEY = "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";
-const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-let SRV = "";
+const GROQ_KEY="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";
+const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
+let SB_URL="", SB_KEY="";
 
-// ══ AUTO-CONFIG INTELIGENTE ════════════════════════════════
-// Só conecta automaticamente se a URL for ngrok ou localhost.
-// GitHub Pages (github.io) NÃO é o servidor — mostra setup manual.
-function detectSRV() {
-  const loc = window.location;
-  const h = loc.hostname;
-
-  // É ngrok ou localhost? → conecta automático
-  const isNgrok = h.includes("ngrok") || h.includes("ngrok-free") ||
-                  h === "localhost" || h === "127.0.0.1";
-
-  if (isNgrok && loc.protocol.startsWith("http")) {
-    SRV = loc.origin;
-    localStorage.setItem("fai_srv", SRV);
-    localStorage.setItem("fai_auto", "1");
-    return true;
-  }
-
-  // GitHub Pages ou arquivo local → tenta URL salva manualmente
-  const manual = localStorage.getItem("fai_srv");
-  // Limpa URL inválida do GitHub Pages salva por versão antiga
-  if (manual && (manual.includes("github.io") || manual.includes("github.com"))) {
-    localStorage.removeItem("fai_srv");
-    localStorage.removeItem("fai_auto");
-    return false;
-  }
-  if (manual) { SRV = manual; return true; }
-  return false;
-}
-
-// ══ API ══════════════════════════════════════════════════
-async function api(method, path, body) {
-  if (!SRV) return null;
-  try {
-    const opts = { method, headers: {
-      "Content-Type": "application/json",
-      "ngrok-skip-browser-warning": "1"
-    }};
-    if (body) opts.body = JSON.stringify(body);
-    const r = await fetch(`${SRV}/api/${path}`, opts);
-    return r.ok ? r.json() : null;
-  } catch { return null; }
+// ══ SUPABASE API ══════════════════════════════════════════
+async function sb(method, table, body, filter=""){
+  if(!SB_URL||!SB_KEY) return null;
+  try{
+    const opts={method,headers:{"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY,"Prefer":"return=minimal"}};
+    if(body) opts.body=JSON.stringify(body);
+    const r=await fetch(`${SB_URL}/rest/v1/${table}${filter}`,opts);
+    if(method==="GET") return r.ok?r.json():null;
+    return r.ok;
+  }catch{return null;}
 }
 
 // ══ SETUP ════════════════════════════════════════════════
-function checkSetup() {
-  const found = detectSRV();
-  if (found) {
-    document.getElementById("setup").style.display = "none";
-    const auto = localStorage.getItem("fai_auto") === "1";
-    if (auto) toast("✅ Conectado automaticamente!", "toast-ok");
-    onReady();
-  } else {
-    document.getElementById("setup").style.display = "flex";
-  }
+function loadCreds(){
+  SB_URL=(localStorage.getItem("fai_sb_url")||"").replace(/\/$/,"");
+  SB_KEY=localStorage.getItem("fai_sb_key")||"";
 }
-
-function saveSetup() {
-  const url = document.getElementById("setup-url").value.trim().replace(/\/$/,"");
-  if (!url.startsWith("http")) {
-    document.getElementById("setup-err").style.display="block"; return;
-  }
-  SRV = url;
-  localStorage.setItem("fai_srv", SRV);
-  localStorage.removeItem("fai_auto");
-  document.getElementById("setup").style.display = "none";
-  onReady();
+function checkSetup(){
+  loadCreds();
+  if(SB_URL&&SB_KEY){document.getElementById("setup").style.display="none";onReady();}
+  else{document.getElementById("setup").style.display="flex";}
 }
-function skipSetup() {
-  document.getElementById("setup").style.display = "none"; onReady();
+function saveSetup(){
+  const url=document.getElementById("setup-url").value.trim().replace(/\/$/,"");
+  const key=document.getElementById("setup-key").value.trim();
+  const err=document.getElementById("setup-err");
+  if(!url.startsWith("https://")||!key){err.style.display="block";return;}
+  err.style.display="none";
+  SB_URL=url;SB_KEY=key;
+  localStorage.setItem("fai_sb_url",SB_URL);localStorage.setItem("fai_sb_key",SB_KEY);
+  document.getElementById("setup").style.display="none";onReady();
 }
-function openConfig() {
-  const auto = localStorage.getItem("fai_auto") === "1";
-  const tipo = auto ? "🤖 Automático" : "🔧 Manual";
-  const opcao = prompt(
-    `Configuração atual: ${tipo}\nURL: ${SRV||"(nenhuma)"}\n\n` +
-    `• Digite uma nova URL para trocar\n` +
-    `• Digite "auto" para voltar ao modo automático\n` +
-    `• Deixe vazio para modo offline\n` +
-    `• Cancele para não mudar nada`,
-    SRV
-  );
-  if (opcao === null) return;
-  const val = opcao.trim();
-
-  if (val.toLowerCase() === "auto") {
-    localStorage.removeItem("fai_srv");
-    localStorage.removeItem("fai_auto");
-    SRV = "";
-    toast("🔄 Abra a URL do ngrok no navegador para reconectar!", "toast-info");
-    return;
-  }
-  if (val === "") {
-    localStorage.removeItem("fai_srv");
-    localStorage.removeItem("fai_auto");
-    SRV = "";
-    toast("⚠️ Modo offline ativado.", "toast-info");
-    return;
-  }
-  const nova = val.replace(/\/$/,"");
-  if (!nova.startsWith("http")) { toast("❌ URL inválida. Use https://...", "toast-info"); return; }
-  if (nova === SRV) return;
-  SRV = nova;
-  localStorage.setItem("fai_srv", SRV);
-  localStorage.removeItem("fai_auto");
-  toast("✅ URL atualizada!", "toast-ok");
+function skipSetup(){document.getElementById("setup").style.display="none";onReady();}
+function openConfig(){
+  const op=prompt("URL do Supabase (deixe vazio para modo offline):",SB_URL);
+  if(op===null)return;
+  if(!op.trim()){localStorage.removeItem("fai_sb_url");localStorage.removeItem("fai_sb_key");SB_URL="";SB_KEY="";toast("⚠️ Modo offline ativado.","toast-info");return;}
+  const k=prompt("Anon Key:",SB_KEY);
+  if(!k)return;
+  SB_URL=op.trim().replace(/\/$/,"");SB_KEY=k.trim();
+  localStorage.setItem("fai_sb_url",SB_URL);localStorage.setItem("fai_sb_key",SB_KEY);
+  toast("✅ Supabase atualizado!","toast-ok");
 }
 
 // ══ UTILS ════════════════════════════════════════════════
 function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
-function nowStr(){const d=new Date(),p=n=>String(n).padStart(2,"0");return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;}
+function nowStr(){const d=new Date(),p=n=>String(n).padStart(2,"0");return`${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;}
 function esc(t){return(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");}
 function md(t){return esc(t).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");}
 function badge(id,v){const b=document.getElementById("b-"+id);b.style.display=v?"block":"none";b.textContent=v;}
-function toast(msg,cls){
-  const t=document.createElement("div");
-  t.className="toast "+(cls||"toast-ok");t.textContent=msg;
-  document.body.appendChild(t);setTimeout(()=>t.remove(),3000);
-}
-
-// ══ TABS ═════════════════════════════════════════════════
+function toast(msg,cls){const t=document.createElement("div");t.className="toast "+(cls||"toast-ok");t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3000);}
 function showTab(name){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
   document.getElementById("page-"+name).classList.add("active");
   document.getElementById("tab-"+name).classList.add("active");
-  if(name==="tkt") loadTickets();
-  if(name==="ann") loadAnn();
+  if(name==="tkt")loadTickets();if(name==="ann")loadAnn();
 }
-
-// ══ ANTI-SPAM ════════════════════════════════════════════
 const BAD=["porra","caralho","merda","viado","fdp","vsf","fuck","shit","bitch","idiota"];
 function checkSpam(name){
-  const log=JSON.parse(localStorage.getItem("fai_sp")||"[]"),now=Date.now(),win=10*60*1000;
+  const log=JSON.parse(localStorage.getItem("fai_sp")||"[]"),now=Date.now(),win=600000;
   if(log.filter(e=>e.n===name.toLowerCase()&&now-e.t<win).length>=3)return false;
-  log.push({n:name.toLowerCase(),t:now});
-  localStorage.setItem("fai_sp",JSON.stringify(log.filter(e=>now-e.t<win*2)));return true;
+  log.push({n:name.toLowerCase(),t:now});localStorage.setItem("fai_sp",JSON.stringify(log.filter(e=>now-e.t<win*2)));return true;
 }
 
 // ══ TICKET ═══════════════════════════════════════════════
@@ -429,36 +301,34 @@ async function sendTicket(){
   const show=(t,c)=>{st.textContent=t;st.className="smsg "+c;st.style.display="block";};
   if(!name){show("⚠️ Informe seu nome.","swarn");return;}
   if(!sub){show("⚠️ Selecione o assunto.","swarn");return;}
-  if(msg.length<10){show("⚠️ Mensagem muito curta (mín. 10).","swarn");return;}
-  if(!checkSpam(name)){show("🚫 Aguarde 10 minutos para enviar outro.","serr");return;}
-  if(BAD.some(w=>msg.toLowerCase().includes(w))){show("❌ Conteúdo impróprio bloqueado.","serr");return;}
+  if(msg.length<10){show("⚠️ Mensagem muito curta.","swarn");return;}
+  if(!checkSpam(name)){show("🚫 Aguarde 10 minutos.","serr");return;}
+  if(BAD.some(w=>msg.toLowerCase().includes(w))){show("❌ Conteúdo impróprio.","serr");return;}
   btn.disabled=true;btn.textContent="⏳ Enviando...";show("Enviando...","swarn");
-  const ticket={id:genId(),date:nowStr(),name,subject:sub,message:msg,response:"",platform:"mobile"};
+  const tkt={id:genId(),date:nowStr(),name,subject:sub,message:msg,response:"",platform:"mobile"};
   const local=JSON.parse(localStorage.getItem("my_tkt")||"[]");
-  local.push(ticket);localStorage.setItem("my_tkt",JSON.stringify(local));
-  const ok=await api("POST","tickets",ticket);
+  local.push(tkt);localStorage.setItem("my_tkt",JSON.stringify(local));
+  const ok=await sb("POST","tickets",tkt);
   btn.disabled=false;btn.textContent="📨 Enviar Ticket";
-  if(ok||!SRV){
+  if(ok!==false){
     show("✅ Ticket enviado! Veja a resposta em Meus Tickets.","sok");
-    document.getElementById("sup-name").value="";
-    document.getElementById("sup-sub").value="";
-    document.getElementById("sup-msg").value="";
-    document.getElementById("sup-cnt").textContent="0";
-  }else{show("❌ Erro ao enviar. Verifique a conexão.","serr");}
+    document.getElementById("sup-name").value="";document.getElementById("sup-sub").value="";
+    document.getElementById("sup-msg").value="";document.getElementById("sup-cnt").textContent="0";
+  }else show("❌ Erro ao enviar. Verifique a conexão.","serr");
 }
-document.getElementById("sup-msg").addEventListener("input",function(){
-  document.getElementById("sup-cnt").textContent=this.value.length;
-});
+document.getElementById("sup-msg").addEventListener("input",function(){document.getElementById("sup-cnt").textContent=this.value.length;});
 
-// ══ MEUS TICKETS ═════════════════════════════════════════
 async function loadTickets(){
   const box=document.getElementById("tkt-list");
   box.innerHTML=`<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Buscando...</div>`;
   const local=JSON.parse(localStorage.getItem("my_tkt")||"[]");
   if(!local.length){box.innerHTML=`<div class="empty"><div class="eico">📭</div>Nenhum ticket enviado ainda.</div>`;return;}
   let cloud={};
-  const raw=await api("GET","tickets");
-  if(Array.isArray(raw))raw.forEach(t=>{cloud[t.id]=t;});
+  if(SB_URL&&SB_KEY){
+    const ids=local.map(t=>`'${t.id}'`).join(",");
+    const raw=await sb("GET","tickets",null,`?id=in.(${ids})&select=id,response`);
+    if(Array.isArray(raw))raw.forEach(t=>{cloud[t.id]=t;});
+  }
   const upd=local.map(t=>cloud[t.id]?{...t,...cloud[t.id]}:t);
   localStorage.setItem("my_tkt",JSON.stringify(upd));
   badge("tkt",upd.filter(t=>t.response&&t.response.trim()).length||"");
@@ -467,14 +337,10 @@ async function loadTickets(){
   for(const t of [...upd].reverse()){
     const hasR=!!(t.response&&t.response.trim());
     const c=document.createElement("div");c.className="tcard "+(hasR?"done":"pend");
-    c.innerHTML=`<div class="thead2">
-      <span class="tid">#${t.id}</span>
-      <span class="tstat" style="color:${hasR?"#44ff88":"#ffaa44"}">${hasR?"✅ Respondido":"⏳ Aguardando"}</span>
-    </div>
+    c.innerHTML=`<div class="thead2"><span class="tid">#${t.id}</span><span class="tstat" style="color:${hasR?"#44ff88":"#ffaa44"}">${hasR?"✅ Respondido":"⏳ Aguardando"}</span></div>
     <div style="font-size:.7rem;color:var(--muted);margin-bottom:5px">${slbl[t.subject]||"Suporte"} • ${t.date}</div>
     <div class="tmsg">${esc(t.message)}</div>
-    ${hasR?`<div style="font-size:.7rem;color:#44ff88;margin:5px 0 3px">💬 Resposta da equipe:</div>
-    <div class="treply">${esc(t.response)}</div>`
+    ${hasR?`<div style="font-size:.7rem;color:#44ff88;margin:5px 0 3px">💬 Resposta:</div><div class="treply">${esc(t.response)}</div>`
     :`<div style="font-size:.7rem;color:var(--faint);margin-top:5px">Ainda sem resposta.</div>`}`;
     box.appendChild(c);
   }
@@ -484,38 +350,34 @@ async function loadTickets(){
 async function loadAnn(){
   const box=document.getElementById("ann-list");
   box.innerHTML=`<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Carregando...</div>`;
-  if(!SRV){box.innerHTML=`<div class="empty"><div class="eico">📡</div>Configure o servidor para ver anúncios.</div>`;return;}
-  const raw=await api("GET","announcements");
-  const anns=Array.isArray(raw)?raw.sort((a,b)=>b.date>a.date?1:-1):[];
+  if(!SB_URL||!SB_KEY){box.innerHTML=`<div class="empty"><div class="eico">📡</div>Configure o Supabase para ver anúncios.</div>`;return;}
+  const raw=await sb("GET","announcements",null,"?select=*&order=created_at.desc");
+  const anns=Array.isArray(raw)?raw:[];
   badge("ann","");
   if(!anns.length){box.innerHTML=`<div class="empty"><div class="eico">📢</div>Nenhum anúncio.</div>`;return;}
   box.innerHTML="";
   const ico={info:"ℹ️",aviso:"⚠️",update:"🆕"};
   for(const a of anns){
     const d=document.createElement("div");d.className="acard "+(a.type||"info");
-    d.innerHTML=`<div class="atitle">${ico[a.type]||"📢"} ${esc(a.title||"")}</div>
-      <div class="amsg">${esc(a.message||"")}</div><div class="adate">${a.date||""}</div>`;
+    d.innerHTML=`<div class="atitle">${ico[a.type]||"📢"} ${esc(a.title||"")}</div><div class="amsg">${esc(a.message||"")}</div><div class="adate">${a.date||""}</div>`;
     box.appendChild(d);
   }
 }
 async function checkAnn(){
-  if(!SRV)return;
-  const raw=await api("GET","announcements");
-  if(Array.isArray(raw)&&raw.length){
-    document.getElementById("ann-banner").style.display="block";
-    badge("ann",raw.length);
-  }
+  if(!SB_URL||!SB_KEY)return;
+  const raw=await sb("GET","announcements",null,"?select=id&limit=1");
+  if(Array.isArray(raw)&&raw.length){document.getElementById("ann-banner").style.display="block";badge("ann",raw.length);}
 }
-
+</script>
+<script>
 // ══ CHAT ═════════════════════════════════════════════════
 const SYS=`Você é assistente especializado em "Floppa's Schoolhouse 2" (Roblox). NUNCA invente. Responda em português do Brasil.
 OBJETIVO: Coletar 7 livros e encontrar a saída correta. Saída errada vira parede.
 TUTORIAL: Jogo começa com Baldi na entrada. Cada livro tem 3 questões. Errar UMA = só ela marcada. Errar TODAS = livro errado. Ao errar = cutscene Baldi morre, Floppa persegue.
 MECÂNICAS: Cada erro = Floppa mais rápido. 7 livros = Floppa mais rápido. Stamina recupera ao pegar livro ou bebedouro.
-PERSONAGENS: Floppa(perseguidor,audição), Baldi(início,morre), Carro vermelho(após 2 livros,a cada 20s,espere 10-12s), X9(personagem que ao chegar ~10 metros do jogador revela a POSIÇÃO DO JOGADOR pro Floppa por 60s).
+PERSONAGENS: Floppa(perseguidor,audição), Baldi(início,morre), Carro vermelho(após 2 livros,a cada 20s,espere 10-12s), X9(chega ~10m → revela posição ao Floppa por 60s).
 ITENS: Fita Cassete — Floppa persegue o som por 60s.
 SALAS: Aula(livros,porta cinza), Supplies(carro,porta amarela), Cafeteria(saída), Corredores(bebedouros), Detenção, Funcionários.
-CURIOSIDADES: sons secretos não utilizados.
 BUG REPORT: após investigar, inicie com 🐛BUG_REPORT: [resumo] e continue.`;
 
 let hist=[];
@@ -544,17 +406,14 @@ async function sendChat(){
   try{
     const r=await fetch(GROQ_URL,{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+GROQ_KEY},
-      body:JSON.stringify({model:"llama-3.1-8b-instant",
-        messages:[{role:"system",content:SYS},...hist.slice(-14)],
-        max_tokens:900,temperature:.3})});
-    const d=await r.json();
-    if(!r.ok)throw new Error(d.error?.message||"Erro API");
+      body:JSON.stringify({model:"llama-3.1-8b-instant",messages:[{role:"system",content:SYS},...hist.slice(-14)],max_tokens:900,temperature:.3})});
+    const d=await r.json();if(!r.ok)throw new Error(d.error?.message||"Erro API");
     let reply=d.choices[0].message.content;
     if(reply.startsWith("🐛BUG_REPORT:")){
       const[l,...rest]=reply.split("\n");
       const summary=l.replace("🐛BUG_REPORT:","").trim();
       reply=rest.join("\n").trim();
-      if(SRV)api("POST","bugs",{id:genId(),date:nowStr(),summary,response:"",status:"pendente",platform:"mobile"});
+      if(SB_URL&&SB_KEY)sb("POST","bugs",{id:genId(),date:nowStr(),summary,response:"",status:"pendente",platform:"mobile"});
     }
     hist.push({role:"assistant",content:reply});rmTyping();addMsg("ai",reply);
   }catch(e){rmTyping();addMsg("ai","⚠️ Erro: "+e.message);}
@@ -565,10 +424,9 @@ ci.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey)sendChat();});
 
 // ══ INIT ═════════════════════════════════════════════════
 function onReady(){
-  addMsg("sys","👋 Olá! Sou o FloppaAI — assistente de Floppa's Schoolhouse 2.\nUse o Chat para perguntas ou a aba 🎧 Suporte para abrir um ticket!");
+  addMsg("sys","👋 Olá! Sou o FloppaAI.\nUse o Chat para perguntas ou 🎧 Suporte para abrir um ticket!");
   checkAnn();
 }
-
 checkSetup();
 </script>
 </body>

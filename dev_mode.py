@@ -658,24 +658,25 @@ class DevMode(ctk.CTk):
             title=ann_title.get().strip(); msg=ann_msg.get("1.0","end").strip()
             if not title or not msg:
                 messagebox.showwarning("Atenção","Preencha título e mensagem."); return
-            from cloud_db import CloudDB
-            db=CloudDB()
             ann={"id":str(uuid.uuid4())[:8],"date":now_str(),"title":title,
                  "type":type_var.get(),"message":msg,"read":False}
-            ok=db.push_announcement(ann)
-            if ok:
-                log_activity("CRIOU ANÚNCIO",title)
-                ann_title.delete(0,"end"); ann_msg.delete("1.0","end")
-                self._ann_status.configure(text="✅ Anúncio publicado na nuvem!",text_color="#44ff88")
-                self.after(2000,lambda: self._navigate("announcements"))
-            else:
-                self._ann_status.configure(text="❌ Erro ao publicar. Verifique Firebase.",text_color="#ff4444")
+            # Salva localmente
+            anns=load_announcements(); anns.append(ann); save_announcements(anns)
+            # Envia ao servidor ngrok se disponível
+            import requests as _req
+            ngrok_url=_read_ngrok_url()
+            if ngrok_url:
+                try: _req.post(f"{ngrok_url}/api/announcements",json=ann,timeout=5,headers={"ngrok-skip-browser-warning":"1"})
+                except: pass
+            log_activity("CRIOU ANÚNCIO",title)
+            ann_title.delete(0,"end"); ann_msg.delete("1.0","end")
+            self._ann_status.configure(text="✅ Anúncio salvo!",text_color="#44ff88")
+            self.after(2000,lambda: self._navigate("announcements"))
         ctk.CTkButton(body,text="📢  Publicar Anúncio",height=42,
                       fg_color="#003a7a",hover_color="#0055bb",
                       font=ctk.CTkFont(size=13,weight="bold"),command=_create).pack(fill="x",pady=6)
         ctk.CTkFrame(body,height=1,fg_color="#333").pack(fill="x",pady=12)
-        from cloud_db import CloudDB
-        anns=CloudDB().get_announcements()
+        anns=load_announcements()
         ctk.CTkLabel(body,text=f"📋  Anúncios publicados ({len(anns)})",
                      font=ctk.CTkFont(size=12,weight="bold"),text_color="#888").pack(anchor="w",pady=(0,6))
         if not anns:
@@ -697,8 +698,8 @@ class DevMode(ctk.CTk):
                           command=lambda aid=ann.get("id",""): self._delete_ann(aid)).pack(side="right")
 
     def _delete_ann(self, aid):
-        from cloud_db import CloudDB
-        CloudDB().delete_announcement(aid)
+        anns=[a for a in load_announcements() if a.get("id")!=aid]
+        save_announcements(anns)
         log_activity("DELETOU ANÚNCIO",f"#{aid}"); self._navigate("announcements")
 
     # ── VERSÃO ───────────────────────────────────────────────────────────────

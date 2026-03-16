@@ -282,27 +282,32 @@ const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 let SRV = "";
 
 // ══ AUTO-CONFIG INTELIGENTE ════════════════════════════════
-// Se o app foi aberto PELA URL do ngrok, usa window.location.origin
-// automaticamente — sempre atualizado, nunca desatualizado!
+// Só conecta automaticamente se a URL for ngrok ou localhost.
+// GitHub Pages (github.io) NÃO é o servidor — mostra setup manual.
 function detectSRV() {
   const loc = window.location;
-  const isServedByServer = loc.protocol.startsWith("http") &&
-    loc.hostname !== "" &&
-    loc.hostname !== "localhost" &&
-    !loc.protocol.startsWith("file");
+  const h = loc.hostname;
 
-  if (isServedByServer) {
-    // App aberto pelo ngrok/servidor — usa a URL atual automaticamente
+  // É ngrok ou localhost? → conecta automático
+  const isNgrok = h.includes("ngrok") || h.includes("ngrok-free") ||
+                  h === "localhost" || h === "127.0.0.1";
+
+  if (isNgrok && loc.protocol.startsWith("http")) {
     SRV = loc.origin;
     localStorage.setItem("fai_srv", SRV);
     localStorage.setItem("fai_auto", "1");
     return true;
   }
-  // App aberto como arquivo local — tenta URL salva manualmente
+
+  // GitHub Pages ou arquivo local → tenta URL salva manualmente
   const manual = localStorage.getItem("fai_srv");
-  if (manual && localStorage.getItem("fai_auto") !== "1") {
-    SRV = manual; return true;
+  // Limpa URL inválida do GitHub Pages salva por versão antiga
+  if (manual && (manual.includes("github.io") || manual.includes("github.com"))) {
+    localStorage.removeItem("fai_srv");
+    localStorage.removeItem("fai_auto");
+    return false;
   }
+  if (manual) { SRV = manual; return true; }
   return false;
 }
 

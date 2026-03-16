@@ -272,7 +272,8 @@ select.finp{cursor:pointer}
 const GROQ_KEY="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";
 const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
 const VER_URL ="https://raw.githubusercontent.com/Heitorcoser/floppaai-mobile/main/version.json";
-let SB_URL="",SB_KEY="";
+const SB_URL="https://gxjmolabyaiuuwvioyuw.supabase.co";
+const SB_KEY="sb_publishable_nLx32tzEkLUyXe3J4YfHKg_apSpDoI0";
 let _bugId=null,_tktId=null;
 
 // ══ SUPABASE ══════════════════════════════════════════════
@@ -287,37 +288,14 @@ async function sb(method,table,body,filter=""){
   }catch{return null;}
 }
 
-// ══ SETUP ════════════════════════════════════════════════
-function loadCreds(){
-  SB_URL=(localStorage.getItem("pc_sb_url")||"").replace(/\/$/,"");
-  SB_KEY=localStorage.getItem("pc_sb_key")||"";
-}
-function checkSetup(){
-  loadCreds();
-  if(SB_URL&&SB_KEY){updateSrvLabel();onReady();}
-  else document.getElementById("setup-overlay").style.display="flex";
-}
-function saveSetup(){
-  const url=document.getElementById("setup-url").value.trim().replace(/\/$/,"");
-  const key=document.getElementById("setup-key").value.trim();
-  if(!url.startsWith("https://")||!key){document.getElementById("setup-err").style.display="block";return;}
-  SB_URL=url;SB_KEY=key;
-  localStorage.setItem("pc_sb_url",SB_URL);localStorage.setItem("pc_sb_key",SB_KEY);
-  document.getElementById("setup-overlay").style.display="none";
-  updateSrvLabel();onReady();
-}
-function skipSetup(){document.getElementById("setup-overlay").style.display="none";onReady();}
-function openConfig(){
-  const url=prompt("Project URL do Supabase:",SB_URL);if(url===null)return;
-  if(!url.trim()){SB_URL="";SB_KEY="";localStorage.removeItem("pc_sb_url");localStorage.removeItem("pc_sb_key");updateSrvLabel();toast("⚠️ Modo offline.","toast-info");return;}
-  const key=prompt("Anon Key:",SB_KEY);if(!key)return;
-  SB_URL=url.trim().replace(/\/$/,"");SB_KEY=key.trim();
-  localStorage.setItem("pc_sb_url",SB_URL);localStorage.setItem("pc_sb_key",SB_KEY);
-  updateSrvLabel();toast("✅ Supabase atualizado!","toast-ok");
-}
+// ══ SETUP (hardcoded, sem tela de config) ════════════════
+function checkSetup(){ updateSrvLabel(); onReady(); }
+function saveSetup(){ onReady(); }
+function skipSetup(){ onReady(); }
+function openConfig(){ toast("✅ Supabase configurado automaticamente!","toast-ok"); }
 function updateSrvLabel(){
   const el=document.getElementById("srv-lbl");if(!el)return;
-  if(SB_URL&&SB_KEY){el.textContent="🟢 Supabase conectado";el.style.color="#44ff88";}
+  el.textContent="🟢 Supabase";el.style.color="#44ff88";
   else{el.textContent="⚪ offline";el.style.color="var(--faint)";}
 }
 

@@ -225,7 +225,8 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
 <script>
 const GROQ_KEY="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";
 const GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
-let SB_URL="", SB_KEY="";
+const SB_URL="https://gxjmolabyaiuuwvioyuw.supabase.co";
+const SB_KEY="sb_publishable_nLx32tzEkLUyXe3J4YfHKg_apSpDoI0";
 
 // ══ SUPABASE API ══════════════════════════════════════════
 async function sb(method, table, body, filter=""){
@@ -239,36 +240,13 @@ async function sb(method, table, body, filter=""){
   }catch{return null;}
 }
 
-// ══ SETUP ════════════════════════════════════════════════
-function loadCreds(){
-  SB_URL=(localStorage.getItem("fai_sb_url")||"").replace(/\/$/,"");
-  SB_KEY=localStorage.getItem("fai_sb_key")||"";
-}
+// ══ SETUP (credenciais hardcoded, sem tela de config) ════
 function checkSetup(){
-  loadCreds();
-  if(SB_URL&&SB_KEY){document.getElementById("setup").style.display="none";onReady();}
-  else{document.getElementById("setup").style.display="flex";}
+  document.getElementById("setup").style.display="none";
+  onReady();
 }
-function saveSetup(){
-  const url=document.getElementById("setup-url").value.trim().replace(/\/$/,"");
-  const key=document.getElementById("setup-key").value.trim();
-  const err=document.getElementById("setup-err");
-  if(!url.startsWith("https://")||!key){err.style.display="block";return;}
-  err.style.display="none";
-  SB_URL=url;SB_KEY=key;
-  localStorage.setItem("fai_sb_url",SB_URL);localStorage.setItem("fai_sb_key",SB_KEY);
-  document.getElementById("setup").style.display="none";onReady();
-}
-function skipSetup(){document.getElementById("setup").style.display="none";onReady();}
 function openConfig(){
-  const op=prompt("URL do Supabase (deixe vazio para modo offline):",SB_URL);
-  if(op===null)return;
-  if(!op.trim()){localStorage.removeItem("fai_sb_url");localStorage.removeItem("fai_sb_key");SB_URL="";SB_KEY="";toast("⚠️ Modo offline ativado.","toast-info");return;}
-  const k=prompt("Anon Key:",SB_KEY);
-  if(!k)return;
-  SB_URL=op.trim().replace(/\/$/,"");SB_KEY=k.trim();
-  localStorage.setItem("fai_sb_url",SB_URL);localStorage.setItem("fai_sb_key",SB_KEY);
-  toast("✅ Supabase atualizado!","toast-ok");
+  toast("✅ Supabase configurado automaticamente!","toast-ok");
 }
 
 // ══ UTILS ════════════════════════════════════════════════

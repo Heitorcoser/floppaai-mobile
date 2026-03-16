@@ -63,5 +63,20 @@
     "time": "16/03/2026 00:17:28",
     "action": "LOGIN",
     "detail": "Desenvolvedor autenticado"
+  },
+  {
+    "time": "16/03/2026 00:37:44",
+    "action": "LOGIN",
+    "detail": "Desenvolvedor autenticado"
+  },
+  {
+    "time": "16/03/2026 00:37:54",
+    "action": "CONFIGUROU NGROK",
+    "detail": "https://unsounded-mitsuko-unstationed.ngrok-free.dev"
+  },
+  {
+    "time": "16/03/2026 00:37:56",
+    "action": "CONFIGUROU NGROK",
+    "detail": "https://unsounded-mitsuko-unstationed.ngrok-free.dev"
   }
 ]

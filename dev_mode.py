@@ -8,8 +8,8 @@ from tkinter import messagebox
 import json, os, datetime, uuid, threading, time, subprocess, sys, hashlib, requests
 
 # ── Supabase (hardcoded) ──────────────────────────────────────────────────
-SB_URL = "https://gxjmolabyaiuuwvioyuw.supabase.co"
-SB_KEY = "sb_publishable_nLx32tzEkLUyXe3J4YfHKg_apSpDoI0"
+SB_URL = "https://klcdgksyddlyfazowheb.supabase.co"
+SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtsY2Rna3N5ZGRseWZhem93aGViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MzAwMTAsImV4cCI6MjA4OTIwNjAxMH0.pYqDAbpYWvnr0sf2pQJ5BBx1dAU9HUX2Amd69RWvSSg"
 SB_HDR = {
     "apikey": SB_KEY, "Authorization": f"Bearer {SB_KEY}",
     "Content-Type": "application/json", "Prefer": "return=representation"

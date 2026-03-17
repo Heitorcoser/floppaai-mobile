@@ -249,8 +249,8 @@ select.finp{cursor:pointer}
         <select id="sup-sub" class="finp">
           <option value="">— Selecione —</option>
           <option value="bug">🐛 Bug</option>
+          <option value="ideia">💡 Ideia / Sugestão</option>
           <option value="duvida">❓ Dúvida</option>
-          <option value="sugestao">💡 Sugestão</option>
           <option value="outro">🔧 Outro</option>
         </select>
         <label class="flbl">Mensagem:</label>
@@ -289,7 +289,7 @@ const VER_URL ="https://raw.githubusercontent.com/Heitorcoser/floppaai-mobile/ma
 const SB_URL  ="https://klcdgksyddlyfazowheb.supabase.co";
 const SB_KEY  ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtsY2Rna3N5ZGRseWZhem93aGViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MzAwMTAsImV4cCI6MjA4OTIwNjAxMH0.pYqDAbpYWvnr0sf2pQJ5BBx1dAU9HUX2Amd69RWvSSg";
 const DEV_HASH="0f5fdb20028e7514a755f4c2648b7fc26a888b8fed25edfafb3fc1287ac420e6";
-let USERNAME="", IS_DEV=false, _bugId=null, _tktId=null;
+let USERNAME="", USER_ID="", IS_DEV=false, _bugId=null, _tktId=null;
 
 // ══ DEBUG ═════════════════════════════════════════════════
 function dbg(type,msg){
@@ -474,7 +474,7 @@ async function sendTicket(){
   if(checkBadWords(msg)){show("❌ Conteúdo impróprio bloqueado.","serr");return;}
   if(!checkSpam(name)){show("🚫 Aguarde 10 minutos.","serr");return;}
   btn.disabled=true;btn.textContent="⏳...";show("Enviando...","swarn");
-  const tkt={id:genId(),date:nowStr(),name,subject:sub,message:msg,response:"",platform:"pc"};
+  const tkt={id:genId(),date:nowStr(),name,subject:sub,message:msg,response:"",platform:"pc",user_id:USER_ID||""};
   const local=JSON.parse(localStorage.getItem("pc_tkt")||"[]");
   local.push(tkt);localStorage.setItem("pc_tkt",JSON.stringify(local));
   const ok=await sb("POST","tickets",tkt);
@@ -493,7 +493,7 @@ async function loadTickets(){
   const upd=local.map(t=>cloud[t.id]?{...t,response:cloud[t.id].response||""}:t);
   localStorage.setItem("pc_tkt",JSON.stringify(upd));
   box.innerHTML="";
-  const slbl={bug:"🐛 Bug",duvida:"❓ Dúvida",sugestao:"💡 Sugestão",outro:"🔧 Outro"};
+  const slbl={bug:"🐛 Bug",ideia:"💡 Ideia",duvida:"❓ Dúvida",outro:"🔧 Outro"};
   for(const t of [...upd].reverse()){
     const hasR=!!(t.response&&t.response.trim());
     const c=document.createElement("div");c.className="tcard "+(hasR?"done":"pend");
@@ -511,7 +511,7 @@ MECÂNICAS: Cada erro = Floppa mais rápido. 7 livros = Floppa mais rápido. Sta
 PERSONAGENS: Floppa(perseguidor,audição), Baldi(início,morre), Carro vermelho(após 2 livros,20s,espere 10-12s), X9(10m → revela posição por 60s).
 ITENS: Fita Cassete — Floppa persegue som por 60s.
 SALAS: Aula(livros,porta cinza), Supplies(carro,porta amarela), Cafeteria(saída), Corredores(bebedouros), Detenção, Funcionários.
-BUG REPORT: inicie com 🐛BUG_REPORT: [resumo] e continue.`;
+BUG REPORT: inicie com 🐛BUG_REPORT:[sumario_detalhado] quando JA TEM informacoes suficientes (2+ respostas do usuario). Sumario deve ter 10+ chars e ser especifico.`;
 
 let hist=[];
 const chatBox=document.getElementById("chat-box"),ci=document.getElementById("cinput");
@@ -555,10 +555,37 @@ async function checkVer(){try{const d=await(await fetch(VER_URL)).json();if(d.ve
 // Inicializa
 USERNAME=localStorage.getItem("pc_username")||"";
 IS_DEV=localStorage.getItem("pc_is_dev")==="1";
-if(USERNAME){
-  document.getElementById("login-screen").style.display="none";
-  document.getElementById("sb-user").textContent="Olá, "+USERNAME+(IS_DEV?" 👑":"");
-  onReady();
+var STORED_UID=localStorage.getItem("pc_uid")||"";
+
+async function checkUserStillExists(){
+  if(!STORED_UID)return false;
+  var r=await sb("GET","users",null,"?id=eq."+STORED_UID+"&select=id,banned");
+  if(!Array.isArray(r)||r.length===0){
+    // Usuário foi deletado (force logout) — limpa tudo
+    localStorage.removeItem("pc_username");
+    localStorage.removeItem("pc_uid");
+    localStorage.removeItem("pc_is_dev");
+    USERNAME="";STORED_UID="";
+    return false;
+  }
+  return true;
+}
+
+if(USERNAME&&STORED_UID){
+  checkUserStillExists().then(function(exists){
+    if(exists){
+      document.getElementById("login-screen").style.display="none";
+      document.getElementById("sb-user").textContent="Olá, "+USERNAME+(IS_DEV?" 👑":"");
+      onReady();
+    }else{
+      // Força tela de login
+      document.getElementById("login-screen").style.display="flex";
+    }
+  });
+}else if(USERNAME&&!STORED_UID){
+  // Sem UID — também força login
+  localStorage.removeItem("pc_username");
+  document.getElementById("login-screen").style.display="flex";
 }
 document.getElementById("login-input").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
 checkVer();

@@ -14,14 +14,12 @@
   --red:#ff2200;--red2:#cc1100;--red3:#2a0000;
   --blue:#0088ff;--blue2:#003a7a;
   --green:#00cc66;--orange:#ff8844;--yellow:#ffcc44;
-  --gold:#ffd700;--gold2:#b8860b;
+  --gold:#ffd700;
   --text:#e0e0e0;--muted:#888;--faint:#444;
   --radius:16px;--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)
 }
 html,body{height:100%;overflow:hidden}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
-
-/* LOGIN */
 #login-screen{position:fixed;inset:0;background:#050505;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;flex-direction:column}
 .login-box{background:#111;border-radius:20px;padding:26px;width:100%;max-width:340px;text-align:center}
 .login-box .logo{font-size:3rem;margin-bottom:10px}
@@ -29,36 +27,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .login-box p{font-size:.76rem;color:var(--muted);margin-bottom:18px;line-height:1.5}
 #login-input{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:12px 16px;color:var(--text);font-size:.95rem;outline:none;font-family:inherit;text-align:center}
 #login-input:focus{border-color:var(--orange)}
-#login-err{font-size:.72rem;color:#ff6666;margin-top:6px;display:none}
+#login-err{font-size:.72rem;color:#ff6666;margin-top:6px;display:none;line-height:1.4}
 #login-btn{width:100%;margin-top:12px;padding:13px;background:var(--red);border:none;border-radius:12px;color:#fff;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit}
 #login-btn:active{transform:scale(.98)}
-
-/* HEADER */
 #header{background:linear-gradient(135deg,#1a0000,#2a0000);border-bottom:1px solid #ff220022;padding:calc(var(--st)+10px) 14px 10px;display:flex;align-items:center;gap:10px;flex-shrink:0}
 .avatar{width:36px;height:36px;background:linear-gradient(135deg,var(--red),var(--red2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .hinfo{flex:1}.hinfo h1{font-size:.9rem;font-weight:700}.hinfo p{font-size:.63rem;color:var(--orange)}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 #cfg-btn{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:4px}
-
-/* BANNER */
 .banner{display:none;padding:6px 14px;font-size:.74rem;text-align:center;flex-shrink:0;cursor:pointer}
 #ann-banner{background:#001a33;border-bottom:1px solid #0088ff44;color:#66aaff}
-
-/* TABBAR */
 #tabbar{display:flex;background:var(--bg2);border-bottom:1px solid #1e1e1e;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
 #tabbar::-webkit-scrollbar{display:none}
-.tab{flex:1;min-width:52px;padding:8px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.55rem;color:var(--faint);cursor:pointer;border-bottom:2px solid transparent;transition:.15s;user-select:none;position:relative;white-space:nowrap}
-.tab .ico{font-size:1.05rem}
+.tab{flex:1;min-width:50px;padding:8px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.52rem;color:var(--faint);cursor:pointer;border-bottom:2px solid transparent;transition:.15s;user-select:none;position:relative;white-space:nowrap}
+.tab .ico{font-size:1rem}
 .tab.active{color:var(--orange);border-bottom-color:var(--red)}
-.tbadge{position:absolute;top:4px;right:8px;background:var(--red);color:#fff;font-size:.5rem;border-radius:8px;padding:1px 4px;display:none}
-
-/* PAGES */
+.tbadge{position:absolute;top:4px;right:6px;background:var(--red);color:#fff;font-size:.5rem;border-radius:8px;padding:1px 4px;display:none}
 .page{display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0}
 .page.active{display:flex}
 .pscroll{flex:1;overflow-y:auto;padding:14px 14px calc(var(--sb)+14px)}
-
-/* AI CHAT */
 .qabar{display:flex;gap:6px;overflow-x:auto;padding:6px 10px;flex-shrink:0;background:#0a0a0a;border-bottom:1px solid #1a1a1a;scrollbar-width:none}
 .qabar::-webkit-scrollbar{display:none}
 .qabtn{background:var(--red3);border:1px solid #ff220033;border-radius:16px;color:#ffaa88;font-size:.68rem;padding:5px 10px;white-space:nowrap;cursor:pointer;flex-shrink:0;transition:.2s}
@@ -84,14 +72,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 #cinput:focus{border-color:var(--red)}
 #csend{background:var(--red);border:none;border-radius:50%;width:44px;height:44px;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0}
 #csend:active{transform:scale(.9)}
-
-/* GERAL CHAT */
 #gchat{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:4px}
+#gchat-status{font-size:.7rem;color:var(--faint);text-align:center;padding:6px;flex-shrink:0;background:#0a0a0a;border-bottom:1px solid #1a1a1a}
 .gmsg{display:flex;flex-direction:column;animation:fi .15s ease}
 .gmsg .gname{font-size:.62rem;font-weight:700;margin-bottom:2px;padding:0 4px}
 .gmsg .gname.dev{color:var(--gold);text-shadow:0 0 8px #ffd70066}
 .gmsg .gname.user-self{color:#88ff44}
 .gmsg .gname.normal{color:#44aaff}
+.gmsg .gname .gid{font-size:.55rem;color:var(--faint);font-weight:400;margin-left:4px}
 .gmsg .gtext{background:var(--bg3);border-radius:10px;padding:8px 11px;font-size:.83rem;line-height:1.5;word-break:break-word;max-width:85%}
 .gmsg.self{align-items:flex-end}
 .gmsg.self .gtext{background:#1a3a0a}
@@ -102,9 +90,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 #ginput:focus{border-color:var(--blue)}
 #gsend{background:var(--blue2);border:none;border-radius:50%;width:44px;height:44px;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0}
 #gsend:active{transform:scale(.9)}
-.gchat-status{text-align:center;font-size:.7rem;color:var(--faint);padding:8px;flex-shrink:0}
-
-/* FORMS */
+.ban-screen{position:fixed;inset:0;background:#050505;z-index:9998;display:none;align-items:center;justify-content:center;padding:20px;flex-direction:column;text-align:center}
+.ban-box{background:#1a0000;border:2px solid #ff220044;border-radius:20px;padding:28px;width:100%;max-width:340px}
+.ban-box .ban-ico{font-size:3rem;margin-bottom:12px}
+.ban-box h2{font-size:1.1rem;font-weight:700;color:#ff4444;margin-bottom:8px}
+.ban-box p{font-size:.8rem;color:var(--muted);line-height:1.6}
+.ban-box .ban-id{font-size:.65rem;color:var(--faint);margin-top:10px;font-family:monospace}
+.ban-box .ban-reason{font-size:.78rem;color:#ff8888;margin-top:8px;background:#2a0000;padding:8px;border-radius:8px}
 .card{background:var(--bg2);border-radius:14px;padding:14px;margin-bottom:12px}
 .ctitle{font-size:.86rem;font-weight:700;margin-bottom:8px}
 .flbl{font-size:.7rem;color:var(--muted);display:block;margin-bottom:4px;margin-top:10px}
@@ -134,8 +126,6 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
 .stitle{font-size:.76rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:20px;font-size:.78rem;z-index:9999;pointer-events:none;animation:fi .3s ease;white-space:nowrap;max-width:90vw}
 .toast-ok{background:#003300;color:var(--green)}.toast-info{background:#001a33;color:#66aaff}.toast-err{background:#330000;color:#ff6666}
-
-/* DEBUG */
 #page-dbg .dbg-hdr{background:#111;border-bottom:1px solid #222;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0}
 #page-dbg .dbg-hdr span{flex:1;font-size:.85rem;font-weight:700;color:#ff8844}
 .dbg-act{background:#1a1a1a;border:none;color:var(--muted);font-size:.7rem;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:inherit}
@@ -150,14 +140,25 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
 </head>
 <body>
 
+<!-- BAN SCREEN -->
+<div class="ban-screen" id="ban-screen">
+  <div class="ban-box">
+    <div class="ban-ico">🚫</div>
+    <h2>Você foi banido</h2>
+    <p>Seu acesso ao FloppaAI foi suspenso pela equipe de moderação.</p>
+    <div class="ban-reason" id="ban-reason-txt">Motivo não especificado.</div>
+    <div class="ban-id" id="ban-id-txt"></div>
+  </div>
+</div>
+
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
     <div class="logo">🐱</div>
     <h2>Bem-vindo ao FloppaAI</h2>
-    <p>Digite seu nome de usuário para entrar.<br>Você pode trocar nas configurações ⚙️</p>
+    <p>Digite seu nome para entrar.<br>Ele ficará salvo — troque nas configurações ⚙️</p>
     <input id="login-input" type="text" placeholder="Seu nome..." maxlength="24" autocomplete="off" autocorrect="off" spellcheck="false">
-    <div id="login-err">⚠️ Nome inválido. Use 3-24 caracteres sem palavrões.</div>
+    <div id="login-err">⚠️ Nome inválido.</div>
     <button id="login-btn" onclick="doLogin()">Entrar →</button>
   </div>
 </div>
@@ -203,9 +204,9 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
   </div>
 </div>
 
-<!-- GERAL CHAT -->
+<!-- GERAL -->
 <div class="page" id="page-geral">
-  <div class="gchat-status" id="gchat-status">💬 Chat Geral — todos os jogadores</div>
+  <div id="gchat-status">💬 Chat Geral — todos os jogadores</div>
   <div id="gchat"></div>
   <div id="gchat-ft">
     <input id="ginput" type="text" placeholder="Mensagem para todos..." maxlength="200" autocomplete="off">
@@ -218,16 +219,16 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
   <div class="pscroll">
     <div class="card">
       <div class="ctitle">🎧 Abrir Ticket</div>
-      <label class="flbl">Assunto:</label>
+      <label class="flbl">Tipo:</label>
       <select id="sup-sub" class="finp">
         <option value="">— Selecione —</option>
         <option value="bug">🐛 Bug no jogo</option>
+        <option value="ideia">💡 Ideia / Sugestão</option>
         <option value="duvida">❓ Dúvida</option>
-        <option value="sugestao">💡 Sugestão</option>
         <option value="outro">🔧 Outro</option>
       </select>
-      <label class="flbl">Descreva o problema:</label>
-      <textarea id="sup-msg" class="finp" maxlength="1000" placeholder="Explique o que aconteceu..."></textarea>
+      <label class="flbl">Descreva:</label>
+      <textarea id="sup-msg" class="finp" maxlength="1000" placeholder="Explique em detalhes..."></textarea>
       <div style="text-align:right;font-size:.66rem;color:var(--faint);margin-top:3px"><span id="sup-cnt">0</span>/1000</div>
       <div id="sup-st" class="smsg"></div>
       <button class="btn btn-blue" id="sup-btn" onclick="sendTicket()">📨 Enviar Ticket</button>
@@ -235,10 +236,10 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
   </div>
 </div>
 
-<!-- TICKETS -->
+<!-- MEUS TICKETS -->
 <div class="page" id="page-tkt">
   <div class="pscroll">
-    <button class="rbtn" onclick="loadTickets()">🔄 Atualizar respostas</button>
+    <button class="rbtn" onclick="loadTickets()">🔄 Atualizar</button>
     <div class="stitle">Seus Tickets</div>
     <div id="tkt-list"><div class="empty"><div class="eico">📭</div>Nenhum ticket ainda.</div></div>
   </div>
@@ -248,69 +249,52 @@ textarea.finp{resize:none;min-height:88px;line-height:1.5}
 <div class="page" id="page-ann">
   <div class="pscroll">
     <button class="rbtn" onclick="loadAnn()">🔄 Atualizar</button>
-    <div class="stitle">Novidades & Anúncios</div>
+    <div class="stitle">Novidades</div>
     <div id="ann-list"><div class="empty"><div class="eico">📢</div>Nenhum anúncio.</div></div>
   </div>
 </div>
 
 <!-- DEBUG -->
 <div class="page" id="page-dbg">
-  <div class="dbg-hdr">
-    <span>🐛 Console Debug</span>
-    <button class="dbg-act" onclick="clearDbg()">Limpar</button>
-  </div>
+  <div class="dbg-hdr"><span>🐛 Debug</span><button class="dbg-act" onclick="clearDbg()">Limpar</button></div>
   <div id="dbg-log"></div>
 </div>
 
 <script>
-// ══ CONFIG ════════════════════════════════════════════════
-var GROQ_KEY = "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";
-var GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-var SB_URL   = "https://klcdgksyddlyfazowheb.supabase.co";
-var SB_KEY   = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtsY2Rna3N5ZGRseWZhem93aGViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MzAwMTAsImV4cCI6MjA4OTIwNjAxMH0.pYqDAbpYWvnr0sf2pQJ5BBx1dAU9HUX2Amd69RWvSSg";
-var DEV_HASH = "0f5fdb20028e7514a755f4c2648b7fc26a888b8fed25edfafb3fc1287ac420e6";
+var GROQ_KEY="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";
+var GROQ_URL="https://api.groq.com/openai/v1/chat/completions";
+var SB_URL="https://klcdgksyddlyfazowheb.supabase.co";
+var SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtsY2Rna3N5ZGRseWZhem93aGViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MzAwMTAsImV4cCI6MjA4OTIwNjAxMH0.pYqDAbpYWvnr0sf2pQJ5BBx1dAU9HUX2Amd69RWvSSg";
+var DEV_HASH="0f5fdb20028e7514a755f4c2648b7fc26a888b8fed25edfafb3fc1287ac420e6";
+var USERNAME="",USER_ID="",IS_DEV=false;
 
-// ══ DEBUG ═════════════════════════════════════════════════
-function dbg(type, msg) {
-  var log = document.getElementById("dbg-log");
-  if (!log) return;
-  var d = document.createElement("div");
-  d.className = "dlog-" + type;
-  var t = new Date().toTimeString().slice(0,8);
-  d.innerHTML = '<span class="dlog-time">' + t + '</span>' + String(msg).replace(/</g,"&lt;");
-  log.appendChild(d); log.scrollTop = log.scrollHeight;
-}
-function clearDbg() { document.getElementById("dbg-log").innerHTML = ""; }
-var _ce=console.error,_cw=console.warn,_cl=console.log;
-console.error=function(){_ce.apply(console,arguments);dbg("err",Array.from(arguments).join(" "));};
-console.warn =function(){_cw.apply(console,arguments);dbg("warn",Array.from(arguments).join(" "));};
-window.onerror=function(msg,src,line){dbg("err","JS ERROR: "+msg+" (L"+line+")");return false;};
+// DEBUG
+function dbg(type,msg){var log=document.getElementById("dbg-log");if(!log)return;var d=document.createElement("div");d.className="dlog-"+type;var t=new Date().toTimeString().slice(0,8);d.innerHTML='<span class="dlog-time">'+t+"</span>"+String(msg).replace(/</g,"&lt;");log.appendChild(d);log.scrollTop=log.scrollHeight;}
+function clearDbg(){document.getElementById("dbg-log").innerHTML="";}
+window.onerror=function(msg,s,l){dbg("err","JS: "+msg+" L"+l);return false;};
 window.onunhandledrejection=function(e){dbg("err","Promise: "+(e.reason||e));};
 
-// ══ SUPABASE ══════════════════════════════════════════════
-async function sb(method, table, body, filter) {
-  filter = filter || "";
-  try {
-    var h = {"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY};
-    if (method !== "GET") h["Prefer"] = "return=representation";
-    var opts = {method:method, headers:h};
-    if (body) opts.body = JSON.stringify(body);
-    dbg("info", "SB "+method+" "+table+filter);
-    var r = await fetch(SB_URL+"/rest/v1/"+table+filter, opts);
-    if (!r.ok) { var t=await r.text(); dbg("err","SB "+r.status+": "+t); return null; }
-    if (method==="GET") { var d=await r.json(); dbg("ok","SB GET "+table+" "+Array.isArray(d)?d.length+" items":"ok"); return d; }
-    if (r.status===204) return true;
+// SUPABASE
+async function sb(method,table,body,filter){
+  filter=filter||"";
+  try{
+    var h={"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY};
+    if(method!=="GET")h["Prefer"]="return=representation";
+    var opts={method:method,headers:h};if(body)opts.body=JSON.stringify(body);
+    dbg("info","SB "+method+" "+table+filter);
+    var r=await fetch(SB_URL+"/rest/v1/"+table+filter,opts);
+    if(!r.ok){var t=await r.text();dbg("err","SB "+r.status+": "+t.slice(0,100));return null;}
+    if(method==="GET"){var d=await r.json();dbg("ok","SB GET "+table+" "+(Array.isArray(d)?d.length+" items":"ok"));return d;}
+    if(r.status===204)return true;
     return r.json().catch(function(){return true;});
-  } catch(e) { dbg("err","SB exc: "+e.message); return null; }
+  }catch(e){dbg("err","SB exc: "+e.message);return null;}
 }
 
-// ══ UTILS ═════════════════════════════════════════════════
+// UTILS
 function pad(n){return String(n).padStart(2,"0");}
-function genId(){
-  var d=new Date();
-  return "TKT-"+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+"-"+Math.random().toString(36).slice(2,6).toUpperCase();
-}
+function genTktId(){var d=new Date();return "TKT-"+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+"-"+Math.random().toString(36).slice(2,6).toUpperCase();}
 function genMsgId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,5);}
+function genUID(){return "U"+Date.now().toString(36).toUpperCase()+Math.random().toString(36).slice(2,5).toUpperCase();}
 function nowStr(){var d=new Date();return pad(d.getDate())+"/"+pad(d.getMonth()+1)+"/"+d.getFullYear()+" "+pad(d.getHours())+":"+pad(d.getMinutes());}
 function esc(t){return(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");}
 function md(t){return esc(t).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");}
@@ -321,258 +305,242 @@ function showTab(name){
   document.querySelectorAll(".tab").forEach(function(b){b.classList.remove("active");});
   document.getElementById("page-"+name).classList.add("active");
   document.getElementById("tab-"+name).classList.add("active");
-  if(name==="tkt") loadTickets();
-  if(name==="ann") loadAnn();
-  if(name==="geral") { badge("geral",""); startGeralPolling(); }
+  if(name==="tkt")loadTickets();if(name==="ann")loadAnn();
+  if(name==="geral"){badge("geral","");startGeralPolling();}
+}
+async function sha256(msg){
+  var buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,"0");}).join("");
 }
 
-// ══ LOGIN / USUÁRIO ════════════════════════════════════════
-var USERNAME = "";
-var IS_DEV = false;
+// LOGIN / BAN
+var BAD_NAME=["porra","caralho","merda","fdp","fuck","shit","bitch","cuzao","viado","vsf","buceta"];
+async function doLogin(){
+  var val=document.getElementById("login-input").value.trim();
+  var err=document.getElementById("login-err");
+  function showErr(m){err.textContent=m;err.style.display="block";}
+  if(val.length<3||val.length>24){showErr("⚠️ Nome deve ter 3-24 caracteres.");return;}
+  if(BAD_NAME.some(function(w){return val.toLowerCase().includes(w);})){showErr("⚠️ Nome impróprio não permitido.");return;}
+  showErr("⏳ Verificando...");
 
-// Palavrões para validação do nome
-var BAD_NAME = ["porra","caralho","merda","fdp","vsf","fuck","shit","bitch","buceta","cuzao","viado"];
+  var storedUID=localStorage.getItem("fai_uid");
+  var existing=await sb("GET","users",null,"?username=eq."+encodeURIComponent(val)+"&select=id,banned,ban_reason");
+  if(Array.isArray(existing)&&existing.length>0){
+    var u=existing[0];
+    if(!storedUID||u.id!==storedUID){showErr("❌ Nome '"+val+"' já está em uso. Escolha outro.");return;}
+  }
 
-function doLogin() {
-  var val = document.getElementById("login-input").value.trim();
-  var err = document.getElementById("login-err");
-  if (val.length < 3 || val.length > 24) { err.style.display="block"; return; }
-  if (BAD_NAME.some(function(w){return val.toLowerCase().includes(w);})) { err.style.display="block"; return; }
-  err.style.display = "none";
-  USERNAME = val;
-  localStorage.setItem("fai_username", USERNAME);
-  document.getElementById("login-screen").style.display = "none";
-  document.getElementById("header-user").textContent = "Olá, " + USERNAME + "!";
+  var uid=storedUID||genUID();
+  if(!storedUID){
+    var ok=await sb("POST","users",{id:uid,username:val,banned:false,ban_reason:""});
+    if(!ok){showErr("❌ Erro ao registrar. Tente novamente.");return;}
+    localStorage.setItem("fai_uid",uid);
+  } else {
+    // Atualiza username se mudou
+    await sb("PATCH","users",{username:val},"?id=eq."+uid);
+  }
+
+  // Verifica ban por ID
+  var banChk=await sb("GET","users",null,"?id=eq."+uid+"&select=banned,ban_reason");
+  if(Array.isArray(banChk)&&banChk.length>0&&banChk[0].banned){
+    document.getElementById("login-screen").style.display="none";
+    document.getElementById("ban-reason-txt").textContent="Motivo: "+(banChk[0].ban_reason||"N/A");
+    document.getElementById("ban-id-txt").textContent="Seu ID: "+uid;
+    document.getElementById("ban-screen").style.display="flex";
+    return;
+  }
+
+  USERNAME=val; USER_ID=uid;
+  localStorage.setItem("fai_username",USERNAME);
+  IS_DEV=localStorage.getItem("fai_is_dev")==="1";
+  err.style.display="none";
+  document.getElementById("login-screen").style.display="none";
+  document.getElementById("header-user").textContent="Olá, "+USERNAME+"!";
   onReady();
 }
 
-function openConfig() {
-  var op = prompt("Configurações:\n\n1. Trocar nome de usuário\n2. Modo Desenvolvedor\n\nDigite 1 ou 2:", "1");
-  if (!op) return;
-  if (op.trim() === "1") {
-    var novo = prompt("Novo nome de usuário:", USERNAME);
-    if (!novo || novo.trim().length < 3) return;
-    USERNAME = novo.trim();
-    localStorage.setItem("fai_username", USERNAME);
-    document.getElementById("header-user").textContent = "Olá, " + USERNAME + "!";
-    toast("✅ Nome atualizado: " + USERNAME, "toast-ok");
-  } else if (op.trim() === "2") {
-    var pwd = prompt("Senha de desenvolvedor:");
-    if (!pwd) return;
-    sha256(pwd).then(function(hash) {
-      if (hash === DEV_HASH) {
-        IS_DEV = true;
-        localStorage.setItem("fai_is_dev","1");
-        toast("🔑 Modo Dev ativado! Você aparece em dourado no chat.", "toast-ok");
-      } else {
-        toast("❌ Senha incorreta.", "toast-err");
-      }
+function openConfig(){
+  var op=prompt("⚙️ Configurações:\n\n1. Trocar nome de usuário\n2. Ativar Modo Dev\n3. Meu ID: "+USER_ID+"\n\nDigite 1 ou 2:","1");
+  if(!op)return;
+  if(op.trim()==="1"){
+    var novo=prompt("Novo nome:",USERNAME);
+    if(!novo||novo.trim().length<3||BAD_NAME.some(function(w){return novo.toLowerCase().includes(w);})){toast("❌ Nome inválido.","toast-err");return;}
+    sb("PATCH","users",{username:novo.trim()},"?id=eq."+USER_ID).then(function(ok){
+      if(ok){USERNAME=novo.trim();localStorage.setItem("fai_username",USERNAME);document.getElementById("header-user").textContent="Olá, "+USERNAME+"!";toast("✅ Nome atualizado!","toast-ok");}
+      else toast("❌ Nome já em uso ou erro.","toast-err");
+    });
+  } else if(op.trim()==="2"){
+    var pwd=prompt("Senha de desenvolvedor:");
+    if(!pwd)return;
+    sha256(pwd).then(function(hash){
+      if(hash===DEV_HASH){IS_DEV=true;localStorage.setItem("fai_is_dev","1");toast("🔑 Modo Dev ativado!","toast-ok");}
+      else toast("❌ Senha incorreta.","toast-err");
     });
   }
 }
 
-async function sha256(msg) {
-  var buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,"0");}).join("");
-}
-
-// ══ ANTI-SPAM QABAR ════════════════════════════════════════
-var qaCooldown = false;
-function qaClick(btn, prompt) {
-  if (qaCooldown) return;
-  qaCooldown = true;
-  document.querySelectorAll(".qabtn").forEach(function(b){b.classList.add("cd");});
-  qa(prompt);
-  setTimeout(function(){
-    qaCooldown = false;
-    document.querySelectorAll(".qabtn").forEach(function(b){b.classList.remove("cd");});
-  }, 5000);
-}
-
-// ══ MODERAÇÃO MELHORADA ════════════════════════════════════
-var BAD_WORDS = [
-  // palavrões básicos
-  "porra","caralho","merda","viado","fdp","vsf","fuck","shit","bitch","cuzao","buceta",
-  // insultos ao criador/jogo
-  "heitorcoser lixo","heitordc lixo","criador lixo","criador idiota","criador otario",
-  "dono lixo","dono idiota","dono otario","jogo lixo","jogo merda","jogo ruim",
-  "jogo horrivel","jogo pessimo","jogo odeio","odeio esse jogo","esse jogo e uma merda",
-  "esse jogo e lixo","floppa lixo","floppa merda","floppa e lixo",
-  "heitor idiota","heitor lixo","heitor merda","heitor otario"
-];
-function checkBadWords(text) {
-  var t = text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+// MODERAÇÃO
+var BAD_WORDS=["porra","caralho","merda","viado","fdp","vsf","fuck","shit","bitch","cuzao","buceta",
+  "heitorcoser lixo","heitordc lixo","criador lixo","criador idiota","dono lixo","jogo lixo","jogo merda",
+  "jogo ruim","jogo horrivel","jogo pessimo","heitor idiota","heitor lixo","floppa lixo","floppa merda",
+  "heitor otario","esse jogo e lixo","odeio esse jogo","dono otario","criador otario"];
+function checkBadWords(text){
+  var t=text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
   return BAD_WORDS.some(function(w){return t.includes(w);});
 }
-function checkSpam(name) {
-  var log=JSON.parse(localStorage.getItem("fai_sp")||"[]"),now=Date.now(),win=600000;
-  if(log.filter(function(e){return e.n===name.toLowerCase()&&now-e.t<win;}).length>=3)return false;
-  log.push({n:name.toLowerCase(),t:now});
-  localStorage.setItem("fai_sp",JSON.stringify(log.filter(function(e){return now-e.t<win*2;})));
-  return true;
+// Moderação via IA para nomes suspeitos
+async function checkNameViaAI(name){
+  try{
+    var r=await fetch(GROQ_URL,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+GROQ_KEY},
+      body:JSON.stringify({model:"llama-3.1-8b-instant",messages:[
+        {role:"system",content:"Você verifica nomes de usuário. Responda APENAS com 'OK' ou 'IMPRÓPRIO'. É impróprio se contiver: palavrões, insultos, palavras ofensivas em qualquer idioma, nomes de personagens ofensivos, ou referências sexuais. Seja rigoroso."},
+        {role:"user",content:"Nome: "+name}
+      ],max_tokens:5,temperature:0})});
+    var d=await r.json();
+    var resp=(d.choices&&d.choices[0]&&d.choices[0].message.content)||"OK";
+    return resp.trim().toUpperCase().includes("IMPR");
+  }catch(e){return false;}
 }
 
-// ══ TICKET ════════════════════════════════════════════════
-document.getElementById("sup-msg").addEventListener("input",function(){
-  document.getElementById("sup-cnt").textContent=this.value.length;
-});
-async function sendTicket() {
+function checkSpam(uid){
+  var log=JSON.parse(localStorage.getItem("fai_sp")||"[]"),now=Date.now(),win=600000;
+  if(log.filter(function(e){return e.n===uid&&now-e.t<win;}).length>=3)return false;
+  log.push({n:uid,t:now});localStorage.setItem("fai_sp",JSON.stringify(log.filter(function(e){return now-e.t<win*2;})));return true;
+}
+
+// QABAR ANTI-SPAM
+var qaCooldown=false;
+function qaClick(btn,p){
+  if(qaCooldown)return;
+  qaCooldown=true;
+  document.querySelectorAll(".qabtn").forEach(function(b){b.classList.add("cd");});
+  qa(p);
+  setTimeout(function(){qaCooldown=false;document.querySelectorAll(".qabtn").forEach(function(b){b.classList.remove("cd");});},5000);
+}
+
+// TICKET
+document.getElementById("sup-msg").addEventListener("input",function(){document.getElementById("sup-cnt").textContent=this.value.length;});
+async function sendTicket(){
   var sub=document.getElementById("sup-sub").value;
   var msg=document.getElementById("sup-msg").value.trim();
   var st=document.getElementById("sup-st"),btn=document.getElementById("sup-btn");
   function show(t,c){st.textContent=t;st.className="smsg "+c;st.style.display="block";}
-  if(!sub){show("⚠️ Selecione o assunto.","swarn");return;}
-  if(msg.length<10){show("⚠️ Mensagem muito curta.","swarn");return;}
-  if(!checkSpam(USERNAME)){show("🚫 Aguarde 10 minutos.","serr");return;}
-  if(checkBadWords(msg)){show("❌ Conteúdo impróprio bloqueado.","serr");return;}
-  btn.disabled=true;btn.textContent="⏳ Enviando...";show("Enviando...","swarn");
-  var tkt={id:genId(),date:nowStr(),name:USERNAME,subject:sub,message:msg,response:"",platform:"mobile"};
+  if(!sub){show("⚠️ Selecione o tipo.","swarn");return;}
+  if(msg.length<15){show("⚠️ Descreva melhor (mín. 15 chars).","swarn");return;}
+  if(!checkSpam(USER_ID)){show("🚫 Aguarde 10 minutos entre tickets.","serr");return;}
+  if(checkBadWords(msg)){show("❌ Conteúdo impróprio detectado.","serr");return;}
+  btn.disabled=true;btn.textContent="⏳ Verificando...";show("Verificando conteúdo...","swarn");
+  // Moderação extra via IA para conteúdo do ticket
+  var isInap=await checkTicketContentAI(msg);
+  if(isInap){btn.disabled=false;btn.textContent="📨 Enviar Ticket";show("❌ Conteúdo não permitido pela moderação.","serr");return;}
+  btn.textContent="⏳ Enviando...";
+  var tkt={id:genTktId(),date:nowStr(),name:USERNAME,user_id:USER_ID,subject:sub,message:msg,response:"",platform:"mobile"};
   var local=JSON.parse(localStorage.getItem("my_tkt")||"[]");
-  local.push(tkt); localStorage.setItem("my_tkt",JSON.stringify(local));
+  local.push(tkt);localStorage.setItem("my_tkt",JSON.stringify(local));
   var ok=await sb("POST","tickets",tkt);
   btn.disabled=false;btn.textContent="📨 Enviar Ticket";
-  if(ok!==null){
-    show("✅ Ticket "+tkt.id+" enviado!","sok");
-    document.getElementById("sup-sub").value="";
-    document.getElementById("sup-msg").value="";
-    document.getElementById("sup-cnt").textContent="0";
-  }else show("❌ Erro ao enviar. Veja Debug.","serr");
+  if(ok!==null){show("✅ Ticket "+tkt.id+" enviado!","sok");document.getElementById("sup-sub").value="";document.getElementById("sup-msg").value="";document.getElementById("sup-cnt").textContent="0";}
+  else show("❌ Erro ao enviar.","serr");
 }
-async function loadTickets() {
+async function checkTicketContentAI(msg){
+  try{
+    var r=await fetch(GROQ_URL,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+GROQ_KEY},
+      body:JSON.stringify({model:"llama-3.1-8b-instant",messages:[
+        {role:"system",content:"Você modera tickets de suporte de um jogo. Responda APENAS 'OK' ou 'BLOQUEAR'. Bloqueie se contiver: insultos, palavrões, conteúdo ofensivo, spam, ou conteúdo completamente irrelevante para um jogo. Seja justo — críticas construtivas são OK."},
+        {role:"user",content:"Ticket: "+msg}
+      ],max_tokens:5,temperature:0})});
+    var d=await r.json();
+    var resp=(d.choices&&d.choices[0]&&d.choices[0].message.content)||"OK";
+    return resp.trim().toUpperCase().includes("BLOQUEAR");
+  }catch(e){return false;}
+}
+async function loadTickets(){
   var box=document.getElementById("tkt-list");
   box.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Buscando...</div>';
   var local=JSON.parse(localStorage.getItem("my_tkt")||"[]");
   if(!local.length){box.innerHTML='<div class="empty"><div class="eico">📭</div>Nenhum ticket ainda.</div>';return;}
   var ids=local.map(function(t){return t.id;}).join(",");
   var raw=await sb("GET","tickets",null,"?id=in.("+ids+")&select=id,response");
-  var cloud={};
-  if(Array.isArray(raw))raw.forEach(function(t){cloud[t.id]=t;});
+  var cloud={};if(Array.isArray(raw))raw.forEach(function(t){cloud[t.id]=t;});
   var upd=local.map(function(t){return cloud[t.id]?Object.assign({},t,{response:cloud[t.id].response||""}):t;});
   localStorage.setItem("my_tkt",JSON.stringify(upd));
   badge("tkt",upd.filter(function(t){return t.response&&t.response.trim();}).length||"");
   box.innerHTML="";
-  var slbl={bug:"🐛 Bug",duvida:"❓ Dúvida",sugestao:"💡 Sugestão",outro:"🔧 Outro"};
+  var slbl={bug:"🐛 Bug",ideia:"💡 Ideia",duvida:"❓ Dúvida",outro:"🔧 Outro"};
   upd.slice().reverse().forEach(function(t){
     var hasR=!!(t.response&&t.response.trim());
     var c=document.createElement("div");c.className="tcard "+(hasR?"done":"pend");
     c.innerHTML='<div class="thead2"><span class="tid">🎫 '+t.id+'</span><span class="tstat" style="color:'+(hasR?"#44ff88":"#ffaa44")+'">'+(hasR?"✅ Respondido":"⏳ Aguardando")+'</span></div>'+
       '<div style="font-size:.7rem;color:var(--muted);margin-bottom:5px">'+(slbl[t.subject]||"Suporte")+' • '+t.date+'</div>'+
       '<div class="tmsg">'+esc(t.message)+'</div>'+
-      (hasR?'<div style="font-size:.7rem;color:#44ff88;margin:5px 0 3px">💬 Resposta:</div><div class="treply">'+esc(t.response)+'</div>':
-            '<div style="font-size:.7rem;color:var(--faint);margin-top:5px">Sem resposta ainda. Toque 🔄 para verificar.</div>');
+      (hasR?'<div style="font-size:.7rem;color:#44ff88;margin:5px 0 3px">💬 Resposta:</div><div class="treply">'+esc(t.response)+'</div>':'<div style="font-size:.7rem;color:var(--faint);margin-top:5px">Toque 🔄 para verificar.</div>');
     box.appendChild(c);
   });
 }
 
-// ══ ANÚNCIOS ══════════════════════════════════════════════
-async function loadAnn() {
+// ANÚNCIOS
+async function loadAnn(){
   var box=document.getElementById("ann-list");
-  box.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳ Carregando...</div>';
+  box.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem">⏳...</div>';
   var raw=await sb("GET","announcements",null,"?select=*&order=id.desc");
   if(!Array.isArray(raw)||!raw.length){box.innerHTML='<div class="empty"><div class="eico">📢</div>Nenhum anúncio.</div>';return;}
   box.innerHTML="";
   var ico={info:"ℹ️",aviso:"⚠️",update:"🆕"};
-  raw.forEach(function(a){
-    var d=document.createElement("div");d.className="acard "+(a.type||"info");
-    d.innerHTML='<div class="atitle">'+(ico[a.type]||"📢")+" "+esc(a.title||"")+'</div><div class="amsg">'+esc(a.message||"")+'</div><div class="adate">'+esc(a.date||"")+'</div>';
-    box.appendChild(d);
-  });
+  raw.forEach(function(a){var d=document.createElement("div");d.className="acard "+(a.type||"info");d.innerHTML='<div class="atitle">'+(ico[a.type]||"📢")+" "+esc(a.title||"")+'</div><div class="amsg">'+esc(a.message||"")+'</div><div class="adate">'+esc(a.date||"")+'</div>';box.appendChild(d);});
 }
-async function checkAnn() {
-  var raw=await sb("GET","announcements",null,"?select=id&limit=1");
-  if(Array.isArray(raw)&&raw.length){document.getElementById("ann-banner").style.display="block";badge("ann",raw.length);}
-}
+async function checkAnn(){var raw=await sb("GET","announcements",null,"?select=id&limit=1");if(Array.isArray(raw)&&raw.length){document.getElementById("ann-banner").style.display="block";badge("ann",raw.length);}}
 
-// ══ CHAT GERAL ════════════════════════════════════════════
-var geralPollTimer = null;
-var geralLastId = "";
-var geralSending = false;
-
-function startGeralPolling() {
-  if (geralPollTimer) return;
-  loadGeralMessages(true);
-  geralPollTimer = setInterval(function(){loadGeralMessages(false);}, 3000);
-}
-
-async function loadGeralMessages(initial) {
-  var filter = "?select=*&order=id.asc&limit=80";
-  var raw = await sb("GET","chat_messages",null,filter);
-  if (!Array.isArray(raw)) return;
-
-  var box = document.getElementById("gchat");
-  if (!box) return;
-
-  // Verifica se tem mensagens novas
-  var lastRaw = raw.length ? raw[raw.length-1].id : "";
-  if (!initial && lastRaw === geralLastId) return;
-  geralLastId = lastRaw;
-
-  var wasAtBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 60;
-  box.innerHTML = "";
-
-  raw.forEach(function(m) {
-    var isSelf = m.username === USERNAME;
-    var isDev  = !!m.is_dev;
-    var div = document.createElement("div");
-    div.className = "gmsg" + (isSelf?" self":"") + (isDev?" devmsg":"");
-    var nameClass = isDev ? "dev" : (isSelf ? "user-self" : "normal");
-    var prefix = isDev ? "👑 " : "";
-    div.innerHTML =
-      '<div class="gname '+nameClass+'">'+prefix+esc(m.username)+'</div>'+
-      '<div class="gtext">'+esc(m.text)+'</div>'+
-      '<div class="gtime">'+esc(m.date||"")+'</div>';
+// CHAT GERAL
+var geralPollTimer=null,geralLastId="",geralSending=false;
+function startGeralPolling(){if(geralPollTimer)return;loadGeralMessages(true);geralPollTimer=setInterval(function(){loadGeralMessages(false);},3000);}
+async function loadGeralMessages(initial){
+  var raw=await sb("GET","chat_messages",null,"?select=*&order=id.asc&limit=100");
+  if(!Array.isArray(raw))return;
+  var box=document.getElementById("gchat");if(!box)return;
+  var lastRaw=raw.length?raw[raw.length-1].id:"";
+  if(!initial&&lastRaw===geralLastId)return;
+  geralLastId=lastRaw;
+  var wasAtBottom=box.scrollHeight-box.scrollTop-box.clientHeight<60;
+  box.innerHTML="";
+  raw.forEach(function(m){
+    var isSelf=m.user_id===USER_ID,isDev=!!m.is_dev;
+    var div=document.createElement("div");div.className="gmsg"+(isSelf?" self":"")+(isDev?" devmsg":"");
+    var nc=isDev?"dev":(isSelf?"user-self":"normal");
+    div.innerHTML='<div class="gname '+nc+'">'+(isDev?"👑 ":"")+esc(m.username)+'<span class="gid">'+esc(m.user_id||"")+'</span></div><div class="gtext">'+esc(m.text)+'</div><div class="gtime">'+esc(m.date||"")+'</div>';
     box.appendChild(div);
   });
-
-  if (initial || wasAtBottom) box.scrollTop = box.scrollHeight;
-  if (!initial) badge("geral","");
+  if(initial||wasAtBottom)box.scrollTop=box.scrollHeight;
 }
-
-async function sendGeral() {
-  if (geralSending) return;
-  var inp = document.getElementById("ginput");
-  var text = inp.value.trim();
-  if (!text) return;
-  if (text.length > 200) { toast("⚠️ Mensagem muito longa (máx 200).","toast-err"); return; }
-  if (checkBadWords(text)) { toast("❌ Mensagem bloqueada: conteúdo impróprio.","toast-err"); inp.value=""; return; }
-
-  // Rate limit simples: 1 mensagem por 2 segundos
-  var now = Date.now();
-  var last = parseInt(localStorage.getItem("fai_gchat_last")||"0");
-  if (now - last < 2000) { toast("⏳ Aguarde um momento...","toast-info"); return; }
-  localStorage.setItem("fai_gchat_last", now);
-
-  geralSending = true;
-  inp.value = "";
-  document.getElementById("gsend").disabled = true;
-
-  var msg = {id:genMsgId(), username:USERNAME, text:text, date:nowStr(), is_dev:IS_DEV};
-  var ok = await sb("POST","chat_messages",msg);
-  if (!ok) { toast("❌ Erro ao enviar.","toast-err"); }
+async function sendGeral(){
+  if(geralSending)return;
+  var inp=document.getElementById("ginput"),text=inp.value.trim();
+  if(!text)return;
+  if(checkBadWords(text)){toast("❌ Conteúdo impróprio.","toast-err");inp.value="";return;}
+  var now=Date.now(),last=parseInt(localStorage.getItem("fai_gchat_last")||"0");
+  if(now-last<2000){toast("⏳ Aguarde...","toast-info");return;}
+  localStorage.setItem("fai_gchat_last",now);
+  geralSending=true;inp.value="";document.getElementById("gsend").disabled=true;
+  await sb("POST","chat_messages",{id:genMsgId(),username:USERNAME,text:text,date:nowStr(),is_dev:IS_DEV,user_id:USER_ID});
   await loadGeralMessages(false);
-  geralSending = false;
-  document.getElementById("gsend").disabled = false;
+  geralSending=false;document.getElementById("gsend").disabled=false;
 }
+document.getElementById("ginput").addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey)sendGeral();});
 
-document.getElementById("ginput").addEventListener("keydown",function(e){
-  if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendGeral();}
-});
-
-// ══ AI CHAT ═══════════════════════════════════════════════
-var SYS = 'Você é assistente especializado em "Floppa\'s Schoolhouse 2" (Roblox). NUNCA invente. Responda em português do Brasil.\n'+
+// AI CHAT — BUG REPORT SÓ COM SUMÁRIO REAL
+var SYS='Você é assistente especializado em "Floppa\'s Schoolhouse 2" (Roblox). NUNCA invente. Responda em português do Brasil.\n'+
   'OBJETIVO: Coletar 7 livros e encontrar a saída correta. Saída errada vira parede.\n'+
-  'TUTORIAL: Jogo começa com Baldi na entrada. Cada livro tem 3 questões. Errar UMA = só ela marcada. Errar TODAS = livro errado. Ao errar = cutscene Baldi morre, Floppa persegue.\n'+
-  'MECÂNICAS: Cada erro = Floppa mais rápido. 7 livros = Floppa mais rápido. Stamina recupera ao pegar livro ou bebedouro.\n'+
-  'PERSONAGENS: Floppa(perseguidor,audição), Baldi(início,morre), Carro vermelho(após 2 livros,a cada 20s,espere 10-12s), X9(chega ~10m revela posição ao Floppa por 60s).\n'+
-  'ITENS: Fita Cassete — Floppa persegue o som por 60s.\n'+
+  'TUTORIAL: Baldi na entrada. Livros têm 3 questões. Errar TODAS = livro errado. Ao errar = cutscene Baldi morre, Floppa persegue.\n'+
+  'MECÂNICAS: Cada erro = Floppa mais rápido. 7 livros = Floppa mais rápido. Stamina recupera no livro ou bebedouro.\n'+
+  'PERSONAGENS: Floppa(perseguidor,audição), Baldi(início,morre), Carro vermelho(após 2 livros,20s,espere 10-12s), X9(10m → revela posição por 60s).\n'+
+  'ITENS: Fita Cassete — Floppa persegue som por 60s.\n'+
   'SALAS: Aula(livros,porta cinza), Supplies(carro,porta amarela), Cafeteria(saída), Corredores(bebedouros), Detenção, Funcionários.\n'+
-  'BUG REPORT: após investigar, inicie com BUG_REPORT: [resumo] e continue.';
+  'BUG REPORT: SOMENTE use BUG_REPORT: quando você JÁ TEM INFORMAÇÕES SUFICIENTES para descrever o bug (após pelo menos 2 respostas do usuário com detalhes). '+
+  'Se ainda precisar de mais informações, NUNCA use BUG_REPORT — apenas faça perguntas normalmente. '+
+  'O sumário do BUG_REPORT deve ser específico e descritivo (ex: "Carro vermelho atravessa parede na sala 3 após coletar 5 livros"). '+
+  'Formato: BUG_REPORT:[sumário detalhado aqui] e continue a resposta.';
 
-var hist = [];
-var chatEl = document.getElementById("chat");
-var ci = document.getElementById("cinput");
-
-function addMsg(role, text) {
+var hist=[],chatEl=document.getElementById("chat"),ci=document.getElementById("cinput");
+function addMsg(role,text){
   var row=document.createElement("div");row.className="mrow "+role;
   var b=document.createElement("div");b.className="bub "+role;
   if(role==="user")b.innerHTML='<div class="lbl">Você</div>'+md(text);
@@ -580,39 +548,37 @@ function addMsg(role, text) {
   else b.innerHTML=esc(text);
   row.appendChild(b);chatEl.appendChild(row);chatEl.scrollTop=chatEl.scrollHeight;
 }
-function addTyping(){
-  var row=document.createElement("div");row.className="mrow ai";row.id="typ";
-  var b=document.createElement("div");b.className="bub ai";
-  b.innerHTML='<div class="lbl">FloppaAI 🐱</div><div class="dots"><span></span><span></span><span></span></div>';
-  row.appendChild(b);chatEl.appendChild(row);chatEl.scrollTop=chatEl.scrollHeight;
-}
+function addTyping(){var row=document.createElement("div");row.className="mrow ai";row.id="typ";var b=document.createElement("div");b.className="bub ai";b.innerHTML='<div class="lbl">FloppaAI 🐱</div><div class="dots"><span></span><span></span><span></span></div>';row.appendChild(b);chatEl.appendChild(row);chatEl.scrollTop=chatEl.scrollHeight;}
 function rmTyping(){var t=document.getElementById("typ");if(t)t.remove();}
 
-async function sendChat() {
+async function sendChat(){
   var text=ci.value.trim();if(!text)return;
   ci.value="";document.getElementById("csend").disabled=true;
   addMsg("user",text);hist.push({role:"user",content:text});addTyping();
-  try {
-    var r=await fetch(GROQ_URL,{method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+GROQ_KEY},
+  try{
+    var r=await fetch(GROQ_URL,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+GROQ_KEY},
       body:JSON.stringify({model:"llama-3.1-8b-instant",messages:[{role:"system",content:SYS}].concat(hist.slice(-14)),max_tokens:600,temperature:.3})});
     var d=await r.json();
     if(!r.ok)throw new Error(d.error&&d.error.message?d.error.message:"Erro API");
     var reply=d.choices[0].message.content;
-    if(reply.startsWith("BUG_REPORT:")){
-      var lines=reply.split("\n");
-      var summary=lines[0].replace("BUG_REPORT:","").trim();
-      reply=lines.slice(1).join("\n").trim();
-      sb("POST","bugs",{id:genId(),date:nowStr(),summary:summary,response:"",status:"pendente",platform:"mobile"});
+    // BUG_REPORT só registra se tem sumário com 10+ chars após o ':'
+    var bugMatch=reply.match(/^BUG_REPORT:(.+)/m);
+    if(bugMatch){
+      var summary=bugMatch[1].trim();
+      if(summary.length>=10){
+        reply=reply.replace(/^BUG_REPORT:.+\n?/m,"").trim();
+        sb("POST","bugs",{id:genTktId(),date:nowStr(),summary:summary,response:"",status:"pendente",platform:"mobile",user_id:USER_ID});
+        dbg("ok","Bug registrado: "+summary);
+      } else {
+        // Sumário inválido — remove a tag e continua normalmente
+        reply=reply.replace(/^BUG_REPORT:.+\n?/m,"").trim();
+      }
     }
     hist.push({role:"assistant",content:reply});rmTyping();addMsg("ai",reply);
   }catch(e){
     rmTyping();
-    if(e.message.includes("Rate limit")||e.message.includes("rate_limit")) {
-      addMsg("ai","⏳ Muitas perguntas em pouco tempo! Aguarde alguns segundos e tente novamente.");
-    } else {
-      addMsg("ai","⚠️ Erro: "+e.message);
-    }
+    if(e.message.includes("Rate limit")||e.message.includes("rate_limit"))addMsg("ai","⏳ Muitas perguntas! Aguarde alguns segundos.");
+    else addMsg("ai","⚠️ Erro: "+e.message);
     dbg("err","Chat: "+e.message);
   }
   document.getElementById("csend").disabled=false;
@@ -620,20 +586,38 @@ async function sendChat() {
 function qa(p){ci.value=p;sendChat();}
 ci.addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey)sendChat();});
 
-// ══ INIT ══════════════════════════════════════════════════
-function onReady() {
-  dbg("ok","Iniciado como: "+USERNAME+(IS_DEV?" [DEV]":""));
-  addMsg("sys","👋 Olá, "+USERNAME+"!\nUse o Chat para perguntas sobre o jogo.\nToque em 💬 para o Chat Geral com todos os jogadores!");
+// INIT
+function onReady(){
+  dbg("ok","Iniciado: "+USERNAME+" | ID: "+USER_ID+(IS_DEV?" [DEV]":""));
+  addMsg("sys","👋 Olá, "+USERNAME+"!\nUse o Chat para perguntas ou 💬 para o Chat Geral.\n🎫 Seu ID: "+USER_ID);
   checkAnn();
 }
 
-// Inicializa
-USERNAME = localStorage.getItem("fai_username") || "";
-IS_DEV   = localStorage.getItem("fai_is_dev") === "1";
-if (USERNAME) {
-  document.getElementById("login-screen").style.display = "none";
-  document.getElementById("header-user").textContent = "Olá, " + USERNAME + "!";
-  onReady();
+// Inicia
+USERNAME=localStorage.getItem("fai_username")||"";
+USER_ID=localStorage.getItem("fai_uid")||"";
+IS_DEV=localStorage.getItem("fai_is_dev")==="1";
+if(USERNAME&&USER_ID){
+  sb("GET","users",null,"?id=eq."+USER_ID+"&select=banned,ban_reason,username").then(function(r){
+    if(!Array.isArray(r)||r.length===0){
+      // Usuário deletado (force logout) — limpa e mostra login
+      localStorage.removeItem("fai_username");
+      localStorage.removeItem("fai_uid");
+      localStorage.removeItem("fai_is_dev");
+      document.getElementById("login-screen").style.display="flex";
+      return;
+    }
+    if(r[0].banned){
+      document.getElementById("ban-reason-txt").textContent="Motivo: "+(r[0].ban_reason||"N/A");
+      document.getElementById("ban-id-txt").textContent="Seu ID: "+USER_ID;
+      document.getElementById("ban-screen").style.display="flex";
+      return;
+    }
+    USERNAME=r[0].username||USERNAME;
+    document.getElementById("login-screen").style.display="none";
+    document.getElementById("header-user").textContent="Olá, "+USERNAME+"!";
+    onReady();
+  });
 }
 document.getElementById("login-input").addEventListener("keydown",function(e){if(e.key==="Enter")doLogin();});
 </script>

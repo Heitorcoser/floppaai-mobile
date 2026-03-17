@@ -732,7 +732,40 @@ class DevMode(ctk.CTk):
             ctk.CTkButton(dz, text=lbl, height=34, fg_color="#220000", hover_color="#440000",
                           text_color="#ff6666", font=ctk.CTkFont(size=11),
                           command=lambda t=table: self._danger_clear(t)).pack(fill="x",padx=14,pady=2)
-        ctk.CTkLabel(dz, text="").pack(pady=6)
+
+        # Forçar deslogar TODOS os usuários
+        ctk.CTkFrame(dz, height=1, fg_color="#330000").pack(fill="x",padx=14,pady=6)
+        ctk.CTkLabel(dz, text="🔄  Forçar Deslogar Todos",
+                     font=ctk.CTkFont(size=11,weight="bold"), text_color="#ffaa44").pack(anchor="w",padx=14,pady=(0,4))
+        ctk.CTkLabel(dz, text="Deleta TODOS os usuários cadastrados. Todos terão que fazer login novamente.\nUse após updates que mudam sistema de nomes ou IDs.",
+                     font=ctk.CTkFont(size=10), text_color="#666", wraplength=560).pack(anchor="w",padx=14,pady=(0,6))
+        ctk.CTkButton(dz, text="🔄 Forçar Deslogar Todos os Usuários", height=38,
+                      fg_color="#3a1a00", hover_color="#5a2a00",
+                      text_color="#ffaa44", font=ctk.CTkFont(size=12, weight="bold"),
+                      command=self._force_logout_all).pack(fill="x",padx=14,pady=(0,12))
+        ctk.CTkLabel(dz, text="").pack(pady=2)
+
+    def _force_logout_all(self):
+        if not messagebox.askyesno("⚠️ CONFIRMAR",
+            "Isso vai deletar TODOS os usuários cadastrados.\n\n"
+            "Todos os jogadores serão deslogados e terão que criar uma nova conta ao entrar.\n\n"
+            "Tem certeza?"):
+            return
+        # Deleta todos os usuários da tabela users
+        users = sb_get("users","?select=id")
+        count = 0
+        for u in users:
+            sb_delete("users", u["id"])
+            count += 1
+        # Também limpa o chat geral para recomeçar limpo
+        msgs = sb_get("chat_messages","?select=id")
+        for m in msgs:
+            sb_delete("chat_messages", m["id"])
+        log_activity("FORÇOU DESLOGAR TODOS", f"{count} usuários removidos")
+        messagebox.showinfo("✅ Feito!",
+            f"{count} usuário(s) removido(s).\n\n"
+            "Todos os jogadores serão deslogados automaticamente ao acessar o site.")
+        self._navigate("config")
 
     def _save_pwd(self, p):
         if len(p.strip()) < 4:

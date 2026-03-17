@@ -360,7 +360,8 @@ async function doLogin(){
 }
 
 function openConfig(){
-  var op=prompt("⚙️ Configurações:\n\n1. Trocar nome de usuário\n2. Ativar Modo Dev\n3. Meu ID: "+USER_ID+"\n\nDigite 1 ou 2:","1");
+  var notifStr=notifEnabled?"✅ Ativas":"❌ Desativadas";
+  var op=prompt("⚙️ Configurações:\n\n1. Trocar nome\n2. Ativar Modo Dev\n3. Notificações: "+notifStr+"\n4. Meu ID: "+USER_ID+"\n\nDigite 1, 2, 3 ou 4:","1");
   if(!op)return;
   if(op.trim()==="1"){
     var novo=prompt("Novo nome:",USERNAME);
@@ -376,6 +377,11 @@ function openConfig(){
       if(hash===DEV_HASH){IS_DEV=true;localStorage.setItem("fai_is_dev","1");toast("🔑 Modo Dev ativado!","toast-ok");}
       else toast("❌ Senha incorreta.","toast-err");
     });
+  } else if(op.trim()==="3"){
+    notifEnabled=!notifEnabled;
+    localStorage.setItem("fai_notif",notifEnabled?"1":"0");
+    if(notifEnabled){initNotifications();toast("🔔 Notificações ativadas!","toast-ok");}
+    else{if(notifTimer){clearInterval(notifTimer);notifTimer=null;}toast("🔕 Notificações desativadas.","toast-info");}
   }
 }
 
@@ -591,6 +597,60 @@ function onReady(){
   dbg("ok","Iniciado: "+USERNAME+" | ID: "+USER_ID+(IS_DEV?" [DEV]":""));
   addMsg("sys","👋 Olá, "+USERNAME+"!\nUse o Chat para perguntas ou 💬 para o Chat Geral.\n🎫 Seu ID: "+USER_ID);
   checkAnn();
+  initNotifications();
+}
+
+// ══ NOTIFICAÇÕES ══════════════════════════════════════════
+var notifEnabled=localStorage.getItem("fai_notif")!=="0";
+var notifLastTkt=localStorage.getItem("fai_notif_tkt")||"";
+var notifTimer=null;
+
+async function initNotifications(){
+  if(!notifEnabled)return;
+  if(!("Notification" in window))return;
+  if(Notification.permission==="default"){
+    var perm=await Notification.requestPermission();
+    if(perm!=="granted")return;
+  }
+  if(Notification.permission==="granted") startNotifPolling();
+}
+
+function startNotifPolling(){
+  if(notifTimer)return;
+  checkNotifications();
+  notifTimer=setInterval(checkNotifications,60000); // a cada 1 min
+}
+
+async function checkNotifications(){
+  if(!notifEnabled)return;
+  // Verifica respostas de tickets do usuário
+  var local=JSON.parse(localStorage.getItem("my_tkt")||"[]");
+  if(!local.length)return;
+  var ids=local.map(function(t){return t.id;}).join(",");
+  var raw=await sb("GET","tickets",null,"?id=in.("+ids+")&select=id,response");
+  if(!Array.isArray(raw))return;
+  raw.forEach(function(t){
+    if(t.response&&t.response.trim()&&t.id!==notifLastTkt){
+      notifLastTkt=t.id;
+      localStorage.setItem("fai_notif_tkt",t.id);
+      sendNotif("🎫 Ticket respondido!","O ticket "+t.id+" recebeu uma resposta. Abra o app para ver!","tkt");
+    }
+  });
+  // Verifica novos anúncios
+  var lastAnn=localStorage.getItem("fai_notif_ann")||"";
+  var anns=await sb("GET","announcements",null,"?select=id,title&order=id.desc&limit=1");
+  if(Array.isArray(anns)&&anns.length&&anns[0].id!==lastAnn&&lastAnn!==""){
+    localStorage.setItem("fai_notif_ann",anns[0].id);
+    sendNotif("📢 Novo anúncio!",anns[0].title||"Há um novo anúncio no FloppaAI!","ann");
+  }else if(Array.isArray(anns)&&anns.length&&lastAnn===""){
+    localStorage.setItem("fai_notif_ann",anns[0].id);
+  }
+}
+
+function sendNotif(title,body,tab){
+  if(Notification.permission!=="granted")return;
+  var n=new Notification(title,{body:body,icon:"https://heitorcoser.github.io/floppaai-mobile/assets/icon.png",badge:"https://heitorcoser.github.io/floppaai-mobile/assets/icon.png",tag:tab});
+  n.onclick=function(){window.focus();showTab(tab);n.close();};
 }
 
 // Inicia

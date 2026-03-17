@@ -340,7 +340,8 @@ function doLogin(){
   onReady();
 }
 function openConfig(){
-  const op=prompt("Configurações:\n\n1. Trocar nome de usuário\n2. Ativar Modo Dev\n3. Desativar Modo Dev\n\nDigite 1, 2 ou 3:","1");
+  const notifStr=notifEnabled?"✅ Ativas":"❌ Desativadas";
+  const op=prompt("Configurações:\n\n1. Trocar nome\n2. Ativar Modo Dev\n3. Desativar Modo Dev\n4. Notificações: "+notifStr+"\n\nDigite 1, 2, 3 ou 4:","1");
   if(!op)return;
   if(op.trim()==="1"){
     const novo=prompt("Novo nome:",USERNAME);
@@ -359,6 +360,11 @@ function openConfig(){
     IS_DEV=false;localStorage.removeItem("pc_is_dev");
     document.getElementById("sb-user").textContent="Olá, "+USERNAME;
     toast("Modo Dev desativado.","toast-info");
+  }else if(op.trim()==="4"){
+    notifEnabled=!notifEnabled;
+    localStorage.setItem("pc_notif",notifEnabled?"1":"0");
+    if(notifEnabled){initNotifications();toast("🔔 Notificações ativadas!","toast-ok");}
+    else{if(notifTimer){clearInterval(notifTimer);notifTimer=null;}toast("🔕 Notificações desativadas.","toast-info");}
   }
 }
 
@@ -549,6 +555,37 @@ ci.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey)sendChat();});
 function onReady(){
   dbg("ok","Iniciado como: "+USERNAME+(IS_DEV?" [DEV]":""));
   addMsg("sys","👋 Bem-vindo ao FloppaAI PC, "+USERNAME+"!\nUse as ações na sidebar ou digite sua pergunta.\nNovo: 💬 Chat Geral para falar com todos!");
+  initNotifications();
+}
+
+// ══ NOTIFICAÇÕES ══════════════════════════════════════════
+let notifEnabled=localStorage.getItem("pc_notif")!=="0";
+let notifTimer=null,notifLastTkt=localStorage.getItem("pc_notif_tkt")||"";
+
+async function initNotifications(){
+  if(!notifEnabled||!("Notification"in window))return;
+  if(Notification.permission==="default")await Notification.requestPermission();
+  if(Notification.permission==="granted"){checkNotifications();notifTimer=setInterval(checkNotifications,60000);}
+}
+async function checkNotifications(){
+  if(!notifEnabled)return;
+  const local=JSON.parse(localStorage.getItem("pc_tkt")||"[]");
+  if(local.length){
+    const ids=local.map(t=>t.id).join(",");
+    const raw=await sb("GET","tickets",null,`?id=in.(${ids})&select=id,response`);
+    if(Array.isArray(raw))raw.forEach(t=>{
+      if(t.response&&t.response.trim()&&t.id!==notifLastTkt){
+        notifLastTkt=t.id;localStorage.setItem("pc_notif_tkt",t.id);
+        new Notification("🎫 Ticket respondido!",{body:"Ticket "+t.id+" recebeu resposta!",tag:"tkt"});
+      }
+    });
+  }
+  const lastAnn=localStorage.getItem("pc_notif_ann")||"";
+  const anns=await sb("GET","announcements",null,"?select=id,title&order=id.desc&limit=1");
+  if(Array.isArray(anns)&&anns.length){
+    if(anns[0].id!==lastAnn&&lastAnn!=="")new Notification("📢 Novo anúncio!",{body:anns[0].title||"Novo anúncio no FloppaAI!",tag:"ann"});
+    localStorage.setItem("pc_notif_ann",anns[0].id);
+  }
 }
 async function checkVer(){try{const d=await(await fetch(VER_URL)).json();if(d.version>"1.0.0")document.getElementById("upd-sb").style.display="block";}catch{}}
 

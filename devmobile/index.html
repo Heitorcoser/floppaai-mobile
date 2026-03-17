@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0a0a0a">
+<title>FloppaAI — Dev Mobile</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0a0a;--bg2:#111;--bg3:#1a1a1a;
+  --red:#ff2200;--red2:#cc1100;
+  --blue:#0088ff;--blue2:#003a7a;
+  --green:#00cc66;--orange:#ff8844;--yellow:#ffcc44;
+  --gold:#ffd700;--text:#e0e0e0;--muted:#888;--faint:#444;
+  --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)
+}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text)}
+#login-screen{position:fixed;inset:0;background:#050505;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px}
+.lbox{background:#111;border-radius:20px;padding:28px;width:100%;max-width:340px;text-align:center}
+.lbox .logo{font-size:2.8rem;margin-bottom:10px}
+.lbox h2{font-size:1.05rem;font-weight:700;color:#ff8844;margin-bottom:6px}
+.lbox p{font-size:.76rem;color:var(--muted);margin-bottom:18px}
+#pwd-inp{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:12px 16px;color:var(--text);font-size:.95rem;outline:none;font-family:inherit;text-align:center}
+#pwd-inp:focus{border-color:var(--orange)}
+#pwd-err{font-size:.72rem;color:#ff6666;margin-top:6px;display:none}
+#pwd-btn{width:100%;margin-top:12px;padding:13px;background:var(--red);border:none;border-radius:12px;color:#fff;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit}
+#app{display:none;flex-direction:column;height:100%}
+#dv-header{background:linear-gradient(135deg,#1a0000,#2a0000);border-bottom:1px solid #ff220022;padding:calc(var(--st)+10px) 14px 10px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+#dv-header h1{font-size:.95rem;font-weight:700;color:var(--gold);flex:1}
+#dv-header span{font-size:.65rem;color:var(--faint)}
+#dv-tabs{display:flex;background:var(--bg2);border-bottom:1px solid #1e1e1e;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+#dv-tabs::-webkit-scrollbar{display:none}
+.dv-tab{flex:1;min-width:56px;padding:9px 4px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.55rem;color:var(--faint);cursor:pointer;border-bottom:2px solid transparent;user-select:none;white-space:nowrap}
+.dv-tab .ico{font-size:1rem}
+.dv-tab.active{color:var(--gold);border-bottom-color:var(--orange)}
+.dv-page{display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0}
+.dv-page.active{display:flex}
+.dv-scroll{flex:1;overflow-y:auto;padding:12px 12px calc(var(--sb)+12px)}
+.dv-card{background:var(--bg2);border-radius:12px;padding:12px;margin-bottom:10px}
+.dv-card-title{font-size:.82rem;font-weight:700;margin-bottom:8px;color:var(--orange)}
+.dv-stat{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #1e1e1e}
+.dv-stat:last-child{border:none}
+.dv-stat span:first-child{font-size:.76rem;color:var(--muted)}
+.dv-stat span:last-child{font-size:.82rem;font-weight:700}
+.tkt-card{background:var(--bg3);border-radius:10px;padding:11px;margin-bottom:8px;border-left:3px solid var(--faint)}
+.tkt-card.pend{border-left-color:var(--orange)}.tkt-card.done{border-left-color:var(--green)}
+.tkt-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.tkt-id{font-size:.58rem;color:var(--faint);font-family:monospace}
+.tkt-stat{font-size:.62rem;font-weight:700}
+.tkt-user{font-size:.68rem;color:#44aaff;margin-bottom:4px}
+.tkt-msg{font-size:.76rem;color:var(--muted);background:#111;border-radius:6px;padding:7px;word-break:break-word;margin-bottom:6px}
+.tkt-reply{font-size:.76rem;color:#88ff88;background:#0a1a0a;border-radius:6px;padding:7px}
+.dv-inp{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:9px;padding:9px 12px;color:var(--text);font-size:.82rem;outline:none;font-family:inherit;margin-top:6px}
+.dv-inp:focus{border-color:var(--blue)}
+.dv-btn{width:100%;padding:10px;border:none;border-radius:9px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:6px;font-family:inherit}
+.dv-btn-blue{background:var(--blue2);color:#fff}
+.dv-btn-red{background:#440000;color:#ff8888}
+.dv-btn-orange{background:#3a1a00;color:var(--orange)}
+.usr-card{background:var(--bg3);border-radius:10px;padding:11px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.usr-avatar{width:34px;height:34px;border-radius:50%;background:#1a1a1a;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.usr-info{flex:1;min-width:0}
+.usr-name{font-size:.82rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.usr-id{font-size:.56rem;color:var(--faint);font-family:monospace}
+.usr-ban{font-size:.62rem;color:#ff6666;margin-top:2px}
+.usr-btn{background:none;border:1px solid #2a2a2a;border-radius:7px;padding:4px 10px;font-size:.65rem;cursor:pointer;font-family:inherit;display:block;margin-bottom:3px;white-space:nowrap}
+.usr-btn.ban{border-color:#440000;color:#ff6666}
+.usr-btn.unban{border-color:#003300;color:#44ff88}
+.ann-type-sel{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:9px;padding:9px 12px;color:var(--text);font-size:.82rem;outline:none;font-family:inherit;margin:6px 0}
+textarea.dv-inp{resize:none;min-height:80px;line-height:1.5}
+.empty{text-align:center;padding:30px 20px;color:var(--faint);font-size:.8rem}
+.eico{font-size:2rem;margin-bottom:8px}
+.rbtn{background:none;border:1px solid #2a2a2a;border-radius:9px;padding:6px 14px;color:var(--muted);font-size:.7rem;cursor:pointer;margin-bottom:10px;font-family:inherit}
+.stitle{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px}
+.smsg{font-size:.74rem;text-align:center;padding:7px;border-radius:7px;margin-top:6px;display:none}
+.sok{background:#003300;color:var(--green)}.serr{background:#330000;color:#ff6666}.swarn{background:#332200;color:var(--yellow)}
+.toast-dev{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);padding:9px 18px;border-radius:18px;font-size:.76rem;z-index:9999;pointer-events:none;white-space:nowrap;max-width:90vw}
+.tok{background:#003300;color:var(--green)}.terr{background:#330000;color:#ff6666}.tinfo{background:#001a33;color:#66aaff}
+</style>
+</head>
+<body>
+<div id="login-screen">
+  <div class="lbox">
+    <div class="logo">🔑</div>
+    <h2>FloppaAI Dev Mobile</h2>
+    <p>Acesso restrito ao desenvolvedor</p>
+    <input id="pwd-inp" type="password" placeholder="Senha..." autocomplete="off">
+    <div id="pwd-err">❌ Senha incorreta.</div>
+    <button id="pwd-btn" onclick="tryLogin()">Entrar →</button>
+  </div>
+</div>
+
+<div id="app">
+  <div id="dv-header">
+    <h1>👑 Dev Panel</h1>
+    <span id="dv-time"></span>
+  </div>
+  <div id="dv-tabs">
+    <div class="dv-tab active" id="dvt-dash"    onclick="dvShow('dash')"><span class="ico">📊</span><span>Dashboard</span></div>
+    <div class="dv-tab"        id="dvt-bugs"    onclick="dvShow('bugs')"><span class="ico">🐛</span><span>Bugs</span></div>
+    <div class="dv-tab"        id="dvt-ideas"   onclick="dvShow('ideas')"><span class="ico">💡</span><span>Ideias</span></div>
+    <div class="dv-tab"        id="dvt-tickets" onclick="dvShow('tickets')"><span class="ico">🎧</span><span>Outros</span></div>
+    <div class="dv-tab"        id="dvt-users"   onclick="dvShow('users')"><span class="ico">👥</span><span>Usuários</span></div>
+    <div class="dv-tab"        id="dvt-ann"     onclick="dvShow('ann')"><span class="ico">📢</span><span>Anúncios</span></div>
+    <div class="dv-tab"        id="dvt-danger"  onclick="dvShow('danger')"><span class="ico">⚠️</span><span>Perigo</span></div>
+  </div>
+
+  <div class="dv-page active" id="dvp-dash">
+    <div class="dv-scroll">
+      <div class="dv-card">
+        <div class="dv-card-title">📊 Resumo</div>
+        <div class="dv-stat"><span>🐛 Bugs pendentes</span><span id="st-bugs" style="color:#ff8844">—</span></div>
+        <div class="dv-stat"><span>💡 Ideias pendentes</span><span id="st-ideas" style="color:#aa44ff">—</span></div>
+        <div class="dv-stat"><span>🎧 Outros pendentes</span><span id="st-other" style="color:#44aaff">—</span></div>
+        <div class="dv-stat"><span>👥 Usuários</span><span id="st-users" style="color:#44ff88">—</span></div>
+        <div class="dv-stat"><span>🚫 Banidos</span><span id="st-banned" style="color:#ff6666">—</span></div>
+        <div class="dv-stat"><span>💬 Msgs no chat</span><span id="st-msgs" style="color:#888">—</span></div>
+      </div>
+      <button class="rbtn" onclick="loadDash()">🔄 Atualizar</button>
+    </div>
+  </div>
+
+  <div class="dv-page" id="dvp-bugs">
+    <div class="dv-scroll">
+      <button class="rbtn" onclick="loadBugs()">🔄 Atualizar</button>
+      <div class="stitle">Tickets de Bug</div>
+      <div id="bugs-list"><div class="empty"><div class="eico">🐛</div>Carregando...</div></div>
+    </div>
+  </div>
+
+  <div class="dv-page" id="dvp-ideas">
+    <div class="dv-scroll">
+      <button class="rbtn" onclick="loadIdeas()">🔄 Atualizar</button>
+      <div class="stitle">Sugestões e Ideias</div>
+      <div id="ideas-list"><div class="empty"><div class="eico">💡</div>Carregando...</div></div>
+    </div>
+  </div>
+
+  <div class="dv-page" id="dvp-tickets">
+    <div class="dv-scroll">
+      <button class="rbtn" onclick="loadOther()">🔄 Atualizar</button>
+      <div class="stitle">Dúvidas e Outros</div>
+      <div id="other-list"><div class="empty"><div class="eico">🎧</div>Carregando...</div></div>
+    </div>
+  </div>
+
+  <div class="dv-page" id="dvp-users">
+    <div class="dv-scroll">
+      <button class="rbtn" onclick="loadUsers()">🔄 Atualizar</button>
+      <input id="user-search" class="dv-inp" type="text" placeholder="Buscar nome ou ID..." oninput="filterUsers(this.value)" style="margin-bottom:10px;margin-top:0">
+      <div class="stitle">Usuários</div>
+      <div id="users-list"><div class="empty"><div class="eico">👥</div>Carregando...</div></div>
+    </div>
+  </div>
+
+  <div class="dv-page" id="dvp-ann">
+    <div class="dv-scroll">
+      <div class="dv-card">
+        <div class="dv-card-title">📢 Publicar Anúncio</div>
+        <input id="ann-title" class="dv-inp" type="text" placeholder="Título..." style="margin-top:0">
+        <select id="ann-type" class="ann-type-sel">
+          <option value="info">ℹ️ Info</option>
+          <option value="aviso">⚠️ Aviso</option>
+          <option value="update">🆕 Update</option>
+        </select>
+        <textarea id="ann-msg" class="dv-inp" placeholder="Mensagem..." style="margin-top:0"></textarea>
+        <div id="ann-st" class="smsg"></div>
+        <button class="dv-btn dv-btn-blue" onclick="postAnn()">📢 Publicar</button>
+      </div>
+      <button class="rbtn" onclick="loadAnns()">🔄 Atualizar lista</button>
+      <div id="ann-list"><div class="empty"><div class="eico">📢</div>Carregando...</div></div>
+    </div>
+  </div>
+
+  <div class="dv-page" id="dvp-danger">
+    <div class="dv-scroll">
+      <div class="dv-card" style="background:#1a0000;border:1px solid #330000">
+        <div class="dv-card-title" style="color:#ff4444">⚠️ Zona de Perigo</div>
+        <button class="dv-btn dv-btn-red" onclick="dangerClear('tickets')">🗑 Limpar todos os tickets</button>
+        <button class="dv-btn dv-btn-red" onclick="dangerClear('announcements')">🗑 Limpar anúncios</button>
+        <button class="dv-btn dv-btn-red" onclick="dangerClear('chat_messages')">🗑 Limpar chat geral</button>
+        <div style="height:1px;background:#330000;margin:12px 0"></div>
+        <div style="font-size:.78rem;color:#ffaa44;font-weight:700;margin-bottom:4px">🔄 Forçar Deslogar Todos</div>
+        <div style="font-size:.7rem;color:#555;margin-bottom:8px;line-height:1.5">Deleta todos os usuários. Todos precisarão fazer login novamente.</div>
+        <button class="dv-btn dv-btn-orange" onclick="forceLogoutAll()">🔄 Forçar Deslogar Todos</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var SB_URL="https://klcdgksyddlyfazowheb.supabase.co";
+var SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtsY2Rna3N5ZGRseWZhem93aGViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MzAwMTAsImV4cCI6MjA4OTIwNjAxMH0.pYqDAbpYWvnr0sf2pQJ5BBx1dAU9HUX2Amd69RWvSSg";
+var DEV_HASH="0f5fdb20028e7514a755f4c2648b7fc26a888b8fed25edfafb3fc1287ac420e6";
+var allUsersCache=[];
+
+async function sha256(msg){
+  var buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,"0");}).join("");
+}
+async function tryLogin(){
+  var hash=await sha256(document.getElementById("pwd-inp").value);
+  if(hash===DEV_HASH){
+    document.getElementById("login-screen").style.display="none";
+    document.getElementById("app").style.display="flex";
+    startClock();loadDash();
+  }else document.getElementById("pwd-err").style.display="block";
+}
+document.getElementById("pwd-inp").addEventListener("keydown",function(e){if(e.key==="Enter")tryLogin();});
+function pad(n){return String(n).padStart(2,"0");}
+function startClock(){
+  setInterval(function(){
+    var d=new Date();
+    document.getElementById("dv-time").textContent=pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds());
+  },1000);
+}
+function esc(t){return(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");}
+function nowStr(){var d=new Date();return pad(d.getDate())+"/"+pad(d.getMonth()+1)+"/"+d.getFullYear()+" "+pad(d.getHours())+":"+pad(d.getMinutes());}
+function toast(msg,cls){
+  var t=document.createElement("div");t.className="toast-dev "+(cls||"tok");
+  t.textContent=msg;document.body.appendChild(t);
+  setTimeout(function(){t.remove();},3000);
+}
+function dvShow(n){
+  document.querySelectorAll(".dv-page").forEach(function(p){p.classList.remove("active");});
+  document.querySelectorAll(".dv-tab").forEach(function(b){b.classList.remove("active");});
+  document.getElementById("dvp-"+n).classList.add("active");
+  document.getElementById("dvt-"+n).classList.add("active");
+  if(n==="bugs")loadBugs();if(n==="ideas")loadIdeas();if(n==="tickets")loadOther();
+  if(n==="users")loadUsers();if(n==="ann")loadAnns();
+}
+async function sb(method,table,body,filter){
+  filter=filter||"";
+  var h={"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY};
+  if(method!=="GET")h["Prefer"]="return=representation";
+  var opts={method:method,headers:h};if(body)opts.body=JSON.stringify(body);
+  try{
+    var r=await fetch(SB_URL+"/rest/v1/"+table+filter,opts);
+    if(!r.ok)return null;
+    if(method==="GET")return r.json();
+    if(r.status===204)return true;
+    return r.json().catch(function(){return true;});
+  }catch(e){return null;}
+}
+
+async function loadDash(){
+  var tkts=await sb("GET","tickets",null,"?select=id,subject,response");
+  var users=await sb("GET","users",null,"?select=id,banned");
+  var msgs=await sb("GET","chat_messages",null,"?select=id");
+  if(Array.isArray(tkts)){
+    document.getElementById("st-bugs").textContent=tkts.filter(function(t){return t.subject==="bug"&&!t.response;}).length+" pend.";
+    document.getElementById("st-ideas").textContent=tkts.filter(function(t){return t.subject==="sugestao"&&!t.response;}).length+" pend.";
+    document.getElementById("st-other").textContent=tkts.filter(function(t){return t.subject!=="bug"&&t.subject!=="sugestao"&&!t.response;}).length+" pend.";
+  }
+  if(Array.isArray(users)){
+    document.getElementById("st-users").textContent=users.length;
+    document.getElementById("st-banned").textContent=users.filter(function(u){return u.banned;}).length;
+  }
+  if(Array.isArray(msgs))document.getElementById("st-msgs").textContent=msgs.length;
+}
+
+function renderTickets(boxId,tkts){
+  var box=document.getElementById(boxId);
+  if(!Array.isArray(tkts)||!tkts.length){box.innerHTML='<div class="empty"><div class="eico">📭</div>Nenhum ticket.</div>';return;}
+  box.innerHTML="";
+  tkts.slice().reverse().forEach(function(t){
+    var hasR=!!(t.response&&t.response.trim());
+    var div=document.createElement("div");div.className="tkt-card "+(hasR?"done":"pend");
+    div.innerHTML=
+      '<div class="tkt-head"><span class="tkt-id">🎫 '+esc(t.id)+'</span><span class="tkt-stat" style="color:'+(hasR?"#44ff88":"#ffaa44")+'">'+(hasR?"✅":"⏳")+'</span></div>'+
+      '<div class="tkt-user">👤 '+esc(t.name||"?")+' <span style="font-size:.54rem;color:var(--faint)">'+(t.user_id||"")+'</span></div>'+
+      '<div class="tkt-msg">'+esc(t.message)+'</div>'+
+      '<div style="font-size:.62rem;color:var(--faint);margin-bottom:4px">'+esc(t.date||"")+'</div>'+
+      (hasR?'<div class="tkt-reply">💬 '+esc(t.response)+'</div>':
+        '<textarea class="dv-inp" id="resp-'+esc(t.id)+'" placeholder="Responder..." style="min-height:60px;margin-top:4px"></textarea>'+
+        '<button class="dv-btn dv-btn-blue" onclick="replyTicket(\''+esc(t.id)+'\')">💬 Responder</button>');
+    box.appendChild(div);
+  });
+}
+async function loadBugs(){var r=await sb("GET","tickets",null,"?subject=eq.bug&select=*&order=id.asc");renderTickets("bugs-list",r);}
+async function loadIdeas(){var r=await sb("GET","tickets",null,"?subject=eq.sugestao&select=*&order=id.asc");renderTickets("ideas-list",r);}
+async function loadOther(){var r=await sb("GET","tickets",null,"?and=(subject.neq.bug,subject.neq.sugestao)&select=*&order=id.asc");renderTickets("other-list",r);}
+async function replyTicket(id){
+  var inp=document.getElementById("resp-"+id);if(!inp)return;
+  var resp=inp.value.trim();if(!resp){toast("⚠️ Digite a resposta.","tinfo");return;}
+  var ok=await sb("PATCH","tickets",{response:resp},"?id=eq."+id);
+  if(ok){toast("✅ Respondido!","tok");loadBugs();loadIdeas();loadOther();}else toast("❌ Erro.","terr");
+}
+var allUsersCache=[];
+async function loadUsers(){
+  var raw=await sb("GET","users",null,"?select=*&order=username.asc");
+  if(Array.isArray(raw))allUsersCache=raw;
+  renderUsers(allUsersCache);
+}
+function filterUsers(q){
+  var q2=q.toLowerCase();
+  renderUsers(allUsersCache.filter(function(u){return(u.username||"").toLowerCase().includes(q2)||(u.id||"").toLowerCase().includes(q2);}));
+}
+function renderUsers(users){
+  var box=document.getElementById("users-list");
+  if(!users.length){box.innerHTML='<div class="empty"><div class="eico">👥</div>Nenhum usuário.</div>';return;}
+  box.innerHTML="";
+  users.forEach(function(u){
+    var div=document.createElement("div");div.className="usr-card";
+    div.innerHTML=
+      '<div class="usr-avatar">'+(u.banned?"🚫":"👤")+'</div>'+
+      '<div class="usr-info"><div class="usr-name">'+esc(u.username)+'</div>'+
+      '<div class="usr-id">'+esc(u.id)+'</div>'+
+      (u.banned?'<div class="usr-ban">'+esc(u.ban_reason||"Sem motivo")+'</div>':'')+
+      '</div><div>'+
+      (u.banned
+        ?'<button class="usr-btn unban" onclick="unbanUser(\''+esc(u.id)+'\')">✅ Desbanir</button>'
+        :'<button class="usr-btn ban" onclick="banUser(\''+esc(u.id)+'\',\''+esc(u.username)+'\')">🚫 Banir</button>')+
+      '</div>';
+    box.appendChild(div);
+  });
+}
+async function banUser(id,name){
+  var reason=prompt("Motivo do ban de "+name+":");if(!reason)return;
+  var ok=await sb("PATCH","users",{banned:true,ban_reason:reason},"?id=eq."+id);
+  if(ok){toast("🚫 "+name+" banido!","tok");loadUsers();}else toast("❌ Erro.","terr");
+}
+async function unbanUser(id){
+  var ok=await sb("PATCH","users",{banned:false,ban_reason:""},"?id=eq."+id);
+  if(ok){toast("✅ Desbanido!","tok");loadUsers();}else toast("❌ Erro.","terr");
+}
+
+function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,4);}
+async function loadAnns(){
+  var raw=await sb("GET","announcements",null,"?select=*&order=id.desc");
+  var box=document.getElementById("ann-list");
+  if(!Array.isArray(raw)||!raw.length){box.innerHTML='<div class="empty"><div class="eico">📢</div>Nenhum anúncio.</div>';return;}
+  box.innerHTML="";
+  var ico={info:"ℹ️",aviso:"⚠️",update:"🆕"};
+  raw.forEach(function(a){
+    var div=document.createElement("div");div.className="dv-card";div.style.marginBottom="8px";
+    div.innerHTML=
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">'+
+      '<span style="font-size:.8rem;font-weight:700">'+(ico[a.type]||"📢")+" "+esc(a.title)+'</span>'+
+      '<button style="background:#440000;border:none;color:#ff8888;font-size:.65rem;padding:3px 8px;border-radius:5px;cursor:pointer" onclick="deleteAnn(\''+esc(a.id)+'\')">🗑</button></div>'+
+      '<div style="font-size:.76rem;color:var(--muted)">'+esc(a.message)+'</div>'+
+      '<div style="font-size:.6rem;color:var(--faint);margin-top:4px">'+esc(a.date||"")+'</div>';
+    box.appendChild(div);
+  });
+}
+async function deleteAnn(id){
+  if(!confirm("Deletar anúncio?"))return;
+  await sb("DELETE","announcements",null,"?id=eq."+id);
+  loadAnns();
+}
+async function postAnn(){
+  var title=document.getElementById("ann-title").value.trim();
+  var msg=document.getElementById("ann-msg").value.trim();
+  var type=document.getElementById("ann-type").value;
+  var st=document.getElementById("ann-st");
+  function show(t,c){st.textContent=t;st.className="smsg "+c;st.style.display="block";}
+  if(!title||!msg){show("⚠️ Preencha título e mensagem.","swarn");return;}
+  var ok=await sb("POST","announcements",{id:genId(),title:title,message:msg,type:type,date:nowStr()});
+  if(ok){show("✅ Publicado!","sok");document.getElementById("ann-title").value="";document.getElementById("ann-msg").value="";loadAnns();}
+  else show("❌ Erro ao publicar.","serr");
+}
+async function dangerClear(table){
+  if(!confirm("Deletar TODOS de '"+table+"'?\nIrreversível!"))return;
+  var items=await sb("GET",table,null,"?select=id");
+  if(!Array.isArray(items)){toast("❌ Erro.","terr");return;}
+  for(var i=0;i<items.length;i++)await sb("DELETE",table,null,"?id=eq."+items[i].id);
+  toast("✅ "+table+" limpo! ("+items.length+" itens)","tok");
+  loadDash();
+}
+async function forceLogoutAll(){
+  if(!confirm("Deletar TODOS os usuários?\nTodos farão login novamente!"))return;
+  var users=await sb("GET","users",null,"?select=id");
+  if(Array.isArray(users))for(var i=0;i<users.length;i++)await sb("DELETE","users",null,"?id=eq."+users[i].id);
+  var msgs=await sb("GET","chat_messages",null,"?select=id");
+  if(Array.isArray(msgs))for(var j=0;j<msgs.length;j++)await sb("DELETE","chat_messages",null,"?id=eq."+msgs[j].id);
+  toast("🔄 "+(users?users.length:0)+" usuários removidos!","tinfo");
+  loadDash();
+}
+</script>
+</body>
+</html>

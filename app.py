@@ -12,7 +12,7 @@ import io
 # ── Configurações ─────────────────────────────────────────────────────────────
 APP_NAME        = "FloppaAI"
 APP_VERSION     = "1.0.0"
-GROQ_API_KEY    = "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"
+GROQ_API_KEY    = "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"
 GROQ_URL        = "https://api.groq.com/openai/v1/chat/completions"
 MODEL_TEXT      = "llama-3.1-8b-instant"
 MODEL_VISION    = "llama-3.2-11b-vision-preview"
@@ -106,7 +106,7 @@ PERSONAGENS:
 - FLOPPA: perseguidor principal. Usa audição. Fica mais rápido a cada erro e ao coletar 7 livros.
 - CARRO (vermelho): ativado após 2+ livros. A cada 20s percorre o mapa derrubando tudo.
   Não tem como fugir. Esperar 10-12s ou terminar o percurso para ficar livre.
-- X9: personagem que ao chegar aproximadamente 10 metros do jogador, revela a POSIÇÃO DO JOGADOR ao Floppa por 60 segundos.
+- X9: sempre existiu no jogo. Fica parado até o jogador coletar 2 livros, aí começa a andar e perseguir. Ao chegar perto do jogador, revela a posição dele ao Floppa por 60 segundos. NÃO tem relação com tempo, só com quantidade de livros coletados.
 
 SALAS DO MAPA:
 - Salas de aula (carpete azul, mesas amarelas): onde ficam os livros. Porta numerada cinza.
